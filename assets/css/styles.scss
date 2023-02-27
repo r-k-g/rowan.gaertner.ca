@@ -1,14 +1,21 @@
 ---
 ---
+body, html {
+  height: 100%;
+}
+
 body {
   margin: 0;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 .header {
   background-color: rgb(63, 194, 255);
-  // border: 20px solid black;
-  width: 100%;
-  padding: 15px;
+  height: 100px;
+  line-height: 100px;
+  padding: 15px 50px;
 }
 
 h1 {
@@ -16,6 +23,8 @@ h1 {
 }
 
 .content {
-  background-color: rgb(34, 211, 72);
+  background: url(../images/grass2.png) repeat;
+  background-size: 32px 32px;
+  height: 100%;
   padding: 15px;
 }
