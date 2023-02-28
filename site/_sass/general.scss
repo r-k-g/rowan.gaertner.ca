@@ -1,0 +1,25 @@
+body, html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: Pixels;
+  src: url(../fonts/here-lies-mecc.woff2) format("woff2");
+}
+
+body {
+  margin: 0;
+  font-family: Pixels;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+a {
+  color: black;
+  
+}
+a:visited {
+  color: rgb(40, 40, 40)
+}
