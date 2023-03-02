@@ -14,13 +14,13 @@ body {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
-  overflow-x: hidden;
+  // overflow-x: hidden;
 }
 
 a {
   color: black;
-  
 }
+
 a:visited {
   color: rgb(40, 40, 40)
 }

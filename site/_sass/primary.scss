@@ -35,35 +35,35 @@ h1 {
 
 .cloud1 {
   top: 40px;
-  animation: cloudmove 70s linear -10s infinite;
+  animation: cloudmove 80s linear -10s infinite;
 }
 
 .cloud2 {
   top: 45px;
-  animation: cloudmove 55s linear -30s infinite;
+  animation: cloudmove 65s linear -30s infinite;
 }
 
 .cloud3 {
   top: 50px;
-  animation: cloudmove 80s linear 5s infinite;
+  animation: cloudmove 90s linear 5s infinite;
 }
 
 .cloud4 {
   transform: scale(-2, 2);
   top: 75px;
-  animation: cloudmove 80s linear -60s infinite;
+  animation: cloudmove 90s linear -60s infinite;
 }
 
 .cloud5 {
   transform: scale(-2, 2);
   top: 100px;
-  animation: cloudmove 40s linear 20s infinite;
+  animation: cloudmove 50s linear 20s infinite;
 }
 
 .cloud6 {
   transform: scale(-2, 2);
   top: 30px;
-  animation: cloudmove 100s linear -40s infinite;
+  animation: cloudmove 105s linear -40s infinite;
 }
 
 @keyframes cloudmove {
@@ -80,24 +80,38 @@ h1 {
 }
 
 .paths {
-  list-style-type: none;
-  max-width: 400px;
-  margin: auto; 
-  text-align: center;
-  border: 5px solid rgb(73, 43, 15);
+  width: 500px;
+  margin: auto;
+  text-align: left;
+  border: 5px solid rgb(86, 70, 35);
   padding: 15px;
 }
 
-.clearing {
+.sign {
   background: rgb(129, 104, 52);
-  width:fit-content;
+  border: 3px solid rgb(86, 70, 35);
+  width: fit-content;
   padding: 10px;
+  display: block;
 }
 
-.clearing:nth-child(odd) {
+.sign:nth-child(odd) {
   margin-right: auto;
 }
 
-.clearing:nth-child(even) {
+.sign:nth-child(even) {
   margin-left: auto;
+}
+
+.path {
+  background: rgb(73, 43, 15);
+}
+
+.vertical {
+  position: relative;
+  top: 0px;
+  height:100%;
+  width: 40px;
+  margin-left: auto;
+  margin-right: auto;
 }
