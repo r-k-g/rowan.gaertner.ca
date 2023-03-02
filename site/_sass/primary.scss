@@ -11,8 +11,8 @@
   vertical-align: middle;
   display: flex;
   align-items: center;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
 }
 
 h1 {
@@ -24,6 +24,51 @@ h1 {
   // text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
   -webkit-text-stroke: 1px rgb(104, 88, 17);
   z-index: 1;
+}
+
+.cloud {
+  transform: scale(2);
+  z-index: 0;
+  position: absolute;
+  right: -8%;
+}
+
+.cloud1 {
+  top: 40px;
+  animation: cloudmove 70s linear -10s infinite;
+}
+
+.cloud2 {
+  top: 45px;
+  animation: cloudmove 55s linear -30s infinite;
+}
+
+.cloud3 {
+  top: 50px;
+  animation: cloudmove 80s linear 5s infinite;
+}
+
+.cloud4 {
+  transform: scale(-2, 2);
+  top: 75px;
+  animation: cloudmove 80s linear -60s infinite;
+}
+
+.cloud5 {
+  transform: scale(-2, 2);
+  top: 100px;
+  animation: cloudmove 40s linear 20s infinite;
+}
+
+.cloud6 {
+  transform: scale(-2, 2);
+  top: 30px;
+  animation: cloudmove 100s linear -40s infinite;
+}
+
+@keyframes cloudmove {
+  from {right: -8%;}
+  to {right: 110%;}
 }
 
 .main {
@@ -55,18 +100,4 @@ h1 {
 
 .clearing:nth-child(even) {
   margin-left: auto;
-}
-
-.cloud {
-  transform: scale(2);
-  z-index: 0;
-  position: absolute;
-  right: 200px;
-  top: 40px;
-  animation: cloudmove 60s linear infinite;
-}
-
-@keyframes cloudmove {
-  from {right: -10%;}
-  to {right: 110%;}
 }
