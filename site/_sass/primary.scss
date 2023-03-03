@@ -80,11 +80,13 @@ h1 {
 }
 
 .paths {
-  width: 500px;
+  max-width: 500px;
+  min-width: 350px;
   margin: auto;
-  text-align: left;
+  text-align: center;
   border: 5px solid rgb(86, 70, 35);
   padding: 15px;
+  contain: paint;
 }
 
 .sign {
@@ -108,10 +110,20 @@ h1 {
 }
 
 .vertical {
-  position: relative;
-  top: 0px;
-  height:100%;
-  width: 40px;
-  margin-left: auto;
-  margin-right: auto;
+  position: absolute;
+  top: 10px;
+  height: 90%;
+  width: 30px;
+}
+
+.short-text {
+  display: none;
+}
+@media screen and (max-width: 484px) {
+  .short-text{
+    display: inline;
+  }
+  .full-text {
+    display: none;
+  }
 }
