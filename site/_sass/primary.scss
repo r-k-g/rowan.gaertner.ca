@@ -83,18 +83,37 @@ h1 {
   max-width: 500px;
   min-width: 350px;
   margin: auto;
+  margin-top: 32px;
   text-align: center;
   border: 5px solid rgb(86, 70, 35);
-  padding: 15px;
+  padding: 15px 15px 27px 15px;
   contain: paint;
 }
 
 .sign {
-  background: rgb(129, 104, 52);
+  background-color: rgb(129, 104, 52);
   border: 3px solid rgb(86, 70, 35);
   width: fit-content;
   padding: 10px;
   display: block;
+  contain: layout;
+}
+
+.sign::after, .sign::before {
+  position: absolute;
+  display: block;
+  content: "";
+  width: 6px;
+  height: 17px;
+  bottom: -17px;
+  background: url(../images/post.png) top;
+}
+
+.sign::after {
+  left: 30%;
+}
+.sign::before {
+  right: 30%;
 }
 
 .sign:nth-child(odd) {
@@ -111,8 +130,8 @@ h1 {
 
 .vertical {
   position: absolute;
-  top: 10px;
-  height: 90%;
+  top: 35px;
+  height: 80%;
   width: 30px;
 }
 
