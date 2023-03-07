@@ -1,75 +1,4 @@
-@font-face {
-  font-family: Title;
-  src: url(../fonts/kings-quest-v-initials.woff2) format("woff2");
-}
-
-.header {
-  background-color: rgb(63, 194, 255);
-  height: 100px;
-  line-height: 40px;
-  padding: 15px 50px;
-  vertical-align: middle;
-  display: flex;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-}
-
-h1 {
-  margin: 0;
-  font: small-caps 3em Title;
-  color: rgb(200, 183, 0);
-  display: inline-block;
-  vertical-align: middle;
-  // text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
-  -webkit-text-stroke: 1px rgb(104, 88, 17);
-  z-index: 1;
-}
-
-.cloud {
-  transform: scale(2);
-  z-index: 0;
-  position: absolute;
-  right: -8%;
-}
-
-.cloud1 {
-  top: 40px;
-  animation: cloudmove 80s linear -10s infinite;
-}
-
-.cloud2 {
-  top: 45px;
-  animation: cloudmove 65s linear -30s infinite;
-}
-
-.cloud3 {
-  top: 50px;
-  animation: cloudmove 90s linear 5s infinite;
-}
-
-.cloud4 {
-  transform: scale(-2, 2);
-  top: 75px;
-  animation: cloudmove 90s linear -60s infinite;
-}
-
-.cloud5 {
-  transform: scale(-2, 2);
-  top: 100px;
-  animation: cloudmove 50s linear 20s infinite;
-}
-
-.cloud6 {
-  transform: scale(-2, 2);
-  top: 30px;
-  animation: cloudmove 105s linear -40s infinite;
-}
-
-@keyframes cloudmove {
-  from {right: -8%;}
-  to {right: 110%;}
-}
+@import "primary-header";
 
 .main {
   background: url(../images/grass2.png) repeat;
@@ -82,21 +11,36 @@ h1 {
 .paths {
   max-width: 500px;
   min-width: 350px;
-  margin: auto;
-  margin-top: 32px;
+  margin: 32px auto auto;
   text-align: center;
   border: 5px solid rgb(86, 70, 35);
   padding: 15px 15px 27px 15px;
   contain: paint;
 }
 
+.row:nth-child(even) {
+  text-align: right;
+  .crop {
+    margin-right: auto;
+    float: left;
+  }
+}
+.row:nth-child(odd) {
+  text-align: left;
+  .crop {
+    margin-left: auto;
+    float: right;
+  }
+}
+
 .sign {
-  background-color: rgb(129, 104, 52);
+  background: url(../images/wood3.png) repeat;
+  background-size: 16px 16px;
   border: 3px solid rgb(86, 70, 35);
   width: fit-content;
   padding: 10px;
-  display: block;
   contain: layout;
+  display: inline-block;
 }
 
 .sign::after, .sign::before {
@@ -116,12 +60,13 @@ h1 {
   right: 30%;
 }
 
-.sign:nth-child(odd) {
-  margin-right: auto;
-}
-
-.sign:nth-child(even) {
-  margin-left: auto;
+.crop {
+  width: calc(50% - 15px);
+  height: 32px;
+  background: url(../images/plant.png) repeat-x;
+  background-size: 32px 32px;
+  border: 2px solid #4C6A17;
+  margin-top: 6px;
 }
 
 .path {

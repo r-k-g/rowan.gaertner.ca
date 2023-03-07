@@ -1,0 +1,72 @@
+@font-face {
+  font-family: Title;
+  src: url(../fonts/kings-quest-v-initials.woff2) format("woff2");
+}
+
+.header {
+  background-color: rgb(63, 194, 255);
+  height: 100px;
+  line-height: 40px;
+  padding: 15px 50px;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+h1 {
+  margin: 0;
+  font: small-caps 3em Title;
+  color: rgb(200, 183, 0);
+  display: inline-block;
+  vertical-align: middle;
+  // text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
+  -webkit-text-stroke: 1px rgb(104, 88, 17);
+  z-index: 1;
+}
+
+.cloud {
+  transform: scale(2);
+  z-index: 0;
+  position: absolute;
+  right: -8%;
+}
+
+.cloud1 {
+  top: 40px;
+  animation: cloudmove 80s linear -10s infinite;
+}
+
+.cloud2 {
+  top: 45px;
+  animation: cloudmove 65s linear -30s infinite;
+}
+
+.cloud3 {
+  top: 50px;
+  animation: cloudmove 90s linear 5s infinite;
+}
+
+.cloud4 {
+  transform: scale(-2, 2);
+  top: 75px;
+  animation: cloudmove 90s linear -60s infinite;
+}
+
+.cloud5 {
+  transform: scale(-2, 2);
+  top: 100px;
+  animation: cloudmove 50s linear 20s infinite;
+}
+
+.cloud6 {
+  transform: scale(-2, 2);
+  top: 30px;
+  animation: cloudmove 105s linear -40s infinite;
+}
+
+@keyframes cloudmove {
+  from {right: -8%;}
+  to {right: 110%;}
+}
