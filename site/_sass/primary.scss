@@ -21,13 +21,14 @@
 .row {
   display: flex;
   align-items: end;
-}
 
-.row:nth-child(even) {
-  justify-content: left;
-}
-.row:nth-child(odd) {
-  justify-content: right;
+  &:nth-child(even) {
+    justify-content: left;
+  }
+
+  &:nth-child(odd) {
+    justify-content: right;
+  }
 }
 
 .sign {
@@ -54,10 +55,6 @@
 }
 .sign::before {
   right: 30%;
-}
-
-.sign.external {
-  padding: 3px 10px;
 }
 
 .crop {
@@ -100,7 +97,37 @@
   }
 }
 
+.sign.external {
+  padding: 3px 10px;
+  display: flex;
+}
+
 .icon {
   height: 2rem;
   margin: 0px 10px;
+}
+
+.dude {
+  position:absolute;
+  width: 18px;
+  height: 28px;
+  background: red;
+  bottom: 40px;
+  left: calc(50% - 10px);
+}
+
+.row:has(.sign:hover) ~ .dude {
+    animation: dudemove 2s linear forward;
+    // bottom: 100px;
+
+  // a { //TEMP
+  //   color: red;
+  // }
+}
+
+@keyframes dudemove {
+  from {bottom: 40px;}
+  to {
+    bottom: 200px;
+  }
 }
