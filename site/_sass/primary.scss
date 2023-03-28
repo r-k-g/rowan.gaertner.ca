@@ -29,12 +29,12 @@
       margin-left: 30px;
     }
     .noscriptDude {
-      left: calc(-250px + 100%);
+      left: calc(-270px + 100%);
       transition: opacity 1s, left 1s;
     }
     .sign:hover .noscriptDude {
       left: -33px;
-      opacity: 100%;
+      opacity: 1;
     }
   }
   
@@ -44,12 +44,12 @@
       margin-right: 30px;
     }
     .noscriptDude {
-      right: calc(-250px + 100%);
+      right: calc(-270px + 100%);
       transition: opacity 1s, right 1s;
     }
     .sign:hover .noscriptDude {
       right: -33px;
-      opacity: 100%;
+      opacity: 1;
     }
   }
 }
@@ -109,12 +109,12 @@
   bottom: 31px;
   width: 30px;
   left: calc(50% - 15px);
+  z-index: -1
 }
 
 .horizontal {
   height: 30px;
   display: inline-block;
-  width: calc(50% - 200px);
   flex-grow: 1;
 }
 
@@ -135,24 +135,22 @@
   width: 20px;
   height: 30px;
   background: red;
-  display: none;
   z-index: 6;
+  opacity: 0;
+  transition: opacity 1s;
 }
-
-// .row:has(.sign:hover) ~ .dude {
-//     animation: dudemove 2s linear forward;
-// }
 
 .noscriptDude {
   display: inline-block;
   position: absolute;
   top: 5px;
+  z-index: 10000;
   opacity: 0;
 }
 
 @keyframes dudemove {
-  from {bottom: 40px;}
-  to {
-    bottom: 200px;
-  }
+  0% {top: 40px; left: 40px;}
+  33% {top: 40px; left: 20px;}
+  67% {top: 0px; left: 20px;}
+  100% {top: 0px; left: 0px;}
 }
