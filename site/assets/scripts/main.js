@@ -1,6 +1,6 @@
 (function main() {
   
-  class NavPlayer {
+  class NavDude {
     element = document.getElementsByClassName("dude")[0];
     state = window.getComputedStyle(this.element);
     style = this.element.style;
@@ -15,9 +15,8 @@
       this.style.top = this.middlePath.offsetTop + 5 + "px";
 
       this.style.opacity = 1;
+      this.animation = animation;
       this.aStart = animation.findRule("0%").style
-      this.aStage1 = animation.findRule("33%").style
-      this.aStage2 = animation.findRule("67%").style
       this.aEnd = animation.findRule("100%").style
     }
 
@@ -31,39 +30,84 @@
     set target(newTarget) {
       if (this.#target[0] !== newTarget[0]) {
         this.#target = newTarget;
-        this.makeAnimation();
+        this.doAnimation();
       }
     }
 
-    makeAnimation() {
+    doAnimation() {
       this.style.top = this.state.getPropertyValue("top");
       this.style.left = this.state.getPropertyValue("left");
+      
+      this.clearAnimation();
+      this.makeAnimation(0.8);
+
+      this.style.animation = "dudemove 0.8s linear forwards";
+    }
+
+    clearAnimation() {
       this.style.animation = "";
 
+      let key, toDelete = [];
+      for (let rule of animation.cssRules) {
+          key = rule.keyText;
+          if (key != "0%" && key != "100%") {
+            toDelete.push(key);
+          }
+      }
+      toDelete.forEach((e) => (this.animation.deleteRule(e)));
+    }
+
+    makeAnimation(time) {
       // initial position
       this.aStart.top = this.style.top;
       this.aStart.left = this.style.left;
 
-      // Go to middle, same height
-      this.aStage1.top = this.style.top;
-      this.aStage1.left = this.getMiddle() + "px";
+      let middle = this.getMiddle()
+      let top = this.stripPX(this.style.top);
+      let left = this.stripPX(this.style.left);
 
-      // Stay in middle, go to correct height
-      this.aStage2.top = this.#target[0].offsetTop + 8 + "px";
-      this.aStage2.left = this.getMiddle() + "px";
-
-      // Go to final position
+      // Target position
       let signOffset;
       if (this.#target[1] == "left") {
         signOffset = -(this.width + 4);
       } else {
-        let width = this.#target[0].getBoundingClientRect().width;
-        signOffset = width + 4;
+        signOffset = this.#target[0].getBoundingClientRect().width + 4;
       }
-      this.aEnd.top = this.#target[0].offsetTop + 8 + "px";
-      this.aEnd.left = this.#target[0].offsetLeft + signOffset + "px";
+      let goalTop = this.#target[0].offsetTop + 8;
+      let goalLeft = this.#target[0].offsetLeft + signOffset;
 
-      this.style.animation = "dudemove 0.8s linear forwards";
+      // Find the constant velocity
+      let dtotal = Math.abs(left - middle) + Math.abs(goalLeft - middle) + Math.abs(top - goalTop);
+      let velocity = dtotal / time;
+
+      let t1 = Math.abs(left - middle) / velocity; // time at keyframe 1
+      let t2 = t1 + (Math.abs(top - goalTop) / velocity); // time at keyframe 2
+
+      let p1 = Math.round((t1 / time) * 100); // Percentage for keyframe 1
+      let p2 = Math.round((t2 / time) * 100); // Percentage for keyframe 2
+
+      // If it is 0, assume already at that position
+      if (p1 != 0) {
+        let stage1 = `${p1}% {top: ${this.style.top}; left: ${middle + "px"};}`;
+        this.animation.appendRule(stage1)
+      }
+
+      if (p2 != 0) {
+        if (p1 == p2) {
+          p2++;
+        }
+        
+        let stage2 = `${p2}% {top: ${goalTop + "px"}; left: ${middle + "px"};}`;
+        this.animation.appendRule(stage2)
+      }
+
+      // Set final position
+      this.aEnd.top = goalTop + "px";
+      this.aEnd.left = goalLeft + "px";
+    }
+
+    stripPX(str) {
+      return str.substring(0, str.length - 2);
     }
 
   }
@@ -77,7 +121,7 @@
 
     // Which side of the sign to go to
     let side = index % 2 ? "left" : "right";
-    navPlayer.target = [target, side];
+    navDude.target = [target, side];
   }
   
   // Add hover listener to signs
@@ -88,7 +132,7 @@
     );
   }
   
-  // Find animation for player
+  // Find animation for Dude
   let animation;
   let rules =  document.styleSheets[0].cssRules;
   for (let rule of rules) {
@@ -97,12 +141,12 @@
     }
   }
 
-  // Create player the first time mouse enters path area
-  let navPlayer;
+  // Create Dude the first time mouse enters path area
+  let navDude;
   document.getElementsByClassName("paths")[0]
     .addEventListener("mouseover",
       (event) => {
-        navPlayer = new NavPlayer(animation);
+        navDude = new NavDude(animation);
       },
       {once: true}
     )

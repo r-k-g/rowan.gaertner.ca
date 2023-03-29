@@ -3,7 +3,10 @@
     <meta charset="utf-8">
     <title>{{ page.title }}</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
-    <script src="/assets/scripts/main.js" defer></script>
+    
+    {% if page.script != nil and page.script != '' %}
+      <script src="/assets/scripts/{{ page.script }}.js" defer></script>
+    {% endif %}
 
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png">
