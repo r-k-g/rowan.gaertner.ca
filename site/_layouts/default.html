@@ -2,7 +2,14 @@
   <head>
     <meta charset="utf-8">
     <title>{{ page.title }}</title>
-    <link rel="stylesheet" href="/assets/css/styles.css">
+    
+    {% if page.styles != nil and page.styles != '' %}
+      <link rel="stylesheet" href="/assets/css/{{ page.styles }}.css">
+    {% endif %}
+
+    {% if layout.styles != nil and layout.styles != '' %}
+    <link rel="stylesheet" href="/assets/css/{{ layout.styles }}.css">
+    {% endif %}
     
     {% if page.script != nil and page.script != '' %}
       <script src="/assets/scripts/{{ page.script }}.js" defer></script>
