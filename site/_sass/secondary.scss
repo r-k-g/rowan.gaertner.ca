@@ -17,15 +17,28 @@ body {
   background-color: white;
 }
 
-.content {
-  padding: 2rem 5rem;
-  border: 4px solid rgb(32, 222, 255);
-  background-color: white;
-}
-
 nav {
-  margin: 2rem 0;
+  margin: 1.5rem 0;
+  line-height: 1.5;
+
   a {
     margin-right: 0.3rem;
+    margin-bottom: 0.3rem;
+    transition: color 1.8s linear;
   }
+
+  a:hover {
+    color: red;
+    transition: color 0.1s linear;
+  }
+}
+
+.current:not(:hover) {
+  color: red;
+}
+  
+.content {
+  padding: 2rem;
+  border: 4px solid rgb(32, 222, 255);
+  background-color: white;
 }
