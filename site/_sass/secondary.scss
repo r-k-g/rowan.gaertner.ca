@@ -7,7 +7,6 @@ body {
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem;
-  height: calc(100% - 4rem);
 }
 
 .title {
@@ -38,7 +37,13 @@ nav {
 }
   
 .content {
-  padding: 2rem;
+  padding: 2rem 3rem;
+  font-family: monospace;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 8rem;
+  text-align: left;
+
   border: 4px solid rgb(32, 222, 255);
   background-color: white;
 }
