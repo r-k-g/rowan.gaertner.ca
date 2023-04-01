@@ -3,35 +3,13 @@ layout: secondary
 title: About Me
 permalink: /about/
 ---
-## **Hello worlodl!**
+## **RIP 🌎**
 ###### (It is me, Rowan)
 
-...how do you do today? I'm doing quite well thank you
 
-So a bit about me cheese cheese *cheeeeeese??* That's what I thought 😎. Sometimes I like to type the same word a lot: for example: omnivore omnivore omnivore omnivore omnivore omnivore omnivore omnivore omnivore omnivore omnivore omnivore. Pretty cool, right??
+![me](../assets/images/me.jpg)
 
-So hypothetically,
+Right now I'm a high school senior in Vancouver, BC. Outside of school I'm a ✨full-stack web developer✨at [PixelPAD.io](https://pixelpad.io), also dabbling in game development and [*other stuff*](https://github.com/r-k-g) on my own time. In the small amount of time not taken up by the above, I cycle, play music, and sometimes even interact with other people.
 
-What happens...
-
-If ***I***!
-
-Put like,
-
-A lot.
-
-A looooooot.
-
-##### (A lot)
-
-Of
-
-L  I  N  E  S
-
-I  N  E  S
-
-N  E  S
-
-E  S
-
-S
+### About this website
+I made it.
