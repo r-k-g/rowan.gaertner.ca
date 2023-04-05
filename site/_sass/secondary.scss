@@ -57,10 +57,89 @@ img {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 0.5rem;
   max-width: 95%;
   image-rendering: auto;
 }
 
-h2, h3 {
+h2, h3, h4, h5, h6 {
+  margin-top: 0.5rem;
   margin-bottom: 0;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.bgcloud {
+  transform: scale(2);
+  z-index: -1;
+  position: fixed;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.cloud1 {
+  top: 8%;
+  right: -8%;
+  animation: moveLeft 80s linear -10s infinite;
+}
+
+.cloud2 {
+  top: 26%;
+  right: -8%;
+  animation: moveLeftCovered 65s linear -30s infinite;
+}
+
+.cloud3 {
+  top: 37%;
+  right: -8%;
+  animation: moveLeftCovered 90s linear 5s infinite;
+}
+
+.cloud4 {
+  transform: scale(-2, 2);
+  top: 45%;
+  right: -8%;
+  animation: moveLeftCovered 60s linear -60s infinite;
+}
+
+.cloud5 {
+  transform: scale(-2, 2);
+  top: 69%;
+  left: -8%;
+  animation: moveRightCovered 50s linear 20s infinite;
+}
+
+.cloud6 {
+  transform: scale(-2, 2);
+  top: 90%;
+  left: -8%;
+  animation: moveRight 105s linear -40s infinite;
+}
+
+@keyframes moveLeftCovered {
+  0% {right: -8%;}
+  46% {right: calc((100% - 750px) / 2);}
+  54% {right: calc(100% - (100% - 750px)/2);}
+  100% {right: 110%;}
+}
+
+@keyframes moveRightCovered {
+  0% {left: -8%;}
+  46% {left: calc((100% - 750px) / 2);}
+  54% {left: calc(100% - (100% - 750px)/2);}
+  100% {left: 110%;}
+}
+
+@keyframes moveLeft {
+  from {right: -8%;}
+  to {right: 110%;}
+}
+
+@keyframes moveRight {
+  from {left: -8%;}
+  to {left: 110%;}
 }
