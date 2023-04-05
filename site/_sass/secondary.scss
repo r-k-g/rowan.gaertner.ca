@@ -120,6 +120,15 @@ p {
   animation: moveRight 105s linear -40s infinite;
 }
 
+table {
+  border-collapse: collapse;
+}
+
+td {
+  border-left: 1px solid black;
+  padding: 0.5rem;
+}
+
 @keyframes moveLeftCovered {
   0% {right: -8%;}
   46% {right: calc((100% - 750px) / 2);}
