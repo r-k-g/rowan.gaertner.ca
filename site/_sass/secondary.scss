@@ -126,7 +126,14 @@ table {
 
 td {
   border-left: 1px solid black;
-  padding: 0.5rem;
+  padding: 0.3rem 0.5rem;
+}
+
+tr {
+  border-top: 1px dotted black;
+  &:first-child {
+    border-top: none;
+  }
 }
 
 @keyframes moveLeftCovered {
