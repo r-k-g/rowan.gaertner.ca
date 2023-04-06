@@ -1,3 +1,32 @@
+html {
+  background-color: #fff2dc;
+}
+
+body {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header {
+  margin: 1rem 0;
+}
+
 .title {
-  background-color: red;
+  border: 2px solid black;
+  padding: 0.5rem;
+  font-family: pixels;
+  margin-top: 1rem;
+}
+.subtitle {
+  font-family: pixels;
+}
+
+hr {
+  margin: 0 1rem;
+}
+
+.content {
+  font-size: 16px;
+  line-height: 1.5;
+  padding: 0 1rem;
 }
