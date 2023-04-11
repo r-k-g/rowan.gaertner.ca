@@ -1,0 +1,42 @@
+---
+layout: secondary
+title: Blog Tags
+permalink: /blog/tags/
+---
+
+<h3> Browse by tags: </h3>
+
+{% for tag in site.tags %}
+  <details id="{{ tag[0] }}">
+    <summary>
+      <b>{{ tag[0] }}</b>
+    </summary>
+
+    <table>
+      {% for post in tag[1] %}
+        <tr>
+          <td>{{ post.date | date_to_long_string }}</td>
+          <td>
+            <a href="{{ post.url }}">{{ post.title }}</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  </details>
+{% endfor %}
+
+<a href="/blog/"> <h3> View blog archive </h3></a>
+
+<script>
+  // Get tag ID from URL hash
+  let tagId = window.location.hash.substring(1);
+  
+  // Find the corresponding <details> element if any and set to open
+  if (tagId) {
+    let tagDetails = document.getElementById(tagId);
+    if (tagDetails) {
+      tagDetails.open = true;
+    }
+  }
+</script>
