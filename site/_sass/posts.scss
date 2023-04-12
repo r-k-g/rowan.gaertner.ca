@@ -1,14 +1,15 @@
 html {
-  background-color: #fff2dc;
+  background-color: rgb(16, 10, 60);
+  padding: 0px 2rem;
+  color: #3a3a3a;
 }
 
 body {
   max-width: 900px;
-  margin: 0 auto;
-}
-
-.header {
-  margin: 1rem 0;
+  margin: 0 auto 2rem auto;
+  padding: 1rem 2rem;
+  background-color: #eee;
+  box-shadow: -20px 0px 40px 6px rgba(167, 165, 179, 0.5), 20px 0px 40px 6px rgba(167, 165, 179, 0.5);
 }
 
 .title {
