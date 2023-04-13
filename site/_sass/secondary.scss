@@ -165,3 +165,24 @@ tr {
 summary {
   margin-top: 0.5rem;
 }
+
+.card {
+  width: 100%;
+  min-height: 5rem;
+  
+  details {
+    display: flex;
+
+  }
+  summary {
+    // float: left; 
+    // display:block;
+    width:fit-content;
+    flex-grow: 0;
+  }
+  .description {
+    // display:block;
+    // margin-left: 1rem;
+    flex-grow: 1;
+  }
+}
