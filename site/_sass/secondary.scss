@@ -168,21 +168,60 @@ summary {
 
 .card {
   width: 100%;
-  min-height: 5rem;
+  display: flex;
+  border: black 1px solid;
+  margin-bottom: 1.5rem;
   
-  details {
-    display: flex;
+  .info-col {
+    text-align: center;
+    border-right: black 1px solid;
+    flex-shrink: 0;
+    
+    .date-range {
+      padding: 0.5rem;
+      border-bottom: black 1px solid;
+      background-color: #efefef;
+
+      .date {
+        display: block;
+      }
+    }
 
   }
-  summary {
-    // float: left; 
-    // display:block;
-    width:fit-content;
-    flex-grow: 0;
-  }
-  .description {
-    // display:block;
-    // margin-left: 1rem;
+  
+  .description-col {
+    display: flex;
     flex-grow: 1;
+    padding: 0.5rem;
+
+    details {
+      margin: auto 0;
+    }
+
+    summary {
+      margin-top: unset;
+      cursor: pointer;
+      font-family: pixels;
+      border-bottom: black 1px solid;
+    }
+
+    img {
+      border: black 1px solid;
+      float: right;
+      max-width: 40%;
+      margin: auto 0;
+      margin-top: 0.4rem;
+    }
+
+    p {
+      margin-top: 0.4rem;
+    }
+  }
+
+  .vl {
+    width: 3px;
+    height: 1rem;
+    background-color: black;
+    display: inline-block;
   }
 }

@@ -4,23 +4,33 @@ title: Portfolio
 permalink: /portfolio/
 ---
 
-<div class="card">
-    Vigenere Cipher Tool - finished
+<!-- <div class="card">
+  <div class="info-col">
+    <div class="date-range">
+      <span class="date end"> January 2021 </span>
+      <span class="vl"></span>
+      <span class="date start"> December 2021 </span>
+    </div>
+    <div class="links">
+      <a href="https://github.com/r-k-g/simon-game" target="_blank" rel="noopener noreferrer"> GitHub </a>
+    </div>
+  </div>
+
+  <div class="description-col">
     <details>
-        <summary>2020 June<br>2020 May</summary>
-        <div class="description">
-            This was a project in which I bongobonged a couple pastas together to make a woobledook. I even scrambled the loodopas to greate some chabudlepasses. In the end, it came out to a couple gazorkas that needed to be quashed before everthing could be reassesed and crumpled.
-        </div>
+      <summary> Pattern Memory Game </summary>
+        <img src="/assets/images/simon_sc.png" loading="lazy">
+        <p>A simon-like light pattern memory game. Originally an assignment for a computer science class, the task was to recreate the game simon using pyFLTK. With some free time on my hands, I added circular button hit detection, a score saving system, and window resizing.</p>
     </details>
-</div>
+  </div>
+</div> -->
 
+{% render_card %}
+Pattern Memory Game
+January 2021 - December 2021
 
-- vigenere cipher tool: may 2020-june 2020 finished
-- pygame space invaders: june 2020-august 2020 finished
-- pyFLTK minesweeper: november 2020-february 2021 "On hold"
-- pyFLTK simon game: january 2021-january 2021 finished
-- pyFLTK mp3 player: december 2020-january 2021 "On hold"
-- pixelpad nautical twilight: march 2021 finished
-- pixelpad multiplayer canvas: Aug 2021 "On hold"
-- pixelpad platformer: Aug 2022-dec 2022 finished
-- this website: Feb 2023-present
+![Simon Game Screenshot](/assets/images/simon_sc.png)
+A simon-like light pattern memory game. Originally an assignment for a computer science class, the task was to recreate the game simon using pyFLTK. With some free time on my hands, I added circular button hit detection, a score saving system, and window resizing.
+
+[GitHub](https://github.com/r-k-g/simon-game)
+{% endrender_card %}
