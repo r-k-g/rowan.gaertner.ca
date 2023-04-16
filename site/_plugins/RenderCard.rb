@@ -42,14 +42,14 @@ module Jekyll
     end
 
     def parse_content(content)
-      # Separate title and date range
+      # Get title and date range
       lines = content.strip.split("\n")
       @title = lines.shift.strip
       date_range = lines.shift.strip.split("-")
       @start_date = date_range[0].strip
       @end_date = date_range[1].strip
     
-      # Look for links after the date range
+      # Look for links after  date range
       while lines.first&.strip&.match?(/\A\[.*\]\(.*\)\z/)
         link_line = lines.shift.strip
         link_parts = link_line.match(/\A\[(.*)\]\((.*)\)\z/)
@@ -58,7 +58,7 @@ module Jekyll
     
       # The rest is the description
       @description = lines.join("\n").strip
-    end    
+    end
   end
 end
 
