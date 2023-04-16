@@ -1,39 +1,64 @@
 module Jekyll
   class CardTagBlock < Liquid::Block
-    # def initialize(tag_name, markup, tokens)
-    #   super
-    # end
-
-
+    def initialize(tag_name, markup, tokens)
+      super
+      @title = nil
+      @start_date = nil
+      @end_date = nil
+      @links = Hash.new
+      @description = nil
+    end
+    
     def render(context)
-      text = super      
-      # <<~HTML 
-      #   <div class="card">
-      #     <div class="info-col">
-      #       <div class="date-range">
-      #         <span class="date end"> January 2021 </span>
-      #         <span class="vl"></span>
-      #         <span class="date start"> December 2021 </span>
-      #       </div>
-      #       <div class="links">
-      #         <a href="https://github.com/r-k-g/simon-game" target="_blank" rel="noopener noreferrer"> GitHub </a>
-      #       </div>
-      #     </div>
+      content = super
+      parse_content(content)
 
-      #     <div class="description-col">
-      #       <details>
-      #         <summary> Pattern Memory Game </summary>
-      #           <img src="/assets/images/simon_sc.png" loading="lazy">
-      #           <p>A simon-like light pattern memory game. Originally an assignment for a computer science class, the task was to recreate the game simon using pyFLTK. With some free time on my hands, I added circular button hit detection, a score saving system, and window resizing.</p>
-      #       </details>
-      #     </div>
-      #   </div>
-      # HTML
-      Jekyll::Converters::Markdown.new("*pasta*").third_party_processors().methods
-      
-      
+      links_html = ""
+      @links.each do |name, url|
+        links_html += "<a href='#{url}' target='_blank' rel='noopener noreferrer'>#{name}</a>"
+      end
+
+      <<~HTML
+        <div class="card">
+          <div class="info-col">
+            <div class="date-range">
+              <span class="date end"> #{@end_date} </span>
+              <span class="vl"></span>
+              <span class="date start"> #{@start_date} </span>
+            </div>
+            <div class="links">
+              #{links_html}
+            </div>
+          </div>
+        
+          <div class="description-col">
+            <details>
+              <summary> #{@title} </summary>
+                #{Kramdown::Document.new(@description).to_html}
+            </details>
+          </div>
+        </div>
+      HTML
     end
 
+    def parse_content(content)
+      # Separate title and date range
+      lines = content.strip.split("\n")
+      @title = lines.shift.strip
+      date_range = lines.shift.strip.split("-")
+      @start_date = date_range[0].strip
+      @end_date = date_range[1].strip
+    
+      # Look for links after the date range
+      while lines.first&.strip&.match?(/\A\[.*\]\(.*\)\z/)
+        link_line = lines.shift.strip
+        link_parts = link_line.match(/\A\[(.*)\]\((.*)\)\z/)
+        @links[link_parts[1]] = link_parts[2]
+      end
+    
+      # The rest is the description
+      @description = lines.join("\n").strip
+    end    
   end
 end
 
