@@ -146,9 +146,78 @@
   document.getElementsByClassName("paths")[0]
     .addEventListener("mouseover",
       (event) => {
-        navDude = new NavDude(animation);
+        if (navDude == undefined) {
+          navDude = new NavDude(animation);
+        }
       },
       {once: true}
     )
+
+  document.addEventListener("keydown", function(event) {
+    if (navDude == undefined) {
+      navDude = new NavDude(animation);
+    }},
+    {once: true}
+  )
+  
+  inputHeld = {left: false, right: false, up: false, down: false}  
+  function watchInputs() {
+    document.addEventListener("keydown", function(event) {
+      let key = event.key;
+      switch (key) {
+        case "ArrowRight":
+        case "d":
+          inputHeld.right = true
+          break;
+      
+        case "ArrowLeft":
+        case "a":
+          inputHeld.left = true
+          break;
+      
+        case "ArrowUp":
+        case "w":
+          inputHeld.up = true
+          break;
+      
+        case "ArrowDown":
+        case "s":
+          inputHeld.down = true
+          break;
+          
+          default:
+            break;
+          }
+        });
+        
+        document.addEventListener("keyup", function(event) {
+          let key = event.key;
+          switch (key) {
+            case "ArrowRight":
+            case "d":
+              inputHeld.right = false
+              break;
+          
+            case "ArrowLeft":
+            case "a":
+              inputHeld.left = false
+              break;
+          
+            case "ArrowUp":
+            case "w":
+              inputHeld.up = false
+              break;
+          
+            case "ArrowDown":
+            case "s":
+              inputHeld.down = false
+              break;
+      
+        default:
+          break;
+      }
+    });
+  }
+  watchInputs();
 
 })();
