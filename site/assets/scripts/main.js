@@ -1,5 +1,13 @@
 (function main() {
   
+  function stripPX(str) {
+    return str.substring(0, str.length - 2);
+  }
+
+  class NavNode {
+    constructor() {}
+  }
+
   class NavDude {
     element = document.getElementsByClassName("dude")[0];
     state = window.getComputedStyle(this.element);
@@ -63,8 +71,8 @@
       this.aStart.left = this.style.left;
 
       let middle = this.getMiddle()
-      let top = this.stripPX(this.style.top);
-      let left = this.stripPX(this.style.left);
+      let top = stripPX(this.style.top);
+      let left = stripPX(this.style.left);
 
       // Target position
       let signOffset;
@@ -106,18 +114,15 @@
       this.aEnd.left = goalLeft + "px";
     }
 
-    stripPX(str) {
-      return str.substring(0, str.length - 2);
-    }
-
   }
+  
 
   function onHover(event, index) {
     // Find parent sign that was hovered
     let target = event.target;
     while (!target.classList.contains("sign")) {
       target = target.parentNode;
-    }    
+    }
 
     // Which side of the sign to go to
     let side = index % 2 ? "left" : "right";
@@ -126,7 +131,29 @@
   
   // Add hover listener to signs
   signs = document.getElementsByClassName("sign");
+  let nodes = Array.from(
+    {length: signs.length}, () => [new NavNode(), new NavNode()]
+  );
+
+  let signNode, midNode;
+  let first, last;
   for (let i=0; i<signs.length; i++) {
+    first = (i === 0);
+    last = (i === signs.length - 1);
+
+    if (i % 2 === 0) { // Sign on left
+      signNode = nodes[i * 2];
+      midNode = nodes[(i * 2) + 1];
+      
+      // DO STUFF HERE
+    }
+    
+    else {
+      signNode = nodes[(i * 2) + 1];
+      midNode = nodes[i * 2];
+
+    }
+
     signs[i].addEventListener("mouseover",
       (event) => {onHover(event, i);}
     );
@@ -187,37 +214,36 @@
           
           default:
             break;
-          }
-        });
+      }
+    });
         
-        document.addEventListener("keyup", function(event) {
-          let key = event.key;
-          switch (key) {
-            case "ArrowRight":
-            case "d":
-              inputHeld.right = false
-              break;
-          
-            case "ArrowLeft":
-            case "a":
-              inputHeld.left = false
-              break;
-          
-            case "ArrowUp":
-            case "w":
-              inputHeld.up = false
-              break;
-          
-            case "ArrowDown":
-            case "s":
-              inputHeld.down = false
-              break;
+    document.addEventListener("keyup", function(event) {
+      let key = event.key;
+      switch (key) {
+        case "ArrowRight":
+        case "d":
+          inputHeld.right = false
+          break;
       
+        case "ArrowLeft":
+        case "a":
+          inputHeld.left = false
+          break;
+      
+        case "ArrowUp":
+        case "w":
+          inputHeld.up = false
+          break;
+      
+        case "ArrowDown":
+        case "s":
+          inputHeld.down = false
+          break;
+  
         default:
           break;
       }
     });
   }
   watchInputs();
-
 })();
