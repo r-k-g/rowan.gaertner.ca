@@ -5,7 +5,31 @@
   }
 
   class NavNode {
-    constructor() {}
+    constructor() {
+      // Adjacent nodes
+      this.up = null;
+      this.down = null;
+      this.left = null;
+      this.right = null;
+      
+      // The reference sign, if any
+      this.xRef = null;
+      this.yRef = null;
+      
+      this.middle = false; // flag if in middle
+      this.onLeft = false; // flag if on left side
+    }
+
+    getX() {
+      if (this.onLeft)
+        return this.xRef.offsetLeft + this.xRef.getBoundingClientRect().width + 4;
+      else
+        return this.xRef.offsetLeft - 4;
+    }
+
+    getY() {
+      return this.yRef.offsetTop;
+    }
   }
 
   class NavDude {
@@ -16,7 +40,7 @@
     height = this.element.getBoundingClientRect().height;
     middlePath = document.getElementsByClassName("vertical")[0];
     middleWidth = this.middlePath.getBoundingClientRect().width;
-    #target = [this.middlePath, "left"];
+    #target = nodes[0][1];
 
     constructor(animation) {
       this.style.left = this.getMiddle() + "px";
@@ -36,10 +60,14 @@
     }
 
     set target(newTarget) {
-      if (this.#target[0] !== newTarget[0]) {
+      if (newTarget && this.#target !== newTarget) {
         this.#target = newTarget;
         this.doAnimation();
       }
+    }
+
+    get target() {
+      return this.#target;
     }
 
     doAnimation() {
@@ -47,9 +75,10 @@
       this.style.left = this.state.getPropertyValue("left");
       
       this.clearAnimation();
-      this.makeAnimation(0.8);
+      let time = this.makeAnimation(0.8);
 
-      this.style.animation = "dudemove 0.8s linear forwards";
+      // this.style.animation = "dudemove 0.8s linear forwards";
+      this.style.animation = `dudemove ${time}s linear forwards`;
     }
 
     clearAnimation() {
@@ -75,32 +104,32 @@
       let left = stripPX(this.style.left);
 
       // Target position
-      let signOffset;
-      if (this.#target[1] == "left") {
-        signOffset = -(this.width + 4);
-      } else {
-        signOffset = this.#target[0].getBoundingClientRect().width + 4;
+      let goalTop = this.#target.getY() + 8;
+      let goalLeft;
+      if (this.#target.middle) {
+        goalLeft = middle;
       }
-      let goalTop = this.#target[0].offsetTop + 8;
-      let goalLeft = this.#target[0].offsetLeft + signOffset;
+      else {
+        goalLeft = this.#target.getX() + (-this.width * !this.#target.onLeft)
+      }
 
-      // Find the constant velocity
       let dtotal = Math.abs(left - middle) + Math.abs(goalLeft - middle) + Math.abs(top - goalTop);
-      let velocity = dtotal / time;
+      let velocity = 400; // pixels/s  
+      let tTotal = dtotal / velocity;
 
       let t1 = Math.abs(left - middle) / velocity; // time at keyframe 1
       let t2 = t1 + (Math.abs(top - goalTop) / velocity); // time at keyframe 2
 
-      let p1 = Math.round((t1 / time) * 100); // Percentage for keyframe 1
-      let p2 = Math.round((t2 / time) * 100); // Percentage for keyframe 2
+      let p1 = Math.round((t1 / tTotal) * 100); // Percentage for keyframe 1
+      let p2 = Math.round((t2 / tTotal) * 100); // Percentage for keyframe 2
 
       // If it is 0, assume already at that position
-      if (p1 != 0) {
+      if (p1 != 0 && p1 != 100) {
         let stage1 = `${p1}% {top: ${this.style.top}; left: ${middle + "px"};}`;
         this.animation.appendRule(stage1)
       }
 
-      if (p2 != 0) {
+      if (p2 != 0 && p2 != 100) {
         if (p1 == p2) {
           p2++;
         }
@@ -112,50 +141,63 @@
       // Set final position
       this.aEnd.top = goalTop + "px";
       this.aEnd.left = goalLeft + "px";
+
+      return tTotal;
     }
-
   }
-  
 
-  function onHover(event, index) {
-    // Find parent sign that was hovered
-    let target = event.target;
-    while (!target.classList.contains("sign")) {
-      target = target.parentNode;
-    }
-
-    // Which side of the sign to go to
-    let side = index % 2 ? "left" : "right";
-    navDude.target = [target, side];
-  }
-  
   // Add hover listener to signs
   signs = document.getElementsByClassName("sign");
   let nodes = Array.from(
     {length: signs.length}, () => [new NavNode(), new NavNode()]
   );
+  
+  function assignNodes(i) {
+    let signNode, midNode;
+    let first = (i === 0);
+    let last = (i === signs.length - 1);
 
-  let signNode, midNode;
-  let first, last;
-  for (let i=0; i<signs.length; i++) {
-    first = (i === 0);
-    last = (i === signs.length - 1);
-
-    if (i % 2 === 0) { // Sign on left
-      signNode = nodes[i * 2];
-      midNode = nodes[(i * 2) + 1];
+    if (i % 2 === 0) { // Sign on left      
+      signNode = nodes[i][0]; // signNode = nodes[i * 2];
+      midNode = nodes[i][1]; // midNode = nodes[(i * 2) + 1];
       
-      // DO STUFF HERE
+      signNode.right = midNode;
+      midNode.left = signNode;
+      if (!first) //midNode.up = nodes[(i-1) * 2];
+        midNode.up = nodes[i-1][0];
+      if (!last) //midNode.down = nodes[(i+1) * 2];
+        midNode.down = nodes[i+1][0];
+
+      signNode.onLeft = true;
     }
     
     else {
-      signNode = nodes[(i * 2) + 1];
-      midNode = nodes[i * 2];
+      signNode = nodes[i][1]; // signNode = nodes[(i * 2) + 1];
+      midNode = nodes[i][0]; // midNode = nodes[i * 2];
 
+      signNode.left = midNode;
+      midNode.right = signNode;
+      if (!first) //midNode.up = nodes[(i-1) * 2 + 1];
+        midNode.up = nodes[i-1][1];
+      if (!last) //midNode.down = nodes[(i + 1) * 2 + 1];
+        midNode.down = nodes[i+1][1];
+
+        signNode.onLeft = false;
     }
 
+    signNode.xRef = signs[i];
+    signNode.yRef = signs[i];
+    midNode.middle = true;
+    midNode.yRef = signs[i];
+
+    return signNode;
+  }
+
+  for (let i=0; i<signs.length; i++) {
+    signNode = assignNodes(i);
+
     signs[i].addEventListener("mouseover",
-      (event) => {onHover(event, i);}
+      (event) => {navDude.target = nodes[i][i%2];}
     );
   }
   
@@ -212,9 +254,11 @@
           inputHeld.down = true
           break;
           
-          default:
+        default:
             break;
       }
+
+      navLoop();
     });
         
     document.addEventListener("keyup", function(event) {
@@ -243,7 +287,23 @@
         default:
           break;
       }
+      navLoop();
     });
   }
   watchInputs();
+
+  function navLoop() {
+    if (inputHeld.right) {
+      navDude.target = navDude.target.right;
+    }
+    if (inputHeld.left) {
+      navDude.target = navDude.target.left;
+    }
+    if (inputHeld.up) {
+      navDude.target = navDude.target.up;
+    }
+    if (inputHeld.down) {
+      navDude.target = navDude.target.down;
+    }
+  }
 })();

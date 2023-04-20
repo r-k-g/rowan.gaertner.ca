@@ -1,0 +1,46 @@
+body { /* applies to everything */
+  text-align: center;
+}
+
+h1 {
+  font-family: script;
+}
+
+nav {
+  border: 3px solid green;
+  margin: 0 40%;
+}
+
+nav a {
+  margin-right: 10px;
+}
+
+img {
+  width: 200px;
+}
+
+.author {
+  border-bottom: 3px solid blue;
+  margin-left: 30%;
+  margin-right: 30%;
+  margin-top: 10px;
+}
+
+.content {
+  background-color: lightgrey;
+  padding: 10px;
+  margin: 10px 10%;
+  font-family: sans-serif;
+}
+
+.footer {
+  margin-top: 40px;
+  border-top: black 1px solid;
+  padding: 3px;
+}
+
+.footer span {
+  margin-right: 60px;
+  border-right: purple 3px solid;
+  border-left: purple 3px solid;
+}
