@@ -77,7 +77,6 @@
       this.clearAnimation();
       let time = this.makeAnimation(0.8);
 
-      // this.style.animation = "dudemove 0.8s linear forwards";
       this.style.animation = `dudemove ${time}s linear forwards`;
     }
 
@@ -229,33 +228,37 @@
     {once: true}
   )
   
-  inputHeld = {left: false, right: false, up: false, down: false}  
+  inputHeld = {left: false, right: false, up: false, down: false, enter: false};  
   function watchInputs() {
     document.addEventListener("keydown", function(event) {
       let key = event.key;
       switch (key) {
         case "ArrowRight":
         case "d":
-          inputHeld.right = true
+          inputHeld.right = true;
           break;
       
         case "ArrowLeft":
         case "a":
-          inputHeld.left = true
+          inputHeld.left = true;
           break;
       
         case "ArrowUp":
         case "w":
-          inputHeld.up = true
+          inputHeld.up = true;
           break;
       
         case "ArrowDown":
         case "s":
-          inputHeld.down = true
+          inputHeld.down = true;
           break;
-          
+        
+        case "Enter":
+          inputHeld.enter = true;
+          break;
+
         default:
-            break;
+          break;
       }
 
       navLoop();
@@ -283,6 +286,10 @@
         case "s":
           inputHeld.down = false
           break;
+
+        case "Enter":
+          inputHeld.enter = false;
+          break;
   
         default:
           break;
@@ -304,6 +311,11 @@
     }
     if (inputHeld.down) {
       navDude.target = navDude.target.down;
+    }
+    if (inputHeld.enter) {
+      let sign = navDude.target.xRef;
+      if (sign)
+        window.location.href = sign.firstElementChild.href
     }
   }
 })();
