@@ -225,3 +225,13 @@ summary {
     display: inline-block;
   }
 }
+
+.gallery {
+  text-align: center;
+}
+
+.gallery img {
+  max-width: 45%;
+  display: inline-block;
+  margin: unset;
+}

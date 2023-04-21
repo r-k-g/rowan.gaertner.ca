@@ -5,14 +5,19 @@ module Jekyll
     end
     
     def render(context)
-      output = ""
-      Dir.foreach(Dir.pwd + "/assets/images/photos") do |photo|
-        output += "![thingy](/assets/images/photos/#{photo})\n"
+      output = "<div class=\"gallery\">"
+
+      files = Dir.entries(Dir.pwd + "/assets/images/photos")
+      photos = files.sort.reject { |i| i == "." or i == ".." or i == "large"}
+
+      photos.each do |photo|
+        output += <<~HTML
+                    <img src="/assets/images/photos/#{photo}" alt="#{photo}">
+                  HTML
       end
 
+      output += "</div>"
       output
-      # <<~HTML
-      # HTML
     end
 
     def parse_content(content)
