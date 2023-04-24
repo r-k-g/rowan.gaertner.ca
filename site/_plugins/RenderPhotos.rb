@@ -12,7 +12,8 @@ module Jekyll
 
       photos.each do |photo|
         output += <<~HTML
-                    <img src="/assets/images/photos/#{photo}" alt="#{photo}">
+                    <img src="/assets/images/photos/#{photo}" alt="#{photo}"
+                      loading="lazy" onclick="openImage(this.src)">
                   HTML
       end
 

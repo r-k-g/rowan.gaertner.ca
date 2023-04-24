@@ -30,22 +30,24 @@ def shrink_image(img, max_dim):
     )
 
 def main():
-    for p in os.listdir(os.getcwd()):
-        if p.rsplit(".", 1)[-1].lower() not in {"jpg", "jpeg", "png"}:
-            continue
+    photos = [
+        f for f in os.listdir(os.getcwd())
+        if f.rsplit(".", 1)[-1].lower() in {"jpg", "jpeg", "png"}
+    ]
+
+    for i, p in enumerate(photos, start=1):
         with Image.open(p) as img:
-          date = get_date(img).strftime(r"%Y-%m-%d %H-%M-%S")
+            date = get_date(img).strftime(r"%Y-%m-%d %H-%M-%S")
 
-          os.makedirs("large", exist_ok=True)
-          shrink_image(img, 1920).save(
-              os.path.join(os.getcwd(), "large", f"{date}.{img.format}")
-          )
+            os.makedirs("large", exist_ok=True)
+            shrink_image(img, 1920).save(
+                os.path.join(os.getcwd(), "large", f"{date}.{img.format}")
+            )
 
-          shrink_image(img, 480).save(
-              os.path.join(os.getcwd(), f"{date}.{img.format}")
-          )
-
-    pass
+            shrink_image(img, 480).save(
+                os.path.join(os.getcwd(), f"{date}.{img.format}")
+            )
+        print(f"Photo {i}/{len(photos)} processed")
 
 if __name__ == "__main__":
     main()
