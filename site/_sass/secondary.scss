@@ -227,13 +227,16 @@ summary {
 }
 
 .gallery {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .gallery img {
   max-width: 45%;
   display: inline-block;
-  margin: unset;
+  margin: 0.5rem;
   cursor: pointer;
 }
 

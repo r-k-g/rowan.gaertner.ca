@@ -8,7 +8,7 @@ module Jekyll
       output = "<div class=\"gallery\">"
 
       files = Dir.entries(Dir.pwd + "/assets/images/photos")
-      photos = files.sort.reject { |i| i == "." or i == ".." or i == "large"}
+      photos = files.sort.reverse.reject { |i| i == "." or i == ".." or i == "large"}
 
       photos.each do |photo|
         output += <<~HTML
