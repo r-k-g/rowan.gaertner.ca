@@ -75,7 +75,7 @@
       this.style.left = this.state.getPropertyValue("left");
       
       this.clearAnimation();
-      let time = this.makeAnimation(0.8);
+      let time = this.makeAnimation();
 
       this.style.animation = `dudemove ${time}s linear forwards`;
     }
@@ -93,7 +93,7 @@
       toDelete.forEach((e) => (this.animation.deleteRule(e)));
     }
 
-    makeAnimation(time) {
+    makeAnimation() {
       // initial position
       this.aStart.top = this.style.top;
       this.aStart.left = this.style.left;
@@ -157,28 +157,28 @@
     let last = (i === signs.length - 1);
 
     if (i % 2 === 0) { // Sign on left      
-      signNode = nodes[i][0]; // signNode = nodes[i * 2];
-      midNode = nodes[i][1]; // midNode = nodes[(i * 2) + 1];
+      signNode = nodes[i][0];
+      midNode = nodes[i][1];
       
       signNode.right = midNode;
       midNode.left = signNode;
-      if (!first) //midNode.up = nodes[(i-1) * 2];
+      if (!first)
         midNode.up = nodes[i-1][0];
-      if (!last) //midNode.down = nodes[(i+1) * 2];
+      if (!last)
         midNode.down = nodes[i+1][0];
 
       signNode.onLeft = true;
     }
     
     else {
-      signNode = nodes[i][1]; // signNode = nodes[(i * 2) + 1];
-      midNode = nodes[i][0]; // midNode = nodes[i * 2];
+      signNode = nodes[i][1];
+      midNode = nodes[i][0];
 
       signNode.left = midNode;
       midNode.right = signNode;
-      if (!first) //midNode.up = nodes[(i-1) * 2 + 1];
+      if (!first)
         midNode.up = nodes[i-1][1];
-      if (!last) //midNode.down = nodes[(i + 1) * 2 + 1];
+      if (!last)
         midNode.down = nodes[i+1][1];
 
         signNode.onLeft = false;

@@ -18,6 +18,28 @@ My main ideas going in were that I wanted the website to be fairly lightweight, 
 
 
 {% render_card %}
+Nautical Twilight
+March 2021 - March 2021
+[GitHub](https://github.com/SubwayMan/jamegam)
+[PixelPAD](https://pixelpad.io/app/lfgzohcupbm/?edit=1)
+
+![Nautical Twilight](/assets/images/nautical_thumb.png)
+This was an entry to the 2021 PixelPAD March Break Game Jam, and my first exposure to PixelPAD. Developed in a team with one other developer, Nautical Twilight is a short complete game about an octopus.
+{% endrender_card %}
+
+
+
+{% render_card %}
+MP3 Player
+December 2021 - January 2021
+
+![MP3 Player](/assets/images/mp3player_sc.png)
+This is a pyFLTK GUI for organizing MP3 files and playing them through VLC. With _definitely_ intentional retro styling, other features include playlists, song queues, and play history.
+{% endrender_card %}
+
+
+
+{% render_card %}
 Pattern Memory Game
 January 2021 - December 2021
 [GitHub](https://github.com/r-k-g/simon-game)
