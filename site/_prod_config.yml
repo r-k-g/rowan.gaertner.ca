@@ -1,0 +1,3 @@
+destination: /var/www/15.235.97.24/
+sass:
+  style: compressed
