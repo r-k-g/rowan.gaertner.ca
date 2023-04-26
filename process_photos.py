@@ -37,7 +37,7 @@ def main():
 
     for i, p in enumerate(photos, start=1):
         with Image.open(p) as img:
-            date = get_date(img).strftime(r"%Y-%m-%d %H-%M-%S")
+            date = get_date(img).strftime(r"%Y-%m-%d__%H-%M-%S")
 
             os.makedirs("large", exist_ok=True)
             shrink_image(img, 1920).save(
