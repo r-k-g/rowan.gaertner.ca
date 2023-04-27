@@ -87,6 +87,13 @@
   display: flex;
 }
 
+.sign.exit {
+  bottom: 10px;
+  left: calc(50% - 13px);
+  position: absolute;
+  cursor: pointer;
+}
+
 .icon {
   height: 2rem;
   margin: 0px 10px;
@@ -108,7 +115,7 @@
 .vertical {
   position: absolute;
   top: 27px;
-  bottom: 31px;
+  bottom: 0px;
   width: 30px;
   left: calc(50% - 15px);
   z-index: -1

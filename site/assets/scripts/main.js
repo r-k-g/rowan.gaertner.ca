@@ -148,8 +148,10 @@
   // Add hover listener to signs
   signs = document.getElementsByClassName("sign");
   let nodes = Array.from(
-    {length: signs.length}, () => [new NavNode(), new NavNode()]
+    {length: signs.length - 1}, () => [new NavNode(), new NavNode()]
   );
+  nodes.push(signs.length % 2 ? [null, new NavNode()] : [new NavNode(), null]);
+  console.log(nodes)
   
   function assignNodes(i) {
     let signNode, midNode;
@@ -160,43 +162,49 @@
       signNode = nodes[i][0];
       midNode = nodes[i][1];
       
-      signNode.right = midNode;
+      if (signNode) {
+        signNode.right = midNode;
+        signNode.onLeft = true;
+      }
+
       midNode.left = signNode;
       if (!first)
         midNode.up = nodes[i-1][0];
       if (!last)
         midNode.down = nodes[i+1][0];
-
-      signNode.onLeft = true;
     }
     
     else {
       signNode = nodes[i][1];
       midNode = nodes[i][0];
 
-      signNode.left = midNode;
+      if (signNode) {
+        signNode.left = midNode;
+        signNode.onLeft = false;
+      }
+
       midNode.right = signNode;
       if (!first)
         midNode.up = nodes[i-1][1];
       if (!last)
         midNode.down = nodes[i+1][1];
 
-        signNode.onLeft = false;
     }
-
-    signNode.xRef = signs[i];
-    signNode.yRef = signs[i];
+    
+    if (signNode) {
+      signNode.xRef = signs[i];
+      signNode.yRef = signs[i];
+    }
     midNode.middle = true;
     midNode.yRef = signs[i];
-
-    return signNode;
   }
 
   for (let i=0; i<signs.length; i++) {
-    signNode = assignNodes(i);
+    assignNodes(i);
 
+    let targetNode = i === signs.length - 1 ? nodes[i][+!(i%2)] : nodes[i][i%2];
     signs[i].addEventListener("mouseover",
-      (event) => {navDude.target = nodes[i][i%2];}
+      (event) => {navDude.target = targetNode;}
     );
   }
   
