@@ -326,4 +326,18 @@
         window.location.href = sign.firstElementChild.href
     }
   }
+
+  document.getElementsByClassName("exit")[0]
+    .addEventListener("click", function(event) {
+      let script = document.createElement("script");
+      script.src = "/assets/scripts/game.js";
+      script.type = "text/javascript";
+
+      script.onload = function () {
+          alert
+      };
+
+      document.getElementsByTagName("head")[0].appendChild(script);
+    })
+  
 })();
