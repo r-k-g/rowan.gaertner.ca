@@ -1,11 +1,23 @@
 @import "primary-header";
 
 .main {
-  background: url(../images/grass2.png) repeat;
+  background: url(../images/grass3.png) repeat;
   background-size: 32px 32px;
-  height: calc(100% - 160px);
-  padding: 15px;
+  height: calc(100% - 6.5rem - 4 * 0.9rem);
+  padding: 0.9rem;
   text-align: center;
+}
+
+.main::before {
+  display:block;
+  position: relative;
+  top: calc(-32px - 0.9rem);
+  left: -0.9rem;
+  width: calc(100% + 2 * 0.9rem);
+  height: 32px;
+  background: url(../images/grasstop.png) repeat-x;
+  background-size: 32px 32px;
+  content: "";
 }
 
 .paths {
