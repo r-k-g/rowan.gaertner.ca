@@ -1,11 +1,27 @@
+let inputs = {left: false, right: false, up: false, down: false, enter: false};
+
+function pxToNum(val) {
+  if (typeof(val) === "string") {
+    if (val.substring(val.length-2, val.length) === "px")
+      return +val.substring(0, val.length - 2);
+  }
+  else {
+    return +val;
+  }
+}
+
+function numToPx(val) {
+  return val + "px";
+}
+
+
 (function main() {
   
-  function stripPX(str) {
-    return str.substring(0, str.length - 2);
-  }
+  let inNav = true;
+
 
   class NavNode {
-    constructor() {
+    constructor(action=null) {
       // Adjacent nodes
       this.up = null;
       this.down = null;
@@ -18,6 +34,7 @@
       
       this.middle = false; // flag if in middle
       this.onLeft = false; // flag if on left side
+      this.action = action;
     }
 
     getX() {
@@ -99,8 +116,8 @@
       this.aStart.left = this.style.left;
 
       let middle = this.getMiddle()
-      let top = stripPX(this.style.top);
-      let left = stripPX(this.style.left);
+      let top = pxToNum(this.style.top);
+      let left = pxToNum(this.style.left);
 
       // Target position
       let goalTop = this.#target.getY() + 8;
@@ -150,8 +167,9 @@
   let nodes = Array.from(
     {length: signs.length - 1}, () => [new NavNode(), new NavNode()]
   );
-  nodes.push(signs.length % 2 ? [null, new NavNode()] : [new NavNode(), null]);
-  console.log(nodes)
+  
+  let exitNode = new NavNode(startExplore)
+  nodes.push(signs.length % 2 ? [null, exitNode] : [exitNode, null]);
   
   function assignNodes(i) {
     let signNode, midNode;
@@ -236,33 +254,32 @@
     {once: true}
   )
   
-  inputHeld = {left: false, right: false, up: false, down: false, enter: false};  
   function watchInputs() {
     document.addEventListener("keydown", function(event) {
       let key = event.key;
       switch (key) {
         case "ArrowRight":
         case "d":
-          inputHeld.right = true;
+          inputs.right = true;
           break;
       
         case "ArrowLeft":
         case "a":
-          inputHeld.left = true;
+          inputs.left = true;
           break;
       
         case "ArrowUp":
         case "w":
-          inputHeld.up = true;
+          inputs.up = true;
           break;
       
         case "ArrowDown":
         case "s":
-          inputHeld.down = true;
+          inputs.down = true;
           break;
         
         case "Enter":
-          inputHeld.enter = true;
+          inputs.enter = true;
           break;
 
         default:
@@ -277,26 +294,26 @@
       switch (key) {
         case "ArrowRight":
         case "d":
-          inputHeld.right = false
+          inputs.right = false
           break;
       
         case "ArrowLeft":
         case "a":
-          inputHeld.left = false
+          inputs.left = false
           break;
       
         case "ArrowUp":
         case "w":
-          inputHeld.up = false
+          inputs.up = false
           break;
       
         case "ArrowDown":
         case "s":
-          inputHeld.down = false
+          inputs.down = false
           break;
 
         case "Enter":
-          inputHeld.enter = false;
+          inputs.enter = false;
           break;
   
         default:
@@ -308,36 +325,47 @@
   watchInputs();
 
   function navLoop() {
-    if (inputHeld.right) {
+    if (!inNav) return;
+
+    if (inputs.right) {
       navDude.target = navDude.target.right;
     }
-    if (inputHeld.left) {
+    if (inputs.left) {
       navDude.target = navDude.target.left;
     }
-    if (inputHeld.up) {
+    if (inputs.up) {
       navDude.target = navDude.target.up;
     }
-    if (inputHeld.down) {
+    if (inputs.down) {
       navDude.target = navDude.target.down;
     }
-    if (inputHeld.enter) {
+    if (inputs.enter) {
       let sign = navDude.target.xRef;
-      if (sign)
+      if (sign && sign.firstElementChild.href)
         window.location.href = sign.firstElementChild.href
+      else if (navDude.target.action)
+        navDude.target.action();
     }
+  }
+
+  // Use of the word "G@M3" is avoided to maybe not get flagged by content blockers
+  function startExplore() {
+    let script = document.createElement("script");
+    script.src = "/assets/scripts/explore.js";
+    script.type = "text/javascript";
+  
+    script.onload = function () {
+        alert
+    };
+  
+    document.getElementsByTagName("head")[0].appendChild(script);
+    navDude.style.display = "none";
+    inNav = false;
   }
 
   document.getElementsByClassName("exit")[0]
     .addEventListener("click", function(event) {
-      let script = document.createElement("script");
-      script.src = "/assets/scripts/game.js";
-      script.type = "text/javascript";
-
-      script.onload = function () {
-          alert
-      };
-
-      document.getElementsByTagName("head")[0].appendChild(script);
+      startExplore();
     })
   
 })();
