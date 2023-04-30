@@ -17,24 +17,27 @@
   function lockElements() {
     let paths = document.getElementsByClassName("paths")[0];
     let styles = getComputedStyle(paths);
-    let rect = paths.getBoundingClientRect()
+    let left = paths.offsetLeft;
+    let top = paths.offsetTop - pxToNum(styles["margin-top"]);;
+
     paths.style.position = "absolute";
-    let pTop = rect.top - pxToNum(styles["margin-top"]);
-    paths.style.top = numToPx(pTop);
-    paths.style.left = rect.left + "px";
+    paths.style.top = numToPx(top);
+    paths.style.left = numToPx(left);
     paths.style.width = styles["max-width"];
-    worldObjects.push(new WorldElement(paths, pTop, rect.left))
+    worldObjects.push(new WorldElement(paths, top, left))
     
     let title = document.getElementsByTagName("h1")[0];
-    rect = title.getBoundingClientRect()
+    let rect = title.getBoundingClientRect()
     title.style.position = "absolute";
     title.style.top = rect.top + "px";
     title.style.left = rect.left + "px";
     title.style.width = rect.width + "px";
     worldObjects.push(new WorldElement(title, rect.top, rect.left))
   }
+
+  document.getElementsByTagName("body")[0].style.overflow = "hidden";
+  // document.getElementsByClassName("main")[0].className += " active"
   lockElements();
-  document.getElementsByClassName("main")[0].className += " active"
 
   function handleCamera() {
     if (inputs.left) {
