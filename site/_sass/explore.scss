@@ -1,4 +1,23 @@
+body {
+    overflow: hidden;
+}
+
+.main.nobg {
+    background: unset;
+}
+
+.main.nobg::before {
+    position: absolute;
+}
+
 .background {
-    width: 100%;
-    height: 100%;
+    position:absolute;
+    width: calc(100% + 4 * var(--grid-size));
+    height: calc(100% + 4 * var(--grid-size));
+    left: calc(-2 * var(--grid-size));
+    top: calc(-2 * var(--grid-size));
+    background: url(../images/grass3.png) repeat;
+    background-size: 32px 32px;
+    z-index: -1;
+    transform: translate3d(0px, 0px, 0px);
 }
