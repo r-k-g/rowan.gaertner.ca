@@ -28,6 +28,15 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       this.#x = val;
       this.el.style.transform = `translate3d(${this.#x}px, ${this.#y}px, 0px)`;
     }
+
+    get y() {
+      return this.#y;
+    }
+
+    set y(val) {
+      this.#y = val;
+      this.el.style.transform = `translate3d(${this.#x}px, ${this.#y}px, 0px)`;
+    }
   }
 
   let worldObjects = [];
@@ -55,23 +64,25 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     let mainLand = document.getElementsByClassName("main")[0]
     mainLand.className += " nobg"
   
-    background = document.createElement("div")
-    background.className += " background"
-    mainLand.appendChild(background)
+    let bg = document.createElement("div")
+    bg.className += " background"
+    mainLand.appendChild(bg)
+    background = new WorldElement(
+      bg, bg.offsetTop, bg.offsetLeft
+    )
+    worldObjects.push(background);
   }
 
   lockElements();
   
 
-  function handleBG(x, y) {
-    // CONTINUE HERE
-    /** THOUGHTS
-     * make background a worldelement
-     * it moves normally as worldelements do
-     * this function just loops it around to not go offscreen
-     * (check if x/y greater than grid size, subtract/add grid size appropriately)
-     */
-    background.style.transform = `translate3d(${x}px, ${y}px, 0px)`;
+  function loopBG(x, y) {
+    if (Math.abs(background.x) > GRID_SIZE) {
+      background.x -= GRID_SIZE * Math.sign(background.x)
+    }
+    if (Math.abs(background.y) > GRID_SIZE) {
+      background.y -= GRID_SIZE * Math.sign(background.y)
+    }
   }
 
   function handleCamera() {
@@ -83,13 +94,19 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       if (inputs.right) {
         el.x -= 1
       }
+      if (inputs.down) {
+        el.y += 1;
+      }
+      if (inputs.up) {
+        el.y -= 1
+      }
     }
   }
 
   // World loop
   function step() {
     handleCamera();
-    handleBG
+    loopBG();
     window.requestAnimationFrame(() => {
       step();
     })
