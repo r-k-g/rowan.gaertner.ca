@@ -8,6 +8,8 @@ body {
 
 .main.nobg::before {
     position: absolute;
+    width: calc(100% + 4 * var(--grid-size));
+    left: calc(-2 * var(--grid-size));
 }
 
 .background {

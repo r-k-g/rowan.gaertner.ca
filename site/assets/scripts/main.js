@@ -352,23 +352,20 @@ function numToPx(val) {
   function startExplore() {
     if (!inNav) return;
 
-    let script = document.createElement("script");
-    script.src = "/assets/scripts/explore.js";
-    script.type = "text/javascript";
-  
-    script.onload = function () {
-      // could do something here?
-    };
-  
-    document.getElementsByTagName("head")[0].appendChild(script);
-    
     let sheet = document.createElement("link");
     sheet.rel = "stylesheet";
     sheet.href = "/assets/css/explore-styles.css"
-    document.getElementsByTagName("head")[0].appendChild(sheet);
 
-    navDude.style.display = "none";
-    inNav = false;
+    sheet.onload = function() {
+      let script = document.createElement("script");
+      script.src = "/assets/scripts/explore.js";
+      script.type = "text/javascript"; 
+      document.getElementsByTagName("head")[0].appendChild(script);
+      navDude.style.display = "none";
+      inNav = false;
+    }
+
+    document.getElementsByTagName("head")[0].appendChild(sheet);
   }
 
   document.getElementsByClassName("exit")[0]

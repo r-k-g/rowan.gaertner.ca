@@ -40,7 +40,17 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   }
 
   let worldObjects = [];
-  let background;
+  let background, grass;
+
+  let grassRule
+  let rules = document.styleSheets[document.styleSheets.length - 1].cssRules;
+  for (let rule of rules)  {
+    if (rule.selectorText === ".main.nobg::before") {
+      grassRule = rule;
+    }
+  }
+  grass = new WorldElement(grassRule, 0, 0);
+  worldObjects.push(grass);
 
   function lockElements() {
     let paths = document.getElementsByClassName("paths")[0];
@@ -54,13 +64,6 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     paths.style.width = styles["max-width"];
     worldObjects.push(new WorldElement(paths, top, left))
     
-    // let title = document.getElementsByTagName("h1")[0];
-    // let rect = title.getBoundingClientRect()
-    // title.style.position = "absolute";
-    // title.style.top = rect.top + "px";
-    // title.style.left = rect.left + "px";
-    // title.style.width = rect.width + "px";
-    // worldObjects.push(new WorldElement(title, rect.top, rect.left))
     let mainLand = document.getElementsByClassName("main")[0]
     mainLand.className += " nobg"
   
@@ -75,14 +78,14 @@ GRID_SIZE = (16) * PIXEL_SIZE;
 
   lockElements();
   
-
-  function loopBG(x, y) {
+  function loopBG() {
     if (Math.abs(background.x) > GRID_SIZE) {
       background.x -= GRID_SIZE * Math.sign(background.x)
     }
     if (Math.abs(background.y) > GRID_SIZE) {
       background.y -= GRID_SIZE * Math.sign(background.y)
     }
+    grass.x = background.x;
   }
 
   function handleCamera() {
@@ -94,10 +97,10 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       if (inputs.right) {
         el.x -= 1
       }
-      if (inputs.down) {
+      if (inputs.up) {
         el.y += 1;
       }
-      if (inputs.up) {
+      if (inputs.down) {
         el.y -= 1
       }
     }
