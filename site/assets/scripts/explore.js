@@ -2,8 +2,6 @@ PIXEL_SIZE = 2;
 GRID_SIZE = (16) * PIXEL_SIZE;
 
 (function main() {
-  console.log("Pastaman is BACK BABYYYYY");
-
   class WorldElement {
     #x;
     #y;
@@ -40,19 +38,9 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   }
 
   let worldObjects = [];
-  let background, grass;
 
-  let grassRule
-  let rules = document.styleSheets[document.styleSheets.length - 1].cssRules;
-  for (let rule of rules)  {
-    if (rule.selectorText === ".main.nobg::before") {
-      grassRule = rule;
-    }
-  }
-  grass = new WorldElement(grassRule, 0, 0);
-  worldObjects.push(grass);
-
-  function lockElements() {
+  ///----- SETUP -----\\\
+  function lockNav() {
     let paths = document.getElementsByClassName("paths")[0];
     let styles = getComputedStyle(paths);
     let left = paths.offsetLeft;
@@ -62,22 +50,40 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     paths.style.top = numToPx(top);
     paths.style.left = numToPx(left);
     paths.style.width = styles["max-width"];
-    worldObjects.push(new WorldElement(paths, top, left))
-    
-    let mainLand = document.getElementsByClassName("main")[0]
-    mainLand.className += " nobg"
+    worldObjects.push(new WorldElement(paths, top, left));
+  }
   
-    let bg = document.createElement("div")
-    bg.className += " background"
-    mainLand.appendChild(bg)
-    background = new WorldElement(
+  function makeBG(mainDiv) {
+    mainDiv.className += " nobg";
+  
+    let bg = document.createElement("div");
+    bg.className += " background";
+
+    mainDiv.appendChild(bg);
+
+    let background = new WorldElement(
       bg, bg.offsetTop, bg.offsetLeft
     )
     worldObjects.push(background);
+    return background;
   }
 
-  lockElements();
+  function touchGrass() {
+    let grassRule;
+    let rules = document.styleSheets[document.styleSheets.length - 1].cssRules;
+    for (let rule of rules)  {
+      if (rule.selectorText === ".main.nobg::before") {
+        grassRule = rule;
+        break;
+      }
+    }
+    let grass = new WorldElement(grassRule, 0, 0);
+    worldObjects.push(grass);
+    return grass;
+  }
   
+  
+  ///----- MECHANICS -----\\\
   function loopBG() {
     if (Math.abs(background.x) > GRID_SIZE) {
       background.x -= GRID_SIZE * Math.sign(background.x)
@@ -86,27 +92,34 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       background.y -= GRID_SIZE * Math.sign(background.y)
     }
     grass.x = background.x;
+    grass.y = 0;
   }
 
   function handleCamera() {
     for (let i=0; i<worldObjects.length; i++) {
       let el = worldObjects[i];
       if (inputs.left) {
-        el.x += 1;
+        el.x += 3;
       }
       if (inputs.right) {
-        el.x -= 1
+        el.x -= 3;
       }
       if (inputs.up) {
-        el.y += 1;
+        el.y += 3;
       }
       if (inputs.down) {
-        el.y -= 1
+        el.y -= 3
       }
     }
   }
 
-  // World loop
+  // Set up and get important components
+  let mainDiv = document.getElementsByClassName("main")[0]
+  lockNav();
+  let background = makeBG(mainDiv);
+  let grass = touchGrass();
+
+  // Explore loop
   function step() {
     handleCamera();
     loopBG();
@@ -114,5 +127,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       step();
     })
   }
-  step(); //kick off the first step!
+  step(); // start the loop
+
+
 })();
