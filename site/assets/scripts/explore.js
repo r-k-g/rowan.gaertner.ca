@@ -10,8 +10,6 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       this.el = el;
       this.worldX = worldX;
       this.worldY = worldY;
-      this.screenX;
-      this.screenY;
       this.#x=0; //temp val
       this.#y=0; //temp val
 
@@ -34,6 +32,13 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     set y(val) {
       this.#y = val;
       this.el.style.transform = `translate3d(${this.#x}px, ${this.#y}px, 0px)`;
+    }
+  }
+
+  class ExploreDude extends WorldElement {
+    constructor(el, worldX, worldY) {
+      super(el, worldX, worldY);
+      this.speed = 3;
     }
   }
 
@@ -81,6 +86,18 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     worldObjects.push(grass);
     return grass;
   }
+
+  function makeDude(mainDiv) {
+    let oldDude = document.getElementsByClassName("dude")[0];
+    console.log(oldDude.style.left);
+    console.log(oldDude.style.top);
+
+    let dudeEl = document.createElement("div");
+    dudeEl.className += " dude";
+    mainDiv.appendChild(dudeEl);
+    
+    return new ExploreDude(dudeEl, 0, 0);
+  }
   
   
   ///----- MECHANICS -----\\\
@@ -95,7 +112,10 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     grass.y = 0;
   }
 
-  function handleCamera() {
+  function doMovement() {
+    let x0 = dude.x;
+    let y0 = dude.y;
+
     for (let i=0; i<worldObjects.length; i++) {
       let el = worldObjects[i];
       if (inputs.left) {
@@ -118,10 +138,11 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   lockNav();
   let background = makeBG(mainDiv);
   let grass = touchGrass();
+  let dude = makeDude(mainDiv);
 
   // Explore loop
   function step() {
-    handleCamera();
+    doMovement();
     loopBG();
     window.requestAnimationFrame(() => {
       step();
