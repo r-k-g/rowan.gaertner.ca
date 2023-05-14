@@ -351,6 +351,7 @@ function numToPx(val) {
   // Use of the word "G@M3" is avoided to maybe not get flagged by content blockers
   function startExplore() {
     if (!inNav) return;
+    inNav = false;
 
     let sheet = document.createElement("link");
     sheet.rel = "stylesheet";
@@ -362,7 +363,6 @@ function numToPx(val) {
       script.type = "text/javascript"; 
       document.getElementsByTagName("head")[0].appendChild(script);
       navDude.style.display = "none";
-      inNav = false;
     }
 
     document.getElementsByTagName("head")[0].appendChild(sheet);
