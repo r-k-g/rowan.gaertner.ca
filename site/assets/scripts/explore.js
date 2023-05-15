@@ -54,10 +54,9 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   class ExploreDude extends WorldElement {
     constructor(el, worldX, worldY) {
       super(el, worldX, worldY);
-      this.speed = 3;
+      this.speed = 390 ;
       this.x = worldX;
       this.y = worldY;
-      
     }
   }
 
@@ -142,17 +141,51 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   }
 
   function doMovement() {
+    let moveX = 0;
+    let moveY = 0;
+
+    if (inputs.left) {
+      moveX = -dude.speed;
+    }
+    if (inputs.right) {
+      moveX = dude.speed;
+    }
+    if (inputs.up) {
+      moveY = -dude.speed;
+    }
+    if (inputs.down) {
+      moveY = dude.speed
+    }
+
+    // Update map position
+    dude.worldX += moveX;
+    dude.worldY += moveY;
+
     let x0 = dude.centerX;
     let y0 = dude.centerY;
     
-    dude.x += (centerX - x0) / 9
-    dude.y += (centerY - y0) / 9
+    let xDist = x0 + moveX;
+    let yDist = y0 + moveY;
+
+
+    // camera.worldX += (camera.centerX - x0) / 9
+    // camera.worldX += (camera.centerY - y0) / 9
+
     
+    // dude.x = (camera.centerX - x0) / 9
+    // dude.y = (camera.centerY - y0) / 9
+    dude.x = camera.centerX + (moveX / 1.1)
+    dude.y = camera.centerY + (moveY / 1.1)
+    
+
+    updateObjects();
+  }
+
+  function updateObjects() {
     for (let i=0; i<worldObjects.length; i++) {
       let el = worldObjects[i];
       if (inputs.left) {
         el.x += 3;
-        dude.y += 5;
       }
       if (inputs.right) {
         el.x -= 3;
@@ -161,10 +194,20 @@ GRID_SIZE = (16) * PIXEL_SIZE;
         el.y += 3;
       }
       if (inputs.down) {
-
         el.y -= 3
       }
     }
+  }
+
+  function updateCamera() {
+    camera.width = window.innerWidth;
+    camera.height = window.innerHeight - (
+      pxToNum(headerStyle["height"])
+      + pxToNum(headerStyle["padding-top"])
+      + pxToNum(headerStyle["padding-bottom"])
+    )
+    camera.centerX = camera.width / 2;
+    camera.centerY = camera.height / 2;
   }
 
   // Set up and get important components
@@ -174,15 +217,24 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   let grass = touchGrass();
   let dude = makeDude(mainDiv);
 
-  let centerX, centerY;
+  let mainStyle = getComputedStyle(mainDiv);
+  let headerStyle = getComputedStyle(document.getElementsByTagName("header")[0]);
+  let camera = {
+    worldX:  0, worldY:  0,
+    centerX: 0, centerY: 0,
+    width:   0, height:  0
+  };
+
+  updateCamera();
+  camera.worldX = camera.centerX;
+  camera.worldY = camera.centerY;
 
   // Explore loop
   function step() {
-    centerX = window.innerWidth / 2;
-    centerY = window.outerHeight / 2;
-    
+    updateCamera();
     doMovement();
     loopBG();
+
     window.requestAnimationFrame(() => {
       step();
     })
