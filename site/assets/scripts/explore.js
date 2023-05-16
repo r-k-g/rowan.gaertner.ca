@@ -131,10 +131,10 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   ///----- MECHANICS -----\\\
   function loopBG() {
     if (Math.abs(background.x) > GRID_SIZE) {
-      background.x -= GRID_SIZE * Math.sign(background.x)
+      background.x = background.x % GRID_SIZE
     }
     if (Math.abs(background.y) > GRID_SIZE) {
-      background.y -= GRID_SIZE * Math.sign(background.y)
+      background.y = background.y % GRID_SIZE
     }
     grass.x = background.x;
     grass.y = 0;
