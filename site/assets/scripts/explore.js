@@ -54,7 +54,12 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   class ExploreDude extends WorldElement {
     constructor(el, worldX, worldY) {
       super(el, worldX, worldY);
-      this.speed = 2;
+      
+      this.accel = 3
+      this.velX = 0;
+      this.velY = 0;
+      this.drag = 0.1
+
       this.x = worldX;
       this.y = worldY;
     }
@@ -70,8 +75,6 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     let top = paths.offsetTop - pxToNum(styles["margin-top"]);
 
     paths.style.position = "absolute";
-    // paths.style.top = numToPx(top);
-    // paths.style.left = numToPx(left);
     paths.style.width = styles["max-width"];
     worldObjects.push(new WorldElement(paths, left, top));
   }
@@ -101,7 +104,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       }
     }
     let grass = new WorldElement(grassRule, 0, 0);
-    worldObjects.push(grass);
+    // worldObjects.push(grass);
     return grass;
   }
 
@@ -116,9 +119,6 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     let left = navRect.left + (navRect.width / 2) - (dudeWidth / 2);
     let top = navRect.height + nav.offsetTop + 15
 
-    // dudeEl.style.left = numToPx(left);
-    // dudeEl.style.top = numToPx(top);
-
     setTimeout(function(el) {
       el.style.opacity = 1;
     }, 70, dudeEl)
@@ -129,55 +129,72 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   }
   
   ///----- MECHANICS -----\\\
-  function loopBG() {
-    if (Math.abs(background.x) > GRID_SIZE) {
-      background.x = background.x % GRID_SIZE
-    }
-    if (Math.abs(background.y) > GRID_SIZE) {
-      background.y = background.y % GRID_SIZE
-    }
-    grass.x = background.x;
-    grass.y = 0;
-  }
+  document.addEventListener("mousemove", function(event) {
+    inputs.mouseX = event.clientX;
+    inputs.mouseY = event.clientY;
+    inputs.mouseDown = Boolean(event.buttons % 2)
+  });
+
+  document.addEventListener("mousedown", function(event) {
+    inputs.mouseDown = true;
+  });
+
+  document.addEventListener("mouseup", function(event) {
+    inputs.mouseDown = false;
+  });
 
   function doMovement() {
-    let moveX = 0;
-    let moveY = 0;
+    let dx = 0;
+    let dy = 0;
 
-    if (inputs.left) {
-      moveX = -dude.speed;
+    if (inputs.left)  dx += -1;
+    if (inputs.right) dx += 1;
+    if (inputs.up)    dy += -1;
+    if (inputs.down)  dy += 1;
+
+    
+    if (!(inputs.left || inputs.right || inputs.up || inputs.down)) {
+      if (inputs.mouseDown) {
+        dx = inputs.mouseX - (
+          dude.worldX - camera.worldX + (camera.width / 2)
+        );
+        dy = inputs.mouseY - headerHeight - (
+          dude.worldY - camera.worldY + (camera.height / 2)
+        );
+        
+      }
     }
-    if (inputs.right) {
-      moveX = dude.speed;
+    
+    let accelX = 0;
+    let accelY = 0;
+    if (dx || dy) {
+      let hypot = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+      accelX = (dx / hypot) * dude.accel;
+      accelY = (dy / hypot) * dude.accel;
     }
-    if (inputs.up) {
-      moveY = -dude.speed;
-    }
-    if (inputs.down) {
-      moveY = dude.speed
-    }
+    
+    let dragX = dude.drag * Math.pow(dude.velX, 2) * -Math.sign(dude.velX);
+    let dragY = dude.drag * Math.pow(dude.velY, 2) * -Math.sign(dude.velY);
+    
+    dude.velX += accelX + dragX;
+    dude.velY += accelY + dragY;
+
+    if (Math.abs(dude.velX) < 0.2) dude.velX = 0;
+    if (Math.abs(dude.velY) < 0.2) dude.velY = 0;
 
     // Update map position
-    dude.worldX += moveX;
-    dude.worldY += moveY;
-
-    // let x0 = dude.centerX;
-    // let y0 = dude.centerY;
-    
-    // let xDist = x0 + moveX;
-    // let yDist = y0 + moveY;
-
+    dude.worldX += dude.velX;
+    dude.worldY += dude.velY;
 
     camera.worldX += (dude.worldX - camera.worldX) / 20
     camera.worldY += (dude.worldY - camera.worldY) / 20
 
-    // dude.x = (camera.centerX - x0) / 9
-    // dude.y = (camera.centerY - y0) / 9
-    // dude.x = camera.centerX + (moveX / 1.1)
-    // dude.y = camera.centerY + (moveY / 1.1)
-    
+    background.worldX = camera.worldX - (camera.width / 2) - camera.worldX%GRID_SIZE;
+    background.worldY = camera.worldY - (camera.height / 2) - camera.worldY%GRID_SIZE;
 
     updateObjects();
+    grass.x = background.x;
+    grass.y = 0;
   }
 
   function updateObjects() {
@@ -189,12 +206,14 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   }
 
   function updateCamera() {
-    camera.width = window.innerWidth;
-    camera.height = window.innerHeight - (
+    headerHeight = (
       pxToNum(headerStyle["height"])
       + pxToNum(headerStyle["padding-top"])
       + pxToNum(headerStyle["padding-bottom"])
     )
+
+    camera.width = window.innerWidth;
+    camera.height = window.innerHeight - headerHeight;
     camera.centerX = camera.width / 2;
     camera.centerY = camera.height / 2;
   }
@@ -209,6 +228,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
 
   let mainStyle = getComputedStyle(mainDiv);
   let headerStyle = getComputedStyle(document.getElementsByTagName("header")[0]);
+  let headerHeight = 0;
   let camera = {
     worldX:  0, worldY:  0,
     centerX: 0, centerY: 0,
@@ -223,13 +243,10 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   function step() {
     updateCamera();
     doMovement();
-    loopBG();
 
     window.requestAnimationFrame(() => {
       step();
     })
   }
   step(); // start the loop
-
-
 })();

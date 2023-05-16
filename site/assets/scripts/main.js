@@ -1,4 +1,10 @@
-let inputs = {left: false, right: false, up: false, down: false, enter: false};
+let inputs = {
+  left: false, right: false,
+  up: false, down: false,
+  mouseX: 0, mouseY: 0,
+  mouseDown: false,
+  enter: false
+};
 
 function pxToNum(val) {
   if (typeof(val) === "string") {
