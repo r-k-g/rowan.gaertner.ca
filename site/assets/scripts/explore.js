@@ -54,7 +54,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   class ExploreDude extends WorldElement {
     constructor(el, worldX, worldY) {
       super(el, worldX, worldY);
-      this.speed = 390 ;
+      this.speed = 2;
       this.x = worldX;
       this.y = worldY;
     }
@@ -161,21 +161,20 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     dude.worldX += moveX;
     dude.worldY += moveY;
 
-    let x0 = dude.centerX;
-    let y0 = dude.centerY;
+    // let x0 = dude.centerX;
+    // let y0 = dude.centerY;
     
-    let xDist = x0 + moveX;
-    let yDist = y0 + moveY;
+    // let xDist = x0 + moveX;
+    // let yDist = y0 + moveY;
 
 
-    // camera.worldX += (camera.centerX - x0) / 9
-    // camera.worldX += (camera.centerY - y0) / 9
+    camera.worldX += (dude.worldX - camera.worldX) / 20
+    camera.worldY += (dude.worldY - camera.worldY) / 20
 
-    
     // dude.x = (camera.centerX - x0) / 9
     // dude.y = (camera.centerY - y0) / 9
-    dude.x = camera.centerX + (moveX / 1.1)
-    dude.y = camera.centerY + (moveY / 1.1)
+    // dude.x = camera.centerX + (moveX / 1.1)
+    // dude.y = camera.centerY + (moveY / 1.1)
     
 
     updateObjects();
@@ -184,18 +183,8 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   function updateObjects() {
     for (let i=0; i<worldObjects.length; i++) {
       let el = worldObjects[i];
-      if (inputs.left) {
-        el.x += 3;
-      }
-      if (inputs.right) {
-        el.x -= 3;
-      }
-      if (inputs.up) {
-        el.y += 3;
-      }
-      if (inputs.down) {
-        el.y -= 3
-      }
+      el.x = camera.centerX + (el.worldX - camera.worldX)
+      el.y = camera.centerY + (el.worldY - camera.worldY)
     }
   }
 
@@ -216,6 +205,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   let background = makeBG(mainDiv);
   let grass = touchGrass();
   let dude = makeDude(mainDiv);
+  worldObjects.push(dude);
 
   let mainStyle = getComputedStyle(mainDiv);
   let headerStyle = getComputedStyle(document.getElementsByTagName("header")[0]);
