@@ -4,12 +4,14 @@ body {
 
 .main.nobg {
     background: unset;
+    height: 100%;
 }
 
 .main.nobg::before {
     position: absolute;
     width: calc(100% + 4 * var(--grid-size));
     left: calc(-2 * var(--grid-size));
+    outline: solid 1px pink;
 }
 
 .background {

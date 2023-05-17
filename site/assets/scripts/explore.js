@@ -55,10 +55,10 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     constructor(el, worldX, worldY) {
       super(el, worldX, worldY);
       
-      this.accel = 3
+      this.accel = 4
       this.velX = 0;
       this.velY = 0;
-      this.drag = 0.1
+      this.drag = 0.13
 
       this.x = worldX;
       this.y = worldY;
@@ -151,22 +151,26 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     if (inputs.right) dx += 1;
     if (inputs.up)    dy += -1;
     if (inputs.down)  dy += 1;
-
     
     if (!(inputs.left || inputs.right || inputs.up || inputs.down)) {
       if (inputs.mouseDown) {
         dx = inputs.mouseX - (
-          dude.worldX - camera.worldX + (camera.width / 2)
+          dude.worldX - camera.worldX + (camera.width)
         );
         dy = inputs.mouseY - headerHeight - (
-          dude.worldY - camera.worldY + (camera.height / 2)
+          dude.worldY - camera.worldY + (camera.height)
         );
-        
       }
     }
     
+    moveDude(dx, dy);
+    moveCamera();
+  }
+  
+  function moveDude(dx, dy) {
     let accelX = 0;
     let accelY = 0;
+
     if (dx || dy) {
       let hypot = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
       accelX = (dx / hypot) * dude.accel;
@@ -186,12 +190,51 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     dude.worldX += dude.velX;
     dude.worldY += dude.velY;
 
-    camera.worldX += (dude.worldX - camera.worldX) / 20
-    camera.worldY += (dude.worldY - camera.worldY) / 20
+  }
 
-    background.worldX = camera.worldX - (camera.width / 2) - camera.worldX%GRID_SIZE;
-    background.worldY = camera.worldY - (camera.height / 2) - camera.worldY%GRID_SIZE;
+  function moveCamera() {
+    // console.log(`height: ${camera.height}`);
+    
+    camera.worldX += (dude.worldX - camera.worldX) / 20;
 
+    // if (dude.worldY < camera.centerY + headerSize) {
+    //   headerOffset = Math.min(camera.centerY - dude.worldY, 0);
+    //   header.style.transform = `translate3d(0px, ${headerOffset}px, 0px)`;
+    //   mainDiv.style.top = `${headerOffset}px`;
+    //   // camera.worldY = camera.centerY;
+    // } else {
+    //   headerOffset = -headerSize;
+    //   // camera.worldY += (dude.worldY - camera.worldY) / 20;
+    // }
+    
+    camera.worldY += (dude.worldY - camera.worldY) / 20;
+
+    if (camera.worldX + camera.width > cameraBounds.right)
+      camera.worldX = cameraBounds.right - camera.width;
+    
+    if (camera.worldX - camera.width < cameraBounds.left)
+      camera.worldX = cameraBounds.left + camera.width;
+    
+    if (camera.worldY - camera.height < cameraBounds.top)
+      camera.worldY = cameraBounds.top + camera.height;
+    
+    if (camera.worldY + camera.height > cameraBounds.bottom)
+      camera.worldY = cameraBounds.bottom - camera.height;
+
+    
+    camera.worldX = Math.max(
+      Math.min(camera.worldX, cameraBounds.right),
+      cameraBounds.left
+    );
+
+    camera.worldY = Math.max(
+      Math.min(camera.worldY, cameraBounds.bottom),
+      cameraBounds.top
+    );
+  
+    background.worldX = camera.worldX - camera.width - camera.worldX%GRID_SIZE;
+    background.worldY = camera.worldY - camera.height - camera.worldY%GRID_SIZE;
+  
     updateObjects();
     grass.x = background.x;
     grass.y = 0;
@@ -203,19 +246,23 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       el.x = camera.centerX + (el.worldX - camera.worldX)
       el.y = camera.centerY + (el.worldY - camera.worldY)
     }
+
+    // let hy = -headerSize;
+    // headerOffset = camera.centerY + (hy - camera.worldY)
+    // header.style.transform = `translate3d(0px, ${headerOffset}px, 0px)`;
+    
+    // let my = 0;
+    // let mainOffset = camera.centerY + (my - camera.worldY)
+    // mainDiv.style.top = `${mainOffset}px`;
   }
 
   function updateCamera() {
-    headerHeight = (
-      pxToNum(headerStyle["height"])
-      + pxToNum(headerStyle["padding-top"])
-      + pxToNum(headerStyle["padding-bottom"])
-    )
+    headerHeight = headerSize + headerOffset;
 
-    camera.width = window.innerWidth;
-    camera.height = window.innerHeight - headerHeight;
-    camera.centerX = camera.width / 2;
-    camera.centerY = camera.height / 2;
+    camera.width = window.innerWidth / 2;
+    camera.height = (window.innerHeight - headerHeight) / 2;
+    camera.centerX = camera.width;
+    camera.centerY = camera.height;
   }
 
   // Set up and get important components
@@ -226,13 +273,23 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   let dude = makeDude(mainDiv);
   worldObjects.push(dude);
 
-  let mainStyle = getComputedStyle(mainDiv);
-  let headerStyle = getComputedStyle(document.getElementsByTagName("header")[0]);
-  let headerHeight = 0;
+  let header = document.getElementsByTagName("header")[0];
+  let headerStyle = getComputedStyle(header);
+  let headerSize = (
+    pxToNum(headerStyle["height"])
+    + pxToNum(headerStyle["padding-top"])
+    + pxToNum(headerStyle["padding-bottom"])
+  );
+  let headerOffset = 0;
+  let headerHeight = headerSize;
+
   let camera = {
     worldX:  0, worldY:  0,
     centerX: 0, centerY: 0,
     width:   0, height:  0
+  };
+  let cameraBounds = {
+    top: 0, bottom: 6000, right: 4000, left: -3000
   };
 
   updateCamera();
