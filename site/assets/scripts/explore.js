@@ -68,15 +68,22 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   let worldObjects = [];
 
   ///----- SETUP -----\\\
-  function lockNav() {
-    let paths = document.getElementsByClassName("paths")[0];
-    let styles = getComputedStyle(paths);
-    let left = paths.offsetLeft;
-    let top = paths.offsetTop - pxToNum(styles["margin-top"]);
+  function loadNav() {
+    let nav = document.getElementsByClassName("paths")[0];
+    let styles = getComputedStyle(nav);
+    document.body.appendChild(nav)
+    // let left = paths.offsetLeft;
+    // let top = paths.offsetTop - pxToNum(styles["margin-top"]);
 
-    paths.style.position = "absolute";
-    paths.style.width = styles["max-width"];
-    worldObjects.push(new WorldElement(paths, left, top));
+    nav.style.position = "absolute";
+    nav.style.width = styles["max-width"];
+    nav.style.top = "0px";
+    nav.style.left = "0px";
+    let left = 0
+    let top = headerHeight + 128;
+    worldObjects.push(new WorldElement(nav, left, top));  
+
+    return nav;
   }
   
   function makeBG(mainDiv) {
@@ -85,7 +92,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     let bg = document.createElement("div");
     bg.className += " background";
 
-    mainDiv.appendChild(bg);
+    document.body.appendChild(bg);
 
     let background = new WorldElement(
       bg, bg.offsetTop, bg.offsetLeft
@@ -109,7 +116,6 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   }
 
   function makeDude(mainDiv) {
-    let nav = document.getElementsByClassName("paths")[0];
     let navRect = nav.getBoundingClientRect();
 
     let dudeEl = document.createElement("div");
@@ -123,7 +129,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       el.style.opacity = 1;
     }, 70, dudeEl)
 
-    mainDiv.appendChild(dudeEl);
+    document.body.appendChild(dudeEl);
     
     return new ExploreDude(dudeEl, left, top);
   }
@@ -193,20 +199,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   }
 
   function moveCamera() {
-    // console.log(`height: ${camera.height}`);
-    
     camera.worldX += (dude.worldX - camera.worldX) / 20;
-
-    // if (dude.worldY < camera.centerY + headerSize) {
-    //   headerOffset = Math.min(camera.centerY - dude.worldY, 0);
-    //   header.style.transform = `translate3d(0px, ${headerOffset}px, 0px)`;
-    //   mainDiv.style.top = `${headerOffset}px`;
-    //   // camera.worldY = camera.centerY;
-    // } else {
-    //   headerOffset = -headerSize;
-    //   // camera.worldY += (dude.worldY - camera.worldY) / 20;
-    // }
-    
     camera.worldY += (dude.worldY - camera.worldY) / 20;
 
     if (camera.worldX + camera.width > cameraBounds.right)
@@ -238,6 +231,9 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     updateObjects();
     grass.x = background.x;
     grass.y = 0;
+
+    headerObj.x = camera.worldX - camera.width;
+    mainObj.x = camera.worldX - camera.width;
   }
 
   function updateObjects() {
@@ -246,42 +242,35 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       el.x = camera.centerX + (el.worldX - camera.worldX)
       el.y = camera.centerY + (el.worldY - camera.worldY)
     }
-
-    // let hy = -headerSize;
-    // headerOffset = camera.centerY + (hy - camera.worldY)
-    // header.style.transform = `translate3d(0px, ${headerOffset}px, 0px)`;
-    
-    // let my = 0;
-    // let mainOffset = camera.centerY + (my - camera.worldY)
-    // mainDiv.style.top = `${mainOffset}px`;
   }
 
   function updateCamera() {
-    headerHeight = headerSize + headerOffset;
-
     camera.width = window.innerWidth / 2;
-    camera.height = (window.innerHeight - headerHeight) / 2;
+    camera.height = window.innerHeight / 2;
     camera.centerX = camera.width;
     camera.centerY = camera.height;
   }
 
   // Set up and get important components
-  let mainDiv = document.getElementsByClassName("main")[0]
-  lockNav();
-  let background = makeBG(mainDiv);
-  let grass = touchGrass();
-  let dude = makeDude(mainDiv);
-  worldObjects.push(dude);
-
-  let header = document.getElementsByTagName("header")[0];
-  let headerStyle = getComputedStyle(header);
-  let headerSize = (
+  let headerEl = document.getElementsByTagName("header")[0];
+  let headerStyle = getComputedStyle(headerEl);
+  let headerHeight = (
     pxToNum(headerStyle["height"])
     + pxToNum(headerStyle["padding-top"])
     + pxToNum(headerStyle["padding-bottom"])
   );
-  let headerOffset = 0;
-  let headerHeight = headerSize;
+  let headerObj = new WorldElement(headerEl, 0, 0);
+  worldObjects.push(headerObj);
+    
+  let mainEl = document.getElementsByClassName("main")[0];
+  let mainObj = new WorldElement(mainEl, 0, headerHeight);
+  worldObjects.push(mainObj);
+
+  let nav = loadNav();
+  let background = makeBG(mainEl);
+  let grass = touchGrass();
+  let dude = makeDude(mainEl);
+  worldObjects.push(dude);
 
   let camera = {
     worldX:  0, worldY:  0,
