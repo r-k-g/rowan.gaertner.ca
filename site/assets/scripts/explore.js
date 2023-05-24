@@ -161,7 +161,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
         dx = inputs.mouseX - (
           dude.worldX - camera.worldX + (camera.width)
         );
-        dy = inputs.mouseY - headerHeight - (
+        dy = inputs.mouseY - (
           dude.worldY - camera.worldY + (camera.height)
         );
       }
