@@ -43,11 +43,11 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     }
 
     get centerX() {
-      return this.x + (this.width / 2)
+      return this.x + (this.width / 2);
     }
 
     get centerY() {
-      return this.y + (this.height / 2)
+      return this.y + (this.height / 2);
     }
   }
 
@@ -55,10 +55,10 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     constructor(el, worldX, worldY) {
       super(el, worldX, worldY);
       
-      this.accel = 4
+      this.accel = 4;
       this.velX = 0;
       this.velY = 0;
-      this.drag = 0.13
+      this.drag = 0.13;
 
       this.x = worldX;
       this.y = worldY;
@@ -72,17 +72,16 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     let nav = document.getElementsByClassName("paths")[0];
     let styles = getComputedStyle(nav);
     document.body.appendChild(nav)
-    // let left = paths.offsetLeft;
-    // let top = paths.offsetTop - pxToNum(styles["margin-top"]);
 
     nav.style.position = "absolute";
     nav.style.width = styles["max-width"];
     nav.style.top = "0px";
     nav.style.left = "0px";
-    let left = 0
-    let top = headerHeight + 128;
-    worldObjects.push(new WorldElement(nav, left, top));  
 
+    let left = camera.width - (pxToNum(styles["max-width"]) / 2);
+    let top = headerHeight + 34;
+
+    worldObjects.push(new WorldElement(nav, left, top));  
     return nav;
   }
   
@@ -96,7 +95,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
 
     let background = new WorldElement(
       bg, bg.offsetTop, bg.offsetLeft
-    )
+    );
     worldObjects.push(background);
     return background;
   }
@@ -104,30 +103,29 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   function touchGrass() {
     let grassRule;
     let rules = document.styleSheets[document.styleSheets.length - 1].cssRules;
-    for (let rule of rules)  {
+    for (let rule of rules) {
       if (rule.selectorText === ".main.nobg::before") {
         grassRule = rule;
         break;
       }
     }
     let grass = new WorldElement(grassRule, 0, 0);
-    // worldObjects.push(grass);
     return grass;
   }
 
-  function makeDude(mainDiv) {
+  function makeDude() {
     let navRect = nav.getBoundingClientRect();
 
     let dudeEl = document.createElement("div");
     dudeEl.className += " dude";
     
-    let dudeWidth = 20
+    let dudeWidth = 20;
     let left = navRect.left + (navRect.width / 2) - (dudeWidth / 2);
-    let top = navRect.height + nav.offsetTop + 15
+    let top = navRect.bottom + 15;
 
     setTimeout(function(el) {
-      el.style.opacity = 1;
-    }, 70, dudeEl)
+      dudeEl.style.opacity = 1;
+    }, 70, dudeEl);
 
     document.body.appendChild(dudeEl);
     
@@ -138,7 +136,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   document.addEventListener("mousemove", function(event) {
     inputs.mouseX = event.clientX;
     inputs.mouseY = event.clientY;
-    inputs.mouseDown = Boolean(event.buttons % 2)
+    inputs.mouseDown = Boolean(event.buttons % 2);
   });
 
   document.addEventListener("mousedown", function(event) {
@@ -195,12 +193,11 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     // Update map position
     dude.worldX += dude.velX;
     dude.worldY += dude.velY;
-
   }
 
   function moveCamera() {
-    camera.worldX += (dude.worldX - camera.worldX) / 20;
-    camera.worldY += (dude.worldY - camera.worldY) / 20;
+    camera.worldX += (dude.worldX - camera.worldX) / camera.delay;
+    camera.worldY += (dude.worldY - camera.worldY) / camera.delay;
 
     if (camera.worldX + camera.width > cameraBounds.right)
       camera.worldX = cameraBounds.right - camera.width;
@@ -232,26 +229,41 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     grass.x = background.x;
     grass.y = 0;
 
-    headerObj.x = camera.worldX - camera.width;
-    mainObj.x = camera.worldX - camera.width;
+    headerObj.x = 0;
+    mainObj.x = 0;
   }
 
   function updateObjects() {
     for (let i=0; i<worldObjects.length; i++) {
       let el = worldObjects[i];
-      el.x = camera.centerX + (el.worldX - camera.worldX)
-      el.y = camera.centerY + (el.worldY - camera.worldY)
+      el.x = camera.width + (el.worldX - camera.worldX);
+      el.y = camera.height + (el.worldY - camera.worldY);
     }
   }
 
   function updateCamera() {
     camera.width = window.innerWidth / 2;
     camera.height = window.innerHeight / 2;
-    camera.centerX = camera.width;
-    camera.centerY = camera.height;
+    if (camera.delay > 20)
+      camera.delay -= 1; 
   }
 
-  // Set up and get important components
+  ///----- DRIVER CODE -----\\\
+  // Set up camera
+  let camera = {
+    worldX: 0, worldY:  0,
+    width:  0, height:  0,
+    delay: 20
+  };
+  let cameraBounds = {
+    top: 0, bottom: 3000, right: 2000, left: -1000
+  };
+
+  updateCamera();
+  camera.worldX = camera.width;
+  camera.worldY = camera.height;
+
+  // Get and set up important components
   let headerEl = document.getElementsByTagName("header")[0];
   let headerStyle = getComputedStyle(headerEl);
   let headerHeight = (
@@ -272,20 +284,8 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   let dude = makeDude(mainEl);
   worldObjects.push(dude);
 
-  let camera = {
-    worldX:  0, worldY:  0,
-    centerX: 0, centerY: 0,
-    width:   0, height:  0
-  };
-  let cameraBounds = {
-    top: 0, bottom: 6000, right: 4000, left: -3000
-  };
 
-  updateCamera();
-  camera.worldX = camera.centerX;
-  camera.worldY = camera.centerY;
-
-  // Explore loop
+  // The explore mode loop
   function step() {
     updateCamera();
     doMovement();
@@ -294,5 +294,10 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       step();
     })
   }
-  step(); // start the loop
+
+  // Start the loop after a pause
+  setTimeout(step, 500);
+
+  // Ease in camera
+  camera.delay = 60;
 })();
