@@ -136,7 +136,6 @@ GRID_SIZE = (16) * PIXEL_SIZE;
 
   document.addEventListener("mousedown", function(event) {
     inputs.mouseDown = true;
-    console.log(`dudeX: ${dude.worldX} navX: ${nav.worldX} dudeY: ${dude.worldY} navY: ${nav.worldY}`)
   });
 
   document.addEventListener("mouseup", function(event) {
@@ -329,6 +328,8 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   let dude = makeDude(mainEl);
   worldObjects.push(dude);
 
+  document.body.style.userSelect = "none";
+  // document.body.style.webkitUserSelect = "none";
 
   // The explore mode loop
   function step() {
