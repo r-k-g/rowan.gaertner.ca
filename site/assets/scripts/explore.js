@@ -145,6 +145,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   function doMovement() {
     let dx = 0;
     let dy = 0;
+    let mouse = false;
 
     if (inputs.left)  dx += -1;
     if (inputs.right) dx += 1;
@@ -159,19 +160,23 @@ GRID_SIZE = (16) * PIXEL_SIZE;
         dy = inputs.mouseY - (
           dude.worldY - camera.worldY + (camera.height)
         );
+        mouse = true;
       }
     }
     
-    moveDude(dx, dy);
+    moveDude(dx, dy, mouse);
     moveCamera();
   }
   
-  function moveDude(dx, dy) {
+  function moveDude(dx, dy, mouse) {
     let accelX = 0;
     let accelY = 0;
 
     if (dx || dy) {
       let hypot = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+      if (mouse && hypot < 50) {
+        dx = dy = 0;
+      }
       accelX = (dx / hypot) * dude.accel;
       accelY = (dy / hypot) * dude.accel;
     }
@@ -328,8 +333,15 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   let dude = makeDude(mainEl);
   worldObjects.push(dude);
 
+  let flowers = new Image(32, 32);
+  document.body.appendChild(flowers);
+  flowers.style.position = "absolute";
+  flowers.src = "/assets/images/flower.png"
+
+  worldObjects.push(new WorldElement(flowers, -500, 800));
+
   document.body.style.userSelect = "none";
-  // document.body.style.webkitUserSelect = "none";
+  document.body.style.webkitUserSelect = "none";
 
   // The explore mode loop
   function step() {
