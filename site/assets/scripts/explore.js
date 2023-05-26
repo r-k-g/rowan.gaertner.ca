@@ -203,17 +203,41 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     if (dude.worldX + dude.width > cameraBounds.right)
       dude.worldX = cameraBounds.right - dude.width;
 
-    let dudeTop = dude.worldY + 25;
-    let dudeBot = dude.worldY + dude.height;
-
     for (let i=0; i<collisionObjects.length; i++) {
       let el = collisionObjects[i];
 
-      if ((el.worldY < dudeBot && dudeBot < el.worldY + el.height) 
-       || (el.worldY < dudeTop && dudeTop < el.worldY + el.height)) {
-        dude.worldY = dude.velY > 0 ? el.worldY - dude.height  : el.worldY + el.height - 25;
+      dude.worldY -= dude.velY;
+      let colliding = checkIntersect(
+        dude.worldX, dude.worldY + 25,
+        dude.width, dude.height - 25,
+        el.worldX, el.worldY,
+        el.width, el.height
+      )
+
+      if (colliding) {
+        dude.worldX = dude.velX > 0 ? el.worldX - dude.width - 2 : el.worldX + el.width + 2;
+        dude.velX = 0;
+      }
+
+      dude.worldY += dude.velY;
+      colliding = checkIntersect(
+        dude.worldX, dude.worldY + 25,
+        dude.width, dude.height - 25,
+        el.worldX, el.worldY,
+        el.width, el.height
+      )
+
+      if (colliding) {
+        dude.worldY = dude.velY > 0 ? el.worldY - dude.height - 2 : el.worldY + el.height - 23;
+        dude.velY = 0;
       }
     }
+  }
+
+  function checkIntersect(x1, y1, w1, h1, x2, y2, w2, h2) {
+    if (x1 > x2 + w2 || x1 + w1 < x2 || y1 > y2 + h2 || y1 + h1 < y2)
+      return false;
+    return true;
   }
 
   function moveCamera() {
