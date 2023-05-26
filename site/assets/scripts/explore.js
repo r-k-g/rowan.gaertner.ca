@@ -5,9 +5,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   class WorldElement {
     #x;
     #y;
-    #centerX;
-    #centerY;
-    constructor(el, worldX, worldY) {
+    constructor(el, worldX, worldY, collision=false) {
       this.permanent = true;
       this.el = el;
       this.worldX = worldX;
@@ -22,6 +20,8 @@ GRID_SIZE = (16) * PIXEL_SIZE;
         this.width = this.rect.width;
         this.height = this.rect.height;
       } catch (error) {}
+
+      if (collision) collisionObjects.push(this);
     }
 
     get x() {
@@ -41,14 +41,6 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       this.#y = val;
       this.el.style.transform = `translate3d(${this.#x}px, ${this.#y}px, 0px)`;
     }
-
-    get centerX() {
-      return this.x + (this.width / 2);
-    }
-
-    get centerY() {
-      return this.y + (this.height / 2);
-    }
   }
 
   class ExploreDude extends WorldElement {
@@ -66,6 +58,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   }
 
   let worldObjects = [];
+  let collisionObjects = [];
 
   ///----- SETUP -----\\\
   function loadNav() {
@@ -74,15 +67,17 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     document.body.appendChild(nav)
 
     nav.style.position = "absolute";
+    nav.style.margin = "0px";
     nav.style.width = styles["max-width"];
     nav.style.top = "0px";
     nav.style.left = "0px";
 
     let left = camera.width - (pxToNum(styles["max-width"]) / 2);
-    let top = headerHeight + 34;
+    let top = headerHeight + 68;
 
-    worldObjects.push(new WorldElement(nav, left, top));  
-    return nav;
+    let navObj = new WorldElement(nav, left, top, true)
+    worldObjects.push(navObj);  
+    return navObj;
   }
   
   function makeBG(mainDiv) {
@@ -114,7 +109,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   }
 
   function makeDude() {
-    let navRect = nav.getBoundingClientRect();
+    let navRect = nav.el.getBoundingClientRect();
 
     let dudeEl = document.createElement("div");
     dudeEl.className += " dude";
@@ -141,6 +136,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
 
   document.addEventListener("mousedown", function(event) {
     inputs.mouseDown = true;
+    console.log(`dudeX: ${dude.worldX} navX: ${nav.worldX} dudeY: ${dude.worldY} navY: ${nav.worldY}`)
   });
 
   document.addEventListener("mouseup", function(event) {
@@ -193,6 +189,31 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     // Update map position
     dude.worldX += dude.velX;
     dude.worldY += dude.velY;
+    
+    doCollision();
+  }
+
+  function doCollision() {
+    if (dude.worldY < cameraBounds.top + headerHeight - 25)
+      dude.worldY = cameraBounds.top + headerHeight - 25;
+    if (dude.worldY + dude.height > cameraBounds.bottom)
+      dude.worldY = cameraBounds.bottom - dude.height;
+    if (dude.worldX < cameraBounds.left)
+      dude.worldX = cameraBounds.left;
+    if (dude.worldX + dude.width > cameraBounds.right)
+      dude.worldX = cameraBounds.right - dude.width;
+
+    let dudeTop = dude.worldY + 25;
+    let dudeBot = dude.worldY + dude.height;
+
+    for (let i=0; i<collisionObjects.length; i++) {
+      let el = collisionObjects[i];
+
+      if ((el.worldY < dudeBot && dudeBot < el.worldY + el.height) 
+       || (el.worldY < dudeTop && dudeTop < el.worldY + el.height)) {
+        dude.worldY = dude.velY > 0 ? el.worldY - dude.height  : el.worldY + el.height - 25;
+      }
+    }
   }
 
   function moveCamera() {
@@ -256,7 +277,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     delay: 20
   };
   let cameraBounds = {
-    top: 0, bottom: 3000, right: 2000, left: -1000
+    top: 0, bottom: 3000, right: 2500, left: -1000
   };
 
   updateCamera();
