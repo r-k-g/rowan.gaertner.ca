@@ -343,18 +343,26 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   document.body.style.userSelect = "none";
   document.body.style.webkitUserSelect = "none";
 
-  // The explore mode loop
-  function step() {
-    updateCamera();
-    doMovement();
+  const FPS = 60;
+  let fpsInterval = 1000 / FPS;
+  let lastTime = 0;
+  let elapsed;
 
-    window.requestAnimationFrame(() => {
-      step();
-    })
+  // The explore mode loop
+  function step(timeStamp) {
+    elapsed = timeStamp - lastTime;
+
+    window.requestAnimationFrame(step);
+    
+    if (elapsed > fpsInterval) {
+      lastTime = timeStamp - (elapsed % fpsInterval);
+      updateCamera();
+      doMovement();
+    }
   }
 
   // Start the loop after a pause
-  setTimeout(step, 500);
+  setTimeout(step, 500, window.performance.now());
 
   // Ease in camera
   camera.delay = 60;
