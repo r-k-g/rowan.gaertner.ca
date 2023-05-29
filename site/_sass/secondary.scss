@@ -45,16 +45,6 @@ nav {
   text-align: left;
 }
 
-.cloud {
-  background-color: white;
-  border-image-slice: 14 20 14 20;
-  border-image-width: 24px 40px 24px 40px;
-  border-image-outset: 14px 20px 14px 20px;
-  border-image-repeat: round round;
-  border-image-source: url(../images/cloudborder.png);
-  border-style: solid;
-}
-
 img {
   display: block;
   margin-left: auto;
@@ -83,45 +73,6 @@ p {
   image-rendering: crisp-edges;
 }
 
-.cloud1 {
-  top: 8%;
-  right: -8%;
-  animation: moveLeft 80s linear -10s infinite;
-}
-
-.cloud2 {
-  top: 26%;
-  right: -8%;
-  animation: moveLeftCovered 65s linear -30s infinite;
-}
-
-.cloud3 {
-  top: 37%;
-  right: -8%;
-  animation: moveLeftCovered 90s linear 5s infinite;
-}
-
-.cloud4 {
-  transform: scale(-2, 2);
-  top: 45%;
-  right: -8%;
-  animation: moveLeftCovered 60s linear -60s infinite;
-}
-
-.cloud5 {
-  transform: scale(-2, 2);
-  top: 69%;
-  left: -8%;
-  animation: moveRightCovered 50s linear 20s infinite;
-}
-
-.cloud6 {
-  transform: scale(-2, 2);
-  top: 90%;
-  left: -8%;
-  animation: moveRight 105s linear -40s infinite;
-}
-
 table {
   border-collapse: collapse;
 }
@@ -136,30 +87,6 @@ tr {
   &:first-child {
     border-top: none;
   }
-}
-
-@keyframes moveLeftCovered {
-  0% {right: -8%;}
-  46% {right: calc((100% - 750px) / 2);}
-  54% {right: calc(100% - (100% - 750px)/2);}
-  100% {right: 110%;}
-}
-
-@keyframes moveRightCovered {
-  0% {left: -8%;}
-  46% {left: calc((100% - 750px) / 2);}
-  54% {left: calc(100% - (100% - 750px)/2);}
-  100% {left: 110%;}
-}
-
-@keyframes moveLeft {
-  from {right: -8%;}
-  to {right: 110%;}
-}
-
-@keyframes moveRight {
-  from {left: -8%;}
-  to {left: 110%;}
 }
 
 summary {
@@ -261,4 +188,78 @@ summary {
 
 img[alt="me"] {
   border: black 2px solid;
+}
+
+
+.cloud {
+  background-color: white;
+  border-image-slice: 14 20 14 20;
+  border-image-width: 24px 40px 24px 40px;
+  border-image-outset: 14px 20px 14px 20px;
+  border-image-repeat: round round;
+  border-image-source: url(../images/cloudborder.png);
+  border-style: solid;
+}
+
+.cloud1 {
+  top: 8%;
+  right: -8%;
+  animation: moveLeft 80s linear -10s infinite;
+}
+
+.cloud2 {
+  top: 26%;
+  right: -8%;
+  animation: moveLeftCovered 65s linear -30s infinite;
+}
+
+.cloud3 {
+  top: 37%;
+  right: -8%;
+  animation: moveLeftCovered 90s linear 5s infinite;
+}
+
+.cloud4 {
+  transform: scale(-2, 2);
+  top: 45%;
+  right: -8%;
+  animation: moveLeftCovered 60s linear -60s infinite;
+}
+
+.cloud5 {
+  transform: scale(-2, 2);
+  top: 69%;
+  left: -8%;
+  animation: moveRightCovered 50s linear 20s infinite;
+}
+
+.cloud6 {
+  transform: scale(-2, 2);
+  top: 90%;
+  left: -8%;
+  animation: moveRight 105s linear -40s infinite;
+}
+
+@keyframes moveLeftCovered {
+  0% {right: -8%;}
+  46% {right: calc((100% - 750px) / 2);}
+  54% {right: calc(100% - (100% - 750px)/2);}
+  100% {right: 110%;}
+}
+
+@keyframes moveRightCovered {
+  0% {left: -8%;}
+  46% {left: calc((100% - 750px) / 2);}
+  54% {left: calc(100% - (100% - 750px)/2);}
+  100% {left: 110%;}
+}
+
+@keyframes moveLeft {
+  from {right: -8%;}
+  to {right: 110%;}
+}
+
+@keyframes moveRight {
+  from {left: -8%;}
+  to {left: 110%;}
 }
