@@ -3,17 +3,26 @@ layout: default
 styles: posts-styles
 ---
 
-<nav class="header">
-  {% for item in site.data.navigation %}
-    <a href="{{ item.link }}">{{ item.name }}</a>
-  {% endfor %}
-</nav>
-
-<h1 class="title">{{ page.title }}</h1>
-<p class="subtitle">{{ page.date | date_to_string }} | <a href="/blog/"> Rowan Gaertner</a></p>
-
-<hr>
-
-<div class="content">
-  {{ content }}
+<div class="sidebar tile">
+  <h2 class="author">By: <a href="/"> Rowan Gaertner </a></h2>
+  {% assign lim = site.data.navigation.size | minus: 2 %}
+  <nav class="header">
+    {% for item in site.data.navigation offset:1 limit:lim %}
+      <a href="{{ item.link }}">{{ item.name }}</a>
+    {% endfor %}
+  </nav>
 </div>
+
+
+<div class="blogpost tile">
+  <h1 class="title">{{ page.title }}</h1>
+  <p class="subtitle">{{ page.date | date_to_string }}</p>
+  
+  <hr>
+  
+  <div class="content">
+    {{ content }}
+  </div>
+</div>
+
+

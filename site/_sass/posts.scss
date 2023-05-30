@@ -1,19 +1,43 @@
 html {
   background-color: #b7dbe2;
-  padding: 0px 2rem;
   color: #3a3a3a;
 }
 
 body {
-  max-width: 900px;
-  margin: 1.5rem auto;
+  display: flex;
+  // flex-wrap: wrap;
+  flex-direction: row-reverse;
+}
+
+// TODO: media query, if small:
+//// flex-wrap, change direction maybe
+//// change margins appropriately to not double up with padding or smth
+
+.tile {
   padding: 1rem 2rem;
   background-color: #eee;
   box-shadow: -20px 0px 40px 6px rgba(121, 151, 160, 0.5), 20px 0px 40px 6px rgba(121, 151, 160, 0.5);
-  height: auto;
-  min-height: 40%;
+  height: fit-content;
   border-radius: 0.8rem;
+  margin: 1rem;
 }
+
+.sidebar {
+  // margin: 1.5rem;
+  flex-shrink: 0;
+}
+
+.author {
+  text-align:center;
+  margin-bottom: 0.3rem;
+}
+
+.blogpost {
+  max-width: 900px;
+  // margin: 1.5rem auto;
+  min-height: 40%;
+}
+
 
 .title {
   border: 2px solid black;
