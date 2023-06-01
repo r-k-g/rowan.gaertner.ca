@@ -4,19 +4,67 @@ styles: posts-styles
 ---
 
 <div class="sidebar tile">
-  <h2 class="author">By: <a href="/"> Rowan Gaertner </a></h2>
+  <h2 class="infotitle">By: <a href="/"> Rowan Gaertner </a></h2>
+
   {% assign lim = site.data.navigation.size | minus: 2 %}
   <nav class="header">
     {% for item in site.data.navigation offset:1 limit:lim %}
       <a href="{{ item.link }}">{{ item.name }}</a>
     {% endfor %}
   </nav>
+
+  <div class="postlist">
+    <h3 class="infotitle"> Other Posts </h3>
+
+    {% assign yearPosts = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
+    <ul>
+      {% for year in yearPosts %}
+      <span class="year">{{ year.name }}</span>
+        {% for post in year.items %}
+          {% assign current = false %}
+          {% if post.url == page.url %} {% assign current = true %} {% endif %}
+
+          <li {% if current %} class="current" {% endif %}>
+            <a {% unless current %} href="{{ post.url }}" {% endunless %}>{{ post.title }}</a>
+          </li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
+
 </div>
 
 
 <div class="blogpost tile">
+  <nav class="inline header">
+    {% for item in site.data.navigation %}
+      <a href="{{ item.link }}">{{ item.name }}</a>
+    {% endfor %}
+  </nav>
+
   <h1 class="title">{{ page.title }}</h1>
-  <p class="subtitle">{{ page.date | date_to_string }}</p>
+  <p class="subtitle">{{ page.date | date_to_string }}
+    <span class="inline author"> | <a href="/"> Rowan Gaertner</a></span>
+  </p>
+
+  <details class="inline postlist">
+    <summary> Other Posts </summary>
+
+    {% assign yearPosts = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
+    <ul>
+      {% for year in yearPosts %}
+      <span class="year">{{ year.name }}</span>
+        {% for post in year.items %}
+          {% assign current = false %}
+          {% if post.url == page.url %} {% assign current = true %} {% endif %}
+
+          <li {% if current %} class="current" {% endif %}>
+            <a {% unless current %} href="{{ post.url }}" {% endunless %}>{{ post.title }}</a>
+          </li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  </details>
   
   <hr>
   

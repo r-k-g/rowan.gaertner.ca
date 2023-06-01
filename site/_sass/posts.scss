@@ -1,43 +1,48 @@
+:root {
+  --bg-color: #b7dbe2;
+  --text-color: #3a3a3a;
+  --content-bg-color: #eee;
+}
+
 html {
-  background-color: #b7dbe2;
-  color: #3a3a3a;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 body {
   display: flex;
-  // flex-wrap: wrap;
   flex-direction: row-reverse;
+  padding: 1rem;
 }
-
-// TODO: media query, if small:
-//// flex-wrap, change direction maybe
-//// change margins appropriately to not double up with padding or smth
 
 .tile {
   padding: 1rem 2rem;
-  background-color: #eee;
-  box-shadow: -20px 0px 40px 6px rgba(121, 151, 160, 0.5), 20px 0px 40px 6px rgba(121, 151, 160, 0.5);
+  background-color: var(--content-bg-color);
+  box-shadow: -15px 0px 30px 6px rgba(121, 151, 160, 0.5), 15px 0px 30px 6px rgba(121, 151, 160, 0.5);
   height: fit-content;
   border-radius: 0.8rem;
-  margin: 1rem;
 }
 
-.sidebar {
-  // margin: 1.5rem;
-  flex-shrink: 0;
-}
-
-.author {
-  text-align:center;
-  margin-bottom: 0.3rem;
-}
-
+/// POST CONTENT \\\
 .blogpost {
-  max-width: 900px;
-  // margin: 1.5rem auto;
+  max-width: 800px;
   min-height: 40%;
 }
 
+.inline {
+  text-align: unset;
+  margin: unset;
+  display: none;
+}
+
+@media screen and (max-width: 875px) {
+  .inline{
+    display: inline;
+  }
+  .sidebar {
+    display: none;
+  }
+}
 
 .title {
   border: 2px solid black;
@@ -45,6 +50,7 @@ body {
   font-family: pixels;
   margin-top: 1rem;
 }
+
 .subtitle {
   font-family: pixels;
 }
@@ -78,4 +84,62 @@ hr {
 
 #markdown-toc ul {
   list-style: decimal;
+}
+
+details .postlist {
+  text-align: center;
+}
+
+/// SIDEBAR & BLOG LIST \\\
+.sidebar {
+  margin-left: 1rem;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.infotitle {
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+
+.postlist {
+  max-width: 200px;
+}
+
+.postlist ul {
+  margin: 0;
+  padding-left: 0;
+  list-style: inside none;
+}
+
+.postlist li {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 0.5rem;
+}
+
+.postlist li::marker {
+  content: "|";
+}
+
+.postlist li.current::marker {
+  content: ">"
+}
+
+.year {
+  background-color: var(--content-bg-color);
+}
+
+.year::after {
+  content: " ";
+  position: relative;
+  height: 1px;
+  width: calc(100% - 4rem);
+  background: var(--text-color);
+  top: -0.2rem;
+  left: 0.2rem;
+  display: inline-block;
 }
