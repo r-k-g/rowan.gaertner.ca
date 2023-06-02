@@ -43,6 +43,12 @@ body {
   .sidebar {
     display: none;
   }
+  .subtitle {
+    text-align: center;
+  }
+  details.postlist {
+    display: block;
+  }
 }
 
 .title {
@@ -87,8 +93,15 @@ hr {
   list-style: decimal;
 }
 
-details .postlist {
-  text-align: center;
+details.postlist {
+  margin: 1rem auto;
+  font-size: 14px;
+  max-width: 260px
+}
+details.postlist summary {
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /// SIDEBAR & BLOG LIST \\\
