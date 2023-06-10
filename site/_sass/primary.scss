@@ -50,7 +50,7 @@
   &:nth-child(even) {
     justify-content: left;
     .path {
-      margin-left: 4px;
+      margin-left: 2px;
     }
     .noscriptDude {
       left: calc(-270px + 100%);
@@ -65,7 +65,7 @@
   &:nth-child(odd) {
     justify-content: right;
     .path {
-      margin-right: 4px;
+      margin-right: 2px;
     }
     .noscriptDude {
       right: calc(-270px + 100%);
@@ -152,7 +152,7 @@
 
 .vertical {
   position: absolute;
-  top: 27px;
+  top: 1.9rem;
   bottom: 0px;
   width: 30px;
   left: calc(50% - 15px);

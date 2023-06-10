@@ -22,9 +22,7 @@ function numToPx(val) {
 
 
 (function main() {
-  
   let inNav = true;
-
 
   class NavNode {
     constructor(action=null) {
