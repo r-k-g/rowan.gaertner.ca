@@ -5,11 +5,16 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   class WorldElement {
     #x;
     #y;
-    constructor(el, worldX, worldY, collision=false) {
+    constructor(el, worldX, worldY, collision=false, useZ=true, moving=false) {
       this.permanent = true;
       this.el = el;
       this.worldX = worldX;
       this.worldY = worldY;
+      
+      this.moving = moving;
+      this.useZ = useZ
+      if (useZ)
+        this.el.style.zIndex = yToZ(worldY);
 
       this.el.style.transform = "translate3d(0, 0, 0px)";
       this.x = worldX;
@@ -21,7 +26,9 @@ GRID_SIZE = (16) * PIXEL_SIZE;
         this.height = this.rect.height;
       } catch (error) {}
 
-      if (collision) collisionObjects.push(this);
+      if (collision)
+        collisionObjects.push(this);
+
     }
 
     get x() {
@@ -40,12 +47,17 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     set y(val) {
       this.#y = val;
       this.el.style.transform = `translate3d(${this.#x}px, ${this.#y}px, 0px)`;
+      
+      if (this.moving && this.useZ) {
+        this.z = yToZ(this.worldY);
+        this.el.style.zIndex = this.z;
+      }
     }
   }
 
   class ExploreDude extends WorldElement {
     constructor(el, worldX, worldY) {
-      super(el, worldX, worldY);
+      super(el, worldX, worldY, false, true, true);
       
       this.accel = 4;
       this.velX = 0;
@@ -55,6 +67,18 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       this.x = worldX;
       this.y = worldY;
     }
+  }
+
+  function addStaticObj(image, x, y, width, height) {
+    let el = new Image(width, height);
+    document.body.appendChild(el);
+    el.style.position = "absolute";
+    el.src = image;
+
+    let obj = new WorldElement(el, x, y)
+    worldObjects.push(obj);
+
+    return obj;
   }
 
   let worldObjects = [];
@@ -108,6 +132,28 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     return grass;
   }
 
+  function loadHeader() {
+    let headerEl = document.getElementsByTagName("header")[0];
+    let headerStyle = getComputedStyle(headerEl);
+    let headerHeight = (
+      pxToNum(headerStyle["height"])
+      + pxToNum(headerStyle["padding-top"])
+      + pxToNum(headerStyle["padding-bottom"])
+    );
+    
+    let headerObj = new WorldElement(headerEl, 0, 0);
+    worldObjects.push(headerObj);
+
+    return [headerObj, headerHeight]
+  }
+
+  function loadMain() {
+    let mainEl = document.getElementsByClassName("main")[0];
+    let mainObj = new WorldElement(mainEl, 0, headerHeight, false, false);
+    worldObjects.push(mainObj);
+    return [mainObj, mainEl];
+  }
+
   function makeDude() {
     let navRect = nav.el.getBoundingClientRect();
 
@@ -126,6 +172,25 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     
     return new ExploreDude(dudeEl, left, top);
   }
+
+  function populateWorld() {
+    let xoff = 0
+    for (let y=130; y<230; y+=18) {
+      for (let x=-60; x<100; x+=40) {
+        addStaticObj("/assets/images/flower.png", x + xoff, y, 32, 32);
+      }
+      if (xoff)
+        xoff = 0;
+      else
+        xoff = 15;
+    }
+  }
+
+  function getZMax() {
+    let fullHeight = cameraBounds.bottom - cameraBounds.top;
+    return Math.floor(fullHeight) * 5
+  }
+
   
   ///----- MECHANICS -----\\\
   document.addEventListener("mousemove", function(event) {
@@ -283,18 +348,38 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   }
 
   function updateObjects() {
+    let xdiff, ydiff, xOOB, yOOB;
+
     for (let i=0; i<worldObjects.length; i++) {
-      let el = worldObjects[i];
-      el.x = camera.width + (el.worldX - camera.worldX);
-      el.y = camera.height + (el.worldY - camera.worldY);
+      let obj = worldObjects[i];
+      xdiff = obj.worldX - camera.worldX;
+      ydiff = obj.worldY - camera.worldY;
+
+      // Don't move objects if offscreen
+      if (camera.loaded) {
+        xOOB = Math.abs(xdiff) > camera.width + 50 + obj.width;
+        yOOB = Math.abs(ydiff) > camera.height + 50 + obj.height;
+        if (xOOB || yOOB)
+          continue;
+      }
+
+      obj.x = camera.width + (xdiff);
+      obj.y = camera.height + (ydiff);
     }
   }
 
   function updateCamera() {
     camera.width = window.innerWidth / 2;
     camera.height = window.innerHeight / 2;
-    if (camera.delay > 20)
-      camera.delay -= 1; 
+    if (camera.delay > 20) {
+      camera.delay -= 1;
+      if (camera.delay < 30)
+        camera.loaded = true;
+    }
+  }
+
+  function yToZ(y) {
+    return Math.floor(y * 5)
   }
 
   ///----- DRIVER CODE -----\\\
@@ -302,7 +387,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   let camera = {
     worldX: 0, worldY:  0,
     width:  0, height:  0,
-    delay: 20
+    delay: 20, loaded: false
   };
   let cameraBounds = {
     top: 0, bottom: 3000, right: 2500, left: -1000
@@ -311,34 +396,20 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   updateCamera();
   camera.worldX = camera.width;
   camera.worldY = camera.height;
+  
+  let zMax = getZMax();
 
   // Get and set up important components
-  let headerEl = document.getElementsByTagName("header")[0];
-  let headerStyle = getComputedStyle(headerEl);
-  let headerHeight = (
-    pxToNum(headerStyle["height"])
-    + pxToNum(headerStyle["padding-top"])
-    + pxToNum(headerStyle["padding-bottom"])
-  );
-  let headerObj = new WorldElement(headerEl, 0, 0);
-  worldObjects.push(headerObj);
-    
-  let mainEl = document.getElementsByClassName("main")[0];
-  let mainObj = new WorldElement(mainEl, 0, headerHeight);
-  worldObjects.push(mainObj);
-
+  let [headerObj, headerHeight] = loadHeader();
+  let [mainObj, mainEl] = loadMain(); 
   let nav = loadNav();
   let background = makeBG(mainEl);
   let grass = touchGrass();
   let dude = makeDude(mainEl);
   worldObjects.push(dude);
 
-  let flowers = new Image(32, 32);
-  document.body.appendChild(flowers);
-  flowers.style.position = "absolute";
-  flowers.src = "/assets/images/flower.png"
-
-  worldObjects.push(new WorldElement(flowers, -500, 800));
+  // Add decorative objects
+  populateWorld();
 
   document.body.style.userSelect = "none";
   document.body.style.webkitUserSelect = "none";
