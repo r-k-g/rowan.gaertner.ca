@@ -2,36 +2,41 @@
 layout: default
 styles: posts-styles
 ---
-
-<div class="sidebar tile">
-  <h2 class="infotitle">By: <a href="/"> Rowan Gaertner </a></h2>
-
-  {% assign lim = site.data.navigation.size | minus: 2 %}
-  <nav class="header">
-    {% for item in site.data.navigation offset:1 limit:lim %}
-      <a href="{{ item.link }}">{{ item.name }}</a>
-    {% endfor %}
-  </nav>
-
-  <div class="postlist">
-    <h3 class="infotitle"> Other Posts </h3>
-
-    {% assign yearPosts = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
-    <ul>
-      {% for year in yearPosts %}
-      <span class="year">{{ year.name }}</span>
-        {% for post in year.items %}
-          {% assign current = false %}
-          {% if post.url == page.url %} {% assign current = true %} {% endif %}
-
-          <li {% if current %} class="current" {% endif %}>
-            <a {% unless current %} href="{{ post.url }}" {% endunless %}>{{ post.title }}</a>
-          </li>
-        {% endfor %}
+<div class="sidebar">
+  <div class="info tile">
+    <h2 class="infotitle">By: <a href="/"> Rowan Gaertner </a></h2>
+  
+    {% assign lim = site.data.navigation.size | minus: 2 %}
+    <nav class="header">
+      {% for item in site.data.navigation offset:1 limit:lim %}
+        <a href="{{ item.link }}">{{ item.name }}</a>
       {% endfor %}
-    </ul>
+    </nav>
+  
+    <div class="postlist">
+      <h3 class="infotitle"> Other Posts </h3>
+  
+      {% assign yearPosts = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
+      <ul>
+        {% for year in yearPosts %}
+        <span class="year">{{ year.name }}</span>
+          {% for post in year.items %}
+            {% assign current = false %}
+            {% if post.url == page.url %} {% assign current = true %} {% endif %}
+  
+            <li {% if current %} class="current" {% endif %}>
+              <a {% unless current %} href="{{ post.url }}" {% endunless %}>{{ post.title }}</a>
+            </li>
+          {% endfor %}
+        {% endfor %}
+      </ul>
+    </div>
   </div>
 
+  <div class="comments tile">
+    <h2 class="infotitle">Comments</h2>
+    Yup this is definitely a comment section, I could comment so hard on this.
+  </div>
 </div>
 
 
