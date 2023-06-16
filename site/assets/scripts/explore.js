@@ -12,9 +12,6 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       this.worldY = worldY;
       
       this.moving = moving;
-      this.useZ = useZ
-      if (useZ)
-        this.el.style.zIndex = yToZ(worldY);
 
       this.el.style.transform = "translate3d(0, 0, 0px)";
       this.x = worldX;
@@ -28,6 +25,10 @@ GRID_SIZE = (16) * PIXEL_SIZE;
 
       if (collision)
         collisionObjects.push(this);
+
+      this.useZ = useZ
+      if (useZ)
+        this.el.style.zIndex = yToZ(worldY, this.height);
 
     }
 
@@ -49,7 +50,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       this.el.style.transform = `translate3d(${this.#x}px, ${this.#y}px, 0px)`;
       
       if (this.moving && this.useZ) {
-        this.z = yToZ(this.worldY);
+        this.z = yToZ(this.worldY, this.height);
         this.el.style.zIndex = this.z;
       }
     }
@@ -99,7 +100,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     let left = camera.width - (pxToNum(styles["max-width"]) / 2);
     let top = headerHeight + 68;
 
-    let navObj = new WorldElement(nav, left, top, true)
+    let navObj = new WorldElement(nav, left, top, true, true)
     worldObjects.push(navObj);  
     return navObj;
   }
@@ -113,7 +114,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     document.body.appendChild(bg);
 
     let background = new WorldElement(
-      bg, bg.offsetTop, bg.offsetLeft
+      bg, bg.offsetTop, bg.offsetLeft, false, false
     );
     worldObjects.push(background);
     return background;
@@ -128,7 +129,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
         break;
       }
     }
-    let grass = new WorldElement(grassRule, 0, 0);
+    let grass = new WorldElement(grassRule, 0, 0, false, false);
     return grass;
   }
 
@@ -141,7 +142,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       + pxToNum(headerStyle["padding-bottom"])
     );
     
-    let headerObj = new WorldElement(headerEl, 0, 0);
+    let headerObj = new WorldElement(headerEl, 0, 0, false, false);
     worldObjects.push(headerObj);
 
     return [headerObj, headerHeight]
@@ -175,7 +176,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
 
   function populateWorld() {
     let xoff = 0
-    for (let y=130; y<230; y+=18) {
+    for (let y=105; y<210; y+=18) {
       for (let x=-60; x<100; x+=40) {
         addStaticObj("/assets/images/flower.png", x + xoff, y, 32, 32);
       }
@@ -184,6 +185,8 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       else
         xoff = 15;
     }
+
+    addStaticObj("/assets/images/maybtree.png", 200, 300, 40, 48);
   }
 
   function getZMax() {
@@ -378,8 +381,8 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     }
   }
 
-  function yToZ(y) {
-    return Math.floor(y * 5)
+  function yToZ(y, h) {
+    return Math.floor((y + h) * 5)
   }
 
   ///----- DRIVER CODE -----\\\
