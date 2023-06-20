@@ -97,7 +97,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     nav.style.top = "0px";
     nav.style.left = "0px";
 
-    let left = camera.width - (pxToNum(styles["max-width"]) / 2);
+    let left = 0; //camera.width - (pxToNum(styles["max-width"]) / 2);
     let top = headerHeight + 68;
 
     let navObj = new WorldElement(nav, left, top, true, true)
@@ -177,7 +177,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   function populateWorld() {
     let xoff = 0
     for (let y=105; y<210; y+=18) {
-      for (let x=-60; x<100; x+=40) {
+      for (let x=-140; x<20; x+=40) {
         addStaticObj("/assets/images/flower.png", x + xoff, y, 32, 32);
       }
       if (xoff)
@@ -186,7 +186,24 @@ GRID_SIZE = (16) * PIXEL_SIZE;
         xoff = 15;
     }
 
-    addStaticObj("/assets/images/maybtree.png", 200, 300, 40, 48);
+    for (let y=480; y<540; y+=14) {
+      for (let x=-50; x<60; x+=35) {
+        addStaticObj("/assets/images/flower.png", x + xoff, y, 32, 32);
+      }
+      if (xoff)
+        xoff = 0;
+      else
+        xoff = 15;
+    }
+
+    xoff=0
+    for (let y=350; y<430; y+=35) {
+      addStaticObj("/assets/images/maybtree.png", 550 + xoff, y, 40, 48);
+      if (xoff)
+        xoff = 0;
+      else
+        xoff = 15;
+    }
   }
 
   function getZMax() {
@@ -397,11 +414,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   };
 
   updateCamera();
-  camera.worldX = camera.width;
-  camera.worldY = camera.height;
   
-  let zMax = getZMax();
-
   // Get and set up important components
   let [headerObj, headerHeight] = loadHeader();
   let [mainObj, mainEl] = loadMain(); 
@@ -438,6 +451,11 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   // Start the loop after a pause
   setTimeout(step, 500, window.performance.now());
 
-  // Ease in camera
+  // Initial camera position
+  camera.worldX = nav.width / 2;
+  camera.worldY = camera.height;
+  doMovement();
+
+  // Ease in camera movement
   camera.delay = 60;
 })();
