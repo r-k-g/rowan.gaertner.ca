@@ -97,7 +97,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     nav.style.top = "0px";
     nav.style.left = "0px";
 
-    let left = camera.width - (pxToNum(styles["max-width"]) / 2);
+    let left = 0; //camera.width - (pxToNum(styles["max-width"]) / 2);
     let top = headerHeight + 68;
 
     let navObj = new WorldElement(nav, left, top, true, true)
@@ -397,11 +397,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   };
 
   updateCamera();
-  camera.worldX = camera.width;
-  camera.worldY = camera.height;
   
-  let zMax = getZMax();
-
   // Get and set up important components
   let [headerObj, headerHeight] = loadHeader();
   let [mainObj, mainEl] = loadMain(); 
@@ -438,6 +434,11 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   // Start the loop after a pause
   setTimeout(step, 500, window.performance.now());
 
-  // Ease in camera
+  // Initial camera position
+  camera.worldX = nav.width / 2;
+  camera.worldY = camera.height;
+  doMovement();
+
+  // Ease in camera movement
   camera.delay = 60;
 })();
