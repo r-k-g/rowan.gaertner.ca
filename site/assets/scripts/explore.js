@@ -177,7 +177,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   function populateWorld() {
     let xoff = 0
     for (let y=105; y<210; y+=18) {
-      for (let x=-60; x<100; x+=40) {
+      for (let x=-140; x<20; x+=40) {
         addStaticObj("/assets/images/flower.png", x + xoff, y, 32, 32);
       }
       if (xoff)
@@ -186,7 +186,24 @@ GRID_SIZE = (16) * PIXEL_SIZE;
         xoff = 15;
     }
 
-    addStaticObj("/assets/images/maybtree.png", 200, 300, 40, 48);
+    for (let y=480; y<540; y+=14) {
+      for (let x=-50; x<60; x+=35) {
+        addStaticObj("/assets/images/flower.png", x + xoff, y, 32, 32);
+      }
+      if (xoff)
+        xoff = 0;
+      else
+        xoff = 15;
+    }
+
+    xoff=0
+    for (let y=350; y<430; y+=35) {
+      addStaticObj("/assets/images/maybtree.png", 550 + xoff, y, 40, 48);
+      if (xoff)
+        xoff = 0;
+      else
+        xoff = 15;
+    }
   }
 
   function getZMax() {
