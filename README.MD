@@ -1,5 +1,5 @@
 # [rowan.gaertner.ca](https://rowan.gaertner.ca/)
-My personal website (in progress).
+My personal website ("in progress").
 
 For development:
 `bundle exec jekyll serve`
