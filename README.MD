@@ -1,4 +1,4 @@
-# [rowan.gaertner.ca](http://rowan.gaertner.ca/)
+# [rowan.gaertner.ca](https://rowan.gaertner.ca/)
 My personal website (in progress).
 
 For development:
