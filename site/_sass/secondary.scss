@@ -1,5 +1,6 @@
 body {
   background-color: rgb(63, 194, 255);
+  animation: bodyMoveup 1s ease-out 1;
 }
 
 .secondary {
@@ -7,6 +8,7 @@ body {
   max-width: 900px;
   margin: 0 auto;
   padding: 2.5rem;
+  animation: contentMoveup 1s ease-out 1;
 }
 
 .title {
@@ -262,4 +264,15 @@ img[alt="me"] {
 @keyframes moveRight {
   from {left: -8%;}
   to {left: 110%;}
+}
+
+// move page up on start
+@keyframes contentMoveup {
+  from {transform:translate3d(0px, -100%, 0px);}
+  to {transform:translate(0, 0, 0);}
+}
+
+@keyframes bodyMoveup {
+  from {overflow: hidden;}
+  to {overflow: unset;}
 }
