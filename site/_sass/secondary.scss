@@ -1,6 +1,6 @@
 body {
   background-color: rgb(63, 194, 255);
-  animation: bodyMoveup 1s ease-out 1;
+  animation: bodyMoveup 0.6s ease-out 1;
 }
 
 .secondary {
@@ -8,7 +8,7 @@ body {
   max-width: 900px;
   margin: 0 auto;
   padding: 2.5rem;
-  animation: contentMoveup 1s ease-out 1;
+  animation: contentMoveup 0.6s ease-out 1;
 }
 
 .title {
@@ -192,6 +192,25 @@ img[alt="me"] {
   border: black 2px solid;
 }
 
+.tempmain {
+  background: url(../images/grass3.png) repeat;
+  background-size: 32px 32px;
+  height: calc(100% - 6.5rem - 2 * 0.9rem);
+  text-align: center;
+  position: relative;
+  animation: tempmainMoveup 0.6s ease-out 1 forwards;
+}
+
+.tempmain::before {
+  display: block;
+  position: relative;
+  top: calc(-32px);
+  width: 100%;
+  height: 32px;
+  background: url(../images/grasstop.png) repeat-x;
+  background-size: 32px 32px;
+  content: "";
+}
 
 .cloud {
   background-color: white;
@@ -269,10 +288,15 @@ img[alt="me"] {
 // move page up on start
 @keyframes contentMoveup {
   from {transform:translate3d(0px, -100%, 0px);}
-  to {transform:translate(0, 0, 0);}
+  to {transform:translate3d(0, 0, 0);}
 }
 
 @keyframes bodyMoveup {
   from {overflow: hidden;}
   to {overflow: unset;}
+}
+
+@keyframes tempmainMoveup {
+  from {transform:translate3d(0px, -50%, 0px);}
+  to {transform:translate3d(0px, 450%, 0px); height:75px;}
 }

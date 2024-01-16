@@ -1,8 +1,10 @@
 ---
 layout: secondary
-title: Portfolio
-permalink: /portfolio/
+title: Projects
+permalink: /projects/
 ---
+
+Currently incomplete - see my [GitHub](https://github.com/r-k-g/) for more.
 
 {% render_card %}
 This Website
@@ -10,9 +12,9 @@ February 2023 - Present
 [GitHub](https://github.com/r-k-g/rowan.gaertner.ca)
 
 ![Homepage](/assets/images/homepage_sc.png)
-You're looking at it right now. After a few years of thinking "maybe I should have a website," I used a open ended school project as an incentive to actually make one. 
+You're looking at it right now. After a few years of thinking "I'd like to have a website," I took the opportunity provided by some free time in my grade 12 year to actually make one. 
 
-My main ideas going in were that I wanted the website to be fairly lightweight, and that I wanted to avoid using any javascript frameworks. I ended up using Jekyll more or less on a whim, but it seems to serve my purposes fine for now. Pretty much everything was made from scratch: hand coding the html/css, and doing the artwork myself. That last one might be somewhat apparent,even despite my usual trick of using pixel art to hide my artistic inability.
+My guiding ideas going in were that I wanted the website to be lightweight, and that I wanted to avoid using complex frameworks—I wanted to it all myself. I ended up using Jekyll more or less on a whim, but it seems to serve my purposes pretty well for now. Almost everything was made from scratch: hand coding the html/css, and doing the artwork by hand too... which might be apparent. I was going for a retro game aesthetic with the design, which played in nicely with making the website lightweight: I make extensive use of tiling graphics.
 {% endrender_card %}
 
 
@@ -24,7 +26,7 @@ March 2021 - March 2021
 [PixelPAD](https://pixelpad.io/app/lfgzohcupbm/?edit=1)
 
 ![Nautical Twilight](/assets/images/nautical_thumb.png)
-This was an entry to the 2021 PixelPAD March Break Game Jam, and my first exposure to PixelPAD. Developed in a team with one other developer, Nautical Twilight is a short complete game about an octopus.
+This was the winner of the 2021 PixelPAD March Break Game Jam, and my first exposure to PixelPAD. Developed in a team with one other developer, Nautical Twilight is a short game about an octopus.
 {% endrender_card %}
 
 
@@ -34,7 +36,7 @@ MP3 Player
 December 2021 - January 2021
 
 ![MP3 Player](/assets/images/mp3player_sc.png)
-This is a pyFLTK GUI for organizing MP3 files and playing them through VLC. With _definitely_ intentional retro styling, other features include playlists, song queues, and play history.
+This is a pyFLTK GUI for organizing MP3 files and playing them using headless VLC. With _definitely_ intentional retro styling, functionality includes playlists, custom queues, and play history.
 {% endrender_card %}
 
 
@@ -45,7 +47,7 @@ January 2021 - December 2021
 [GitHub](https://github.com/r-k-g/simon-game)
 
 ![Simon Game](/assets/images/simon_sc.png)
-A simon-like light pattern memory game. Originally an assignment for a computer science class, the task was to recreate the game simon using pyFLTK. With some free time on my hands, I added circular button hit detection, a score saving system, and window resizing.
+A simon-like light pattern memory game. Originally an assignment for a computer science class, the task was to recreate the game simon using pyFLTK. With some free time on my hands, I added circular button hit detection, a score saving system, and nice window resizing.
 {% endrender_card %}
 
 
