@@ -1,6 +1,6 @@
 ---
 layout: secondary
-title: About Me
+title: About
 permalink: /about/
 ---
 
@@ -9,4 +9,9 @@ permalink: /about/
 ![me](/assets/images/maybeme.jpg)
 <h6 style="text-align: center;"> (This is not a photo of me) </h6>
 
-Right now I'm a full time undergraduate student in Software Engineering at the University of Waterloo. Previously I've worked as a ✨full-stack web developer✨ for [PixelPAD.io](https://pixelpad.io), dabbling in game development and [other stuff](https://github.com/r-k-g) on my own time. In the small amount of time not taken up by the above, I go for bike rides, play music, enjoy photography, and spend time with friends.
+Currently: 4 month co-op term with [North Arrow Research](https://www.northarrowresearch.com/)
+
+Hey! Welcome to my website. Right now I'm a full time undergraduate student studying Software Engineering at the University of Waterloo. If you're interested in my work history, take a look at [my resume](/resume/) (once I upload it; sometime before September 2024). Although I'm pretty busy, when I have time and energy I like to go for bike rides, play music, enjoy photography, and spend time with friends. 
+
+### About this website
+
