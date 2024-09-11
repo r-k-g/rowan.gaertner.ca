@@ -1,0 +1,61 @@
+---
+layout: default
+title: Spotify Playlist Exporter
+script: spotify_export
+styles: spotify-export-styles
+---
+
+<h1 class="box"> Spotify Playlist Exporter </h1>
+
+<section class="box">
+    <button id="login" onclick="redirectSpotifyAuth()"> Connect Spotify Account </button>
+    <span id="user-info"> to load your playlists </span>
+</section>
+
+<section class="box">
+    <button id="load-playlists" onclick="loadPlaylists()" disabled> Load Playlists </button>
+
+    <div class="playlist-filters">
+        <span class="checkbox-input">
+            <input type="checkbox" id="select-all" onclick="selectAllPlaylists(this)" disabled>
+            <label for="select-all"> Select All </label>
+        </span>
+
+        <span class="checkbox-input">
+            <input type="checkbox" id="select-mine" onclick="selectMyPlaylists(this)" disabled>
+            <label for="select-mine"> My Playlists Only </label>
+        </span>
+    </div>
+
+
+    <div class="table-container">
+        <table id="playlists-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th> Playlist Name </th>
+                    <th> Playlist Owner </th>
+                    <th> # Tracks </th>
+                </tr>
+            </thead>
+            <tbody id="playlists-tbody">
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="box">
+    Export Details
+    <div class="export-details">
+        <span class="checkbox-input">
+            <input type="checkbox" id="song-names" disabled checked>
+            <label for="song-names"> Song Names </label>
+        </span>
+
+        <span class="checkbox-input">
+            <input type="checkbox" id="date-added" disabled checked>
+            <label for="date-added"> Date Added </label>
+        </span>
+    </div>
+    <button id="export-playlists" onclick="exportPlaylists()" disabled> Export Playlists </button>
+</section>

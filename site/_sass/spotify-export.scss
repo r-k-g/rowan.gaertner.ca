@@ -1,0 +1,74 @@
+body {
+    background-color: #2a5a36;
+}
+
+h1 {
+    width: fit-content;
+    padding: 0.5rem;
+}
+
+.box {
+    border: 1px solid #e7e7e7;
+    background-color: #edebe3;
+    box-shadow: #adaba3 10px 10px;
+    margin: 2rem auto;
+}
+
+section {
+    padding: 1rem;
+    width: 75%;
+    max-width: 60rem;
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.25;
+}
+
+button {
+    border-radius: 0px;
+    padding: 0.5rem;
+    border-width: 4px;
+}
+
+.table-container {
+    display: block;
+    max-height: 30rem;
+    overflow: auto;
+    width: 90%;
+    margin: 1rem auto;
+    border: 1px solid black;
+}
+
+table {
+    width: 100%;
+    border-spacing: 0;
+}
+
+table th, table td {
+    padding: 6px;
+}
+
+table th {
+    background-color: #edebe3;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid black;
+}
+
+table tbody tr:nth-child(odd) td{
+  background: #d6d6d6;
+}
+
+.playlist-filters {
+    margin: 1rem 0;
+}
+
+.export-details {
+    margin: 1rem 2rem;
+    padding: 1rem;
+    border: 1px solid #aaaaaa;
+}
+
+.checkbox-input {
+    margin: 0 1rem;
+    white-space: nowrap;
+}
