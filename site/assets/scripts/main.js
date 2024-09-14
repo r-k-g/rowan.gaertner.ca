@@ -49,7 +49,7 @@ function numToPx(val) {
     }
 
     getY() {
-      return this.yRef.offsetTop;
+      return this.yRef.offsetParent.offsetTop;
     }
   }
 

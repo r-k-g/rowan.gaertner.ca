@@ -29,15 +29,15 @@
   min-width: 350px;
   margin: 32px auto auto;
   text-align: center;
-  border: 5px solid rgb(171, 137, 64);
-  background-color: rgb(99, 77, 32);;
+  background: url(../images/lawnblue.png) repeat;
+  background-size: 16px 12px;
   padding: 15px 15px 27px 15px;
-  contain: paint;
+  position: relative;
 
-  border-image-slice: 10 7 12 4;
-  border-image-width: 20px 14px 22px 8px;
-  border-image-outset: 16px 0px 0px 0px;
-  border-image-repeat: round round;
+  border-image-slice: 11 5 11 5;
+  border-image-width: 22px 10px 22px 10px;
+  border-image-outset: 15px 5px 0px 5px;
+  border-image-repeat: round round; 
   border-image-source: url(../images/fence.png);
   border-style: solid; 
 }
@@ -46,11 +46,19 @@
   display: flex;
   align-items: end;
   margin-bottom: 4px;
+  padding-top: 18px;
+  position: relative;
 
   &:nth-child(even) {
     justify-content: left;
     .path {
-      margin-left: 2px;
+      margin-right: 20px;
+    }
+    .sign {
+      right: 0px;
+    }
+    .crop {
+      left: 0px;
     }
     .noscriptDude {
       left: calc(-270px + 100%);
@@ -65,7 +73,13 @@
   &:nth-child(odd) {
     justify-content: right;
     .path {
-      margin-right: 2px;
+      margin-left: 20px;
+    }
+    .sign {
+      left: 0px;
+    }
+    .crop {
+      right: 0px;
     }
     .noscriptDude {
       right: calc(-270px + 100%);
@@ -86,6 +100,8 @@
   padding: 10px;
   contain: layout;
   font-family: pixels;
+  position: absolute;
+  bottom: 25px;
 }
 
 .sign::after, .sign::before {
@@ -115,12 +131,12 @@
   
   position: absolute;
   left: calc(50% - 24px);
-  bottom: -4.4px;
+  bottom: -46.4px;
   width: 48px;
   height: 36px;
   z-index: 10;
   
-  background: url(../images/gate.png);
+  background: url(../images/gate-grass.png);
   background-repeat: no-repeat;
   background-size: 48px 36px;
   
@@ -132,31 +148,42 @@
   }
 }
 
+#exitWrapper {
+  position: relative;
+  bottom: 16.6px;
+}
+
 .icon {
   height: 2rem;
   margin: 0px 10px;
 }
 
 .crop {
-  width: calc(50% - 19px);
-  height: 32px;
-  background: url(../images/plant.png) repeat-x;
-  background-size: 32px 32px;
-  border: 2px solid #4C6A17;
-  margin-top: 6px;
+  height: 36px;
+  background: url(../images/yellowflower.png) round;
+  background-size: 20px 36px;
+  position: absolute;
+  bottom: 4px;
+  width: 42%;
 }
 
 .path {
-  background: rgb(73, 43, 15);
+  background: rgb(89, 65, 22);
+  border-image-source: url(../images/lawnborder.png);
+  border-image-slice: 4 4 4 4;
+  border-image-width: 8px 8px 8px 8px;
+  border-image-outset: 6px 6px 6px 6px;
+  border-image-repeat: round round;
 }
 
 .vertical {
+  border: none;
   position: absolute;
-  top: 1.9rem;
+  top: 2.2rem;
   bottom: 0px;
   width: 30px;
   left: calc(50% - 15px);
-  z-index: -1
+  z-index: 0
 }
 
 .horizontal {
