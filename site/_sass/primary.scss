@@ -4,13 +4,18 @@
   --pixel-size: 2px;
   --grid-size: calc( var(--pixel-size) * 16);
 }
-//filter: hue-rotate(47deg) brightness(0.7) grayscale(0.2) contrast(1.1) sepia(0.34);
+
+.dark {
+  filter: hue-rotate(10deg) brightness(0.6) grayscale(0.3) contrast(1.1) sepia(0.34);
+}
+
 .main {
   background: url(../images/grass3.png) repeat;
   background-size: 32px 32px;
   height: calc(100% - 6.5rem - 2 * 0.9rem);
   text-align: center;
   position: relative;
+  transition: filter 1s
 }
 .main::before {
   display: block;

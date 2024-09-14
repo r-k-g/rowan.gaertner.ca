@@ -23,6 +23,7 @@ function numToPx(val) {
 
 (function main() {
   let inNav = true;
+  let day = true;
 
   class NavNode {
     constructor(action=null) {
@@ -357,6 +358,8 @@ function numToPx(val) {
     if (!inNav) return;
     inNav = false;
 
+    if (!day) toggleDayNight();
+
     let sheet = document.createElement("link");
     sheet.rel = "stylesheet";
     sheet.href = "/assets/css/explore-styles.css"
@@ -376,5 +379,40 @@ function numToPx(val) {
     .addEventListener("click", function(event) {
       startExplore();
     })
+
+  function toggleDayNight() {
+    day = !day;
+
+    // Toggle image of sun
+    let sun = document.getElementsByClassName("sun")[0];
+    sun.classList.toggle("moon");
+    
+    setTimeout(() => {
+      if (day) {
+        sun.src = "/assets/images/funsun.png";
+      } else {
+        sun.src = "/assets/images/coolmoon.png";
+      }
+    }, 100);
+
+    // Toggle dark filter
+    let main = document.getElementsByClassName("main")[0];
+    main.classList.toggle("dark");
+
+    let clouds = document.getElementsByClassName("cloud");
+    for (let cloud of clouds) {
+      cloud.classList.toggle("dark");
+    }
+
+    // Change sky background color
+    let sky = document.getElementsByTagName("header")[0];
+    sky.style.backgroundColor = day ? "rgb(63, 194, 255)" : "rgb(29, 38, 68)"
+
+  }
   
+  document.getElementsByClassName("sun")[0]
+    .addEventListener("click", function(event) {
+      toggleDayNight();
+    })
+
 })();
