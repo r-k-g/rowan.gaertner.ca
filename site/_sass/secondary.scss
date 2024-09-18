@@ -66,6 +66,14 @@ p {
   margin-bottom: 1rem;
 }
 
+code {
+  font-family: courier, monospace;
+  background-color: #00000029;
+  padding: 0.3rem;
+  border-radius: 0.2rem;
+  white-space: nowrap;
+}
+
 .bgcloud {
   transform: scale(2);
   z-index: -1;
