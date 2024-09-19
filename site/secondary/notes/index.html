@@ -1,0 +1,22 @@
+---
+layout: secondary-unlimited
+title: The Great Notepad in the Sky
+permalink: /notes/
+---
+
+<div class="content cloud">
+    <p>
+        This used to be a blog; that style didn't really suit me. The old layout is still around at
+        <a href="/blog/">blog/</a>, but this is the intended way of viewing.
+    </p>
+</div>
+
+{% for post in site.posts %}
+    <h3>
+        <a href="{{ post.url }}">{{ post.title }}</a>
+    </h3>
+    {% include notepad.html 
+        content=post.content 
+        title=post.title
+        width=post.width height=post.height %}
+{% endfor %}

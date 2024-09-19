@@ -1,0 +1,26 @@
+<div class="notepad">
+    <div class="notepad-header">
+        <div class="notepad-title-row">
+            <div class="notepad-title">
+                <img src="/assets/images/notepad.png" alt="Notepad icon" class="notepad-icon">
+                {{ include.title }}
+            </div>
+            <div class="notepad-buttons">
+                <span class="notepad-button notepad-button-close"></span>
+                <span class="notepad-button notepad-button-minimize"></span>
+                <span class="notepad-button notepad-button-maximize"></span>
+            </div>
+        </div>
+        <div class="notepad-menu">
+            <span class="notepad-menu-item">File</span>
+            <span class="notepad-menu-item">Edit</span>
+            <span class="notepad-menu-item">Format</span>
+            <span class="notepad-menu-item">View</span>
+            <span class="notepad-menu-item">Help</span>
+        </div>
+    </div>
+
+    <div class="notepad-content" style="width: {{ include.width }}ch; height: {{ include. height}}lh;">
+        {{ include.content }}
+    </div>
+</div>
