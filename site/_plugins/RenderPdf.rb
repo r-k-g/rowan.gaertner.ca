@@ -6,7 +6,7 @@ module Jekyll
         
         def render(context)
         output = <<~HTML
-                    <object type="application/pdf" data="#{@pathname}#toolbar=0&navpanes=0" width="100%" height="900px">
+                    <object type="application/pdf" data="#{@pathname}" width="100%" height="900px">
                         PDF viewer not working. Click 
                         <a href="#{@pathname}">here</a> to download.
                     </object>
