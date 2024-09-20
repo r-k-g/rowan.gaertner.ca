@@ -1,10 +1,8 @@
 <div class="notepad">
     <div class="notepad-header">
         <div class="notepad-title-row">
-            <div class="notepad-title">
-                <img src="/assets/images/notepad.png" alt="Notepad icon" class="notepad-icon">
-                {{ include.title }}
-            </div>
+            <img src="/assets/images/notepad.png" alt="Notepad icon" class="notepad-icon">
+            {{ include.title }}.txt - Notepad
             <div class="notepad-buttons">
                 <span class="notepad-button notepad-button-close"></span>
                 <span class="notepad-button notepad-button-minimize"></span>
@@ -12,15 +10,28 @@
             </div>
         </div>
         <div class="notepad-menu">
-            <span class="notepad-menu-item">File</span>
-            <span class="notepad-menu-item">Edit</span>
-            <span class="notepad-menu-item">Format</span>
-            <span class="notepad-menu-item">View</span>
-            <span class="notepad-menu-item">Help</span>
+
+            <span class="notepad-menu-item"><span class="underline">F</span>ile
+            </span><span class="notepad-menu-item"><span class="underline">E</span>dit
+            </span><span class="notepad-menu-item"><span class="underline">F</span>ormat
+            </span><span class="notepad-menu-item"><span class="underline">V</span>iew
+            </span><span class="notepad-menu-item"><span class="underline">H</span>elp
+            </span>
+
         </div>
     </div>
 
     <div class="notepad-content" style="width: {{ include.width }}ch; height: {{ include. height}}lh;">
         {{ include.content }}
+    </div>
+
+    <div class="notepad-footer">
+        <span class="notepad-footer-left"></span>
+        <span class="notepad-footer-element notepad-footer-1">
+            Ln {{ include.height }}, Col {{ include.width }}
+        </span>
+        <span class="notepad-footer-element notepad-footer-2">100%</span>
+        <span class="notepad-footer-element notepad-footer-3">Windows (CRLF)</span>
+        <span class="notepad-footer-element notepad-footer-4">UTF-8</span>
     </div>
 </div>

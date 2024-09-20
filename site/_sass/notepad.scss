@@ -1,0 +1,114 @@
+.notepad {
+    margin: 1rem auto 4rem auto;
+    text-align: left;
+    width: fit-content;
+
+    // Match windows 10 notepad as exactly as possible
+    background-color: white;
+    outline: 1px solid #00000069;
+    box-shadow: 4px 5px 20px 1px #5959595e;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 9pt;
+
+    // Calibrated to match windows 10 notepad
+    .notepad-content {
+        font-family: consolas, monospace !important;
+        padding: 2px 4px 1px 4px;
+        font-size: 11pt;
+        line-height: 1.23;
+        overflow-y: scroll;
+        cursor: text;
+    }
+
+    // Override part of default user agent stylesheet
+    pre {
+        font-family: inherit !important;
+        display: unset !important;
+        margin-block: unset !important;
+        margin: unset !important;
+    }
+
+    code {
+        all: inherit;
+    }
+
+    .notepad-header {
+        border-bottom: 2px solid #f2f2f2
+    }
+
+    // Notepad header
+    .notepad-title-row {
+        height: 29px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 1px;
+    }
+
+    .notepad-icon {
+        display: inline;
+        margin: unset;
+
+        height: fit-content;
+        margin-left: 8px;
+        margin-right: 6px;
+        image-rendering: pixelated;
+    }
+
+    .notepad-menu-item {
+        padding: 0px 7px 2px 7px;
+        display: inline-block;
+        cursor: default;
+
+        &:hover {
+            background-color: #e5f3ff;
+            outline: 1px solid #cce8ff;
+        }
+    }
+
+    .underline {
+        text-decoration: underline;
+    }
+
+    .notepad-buttons {
+        display: inline;
+        float: right;
+    }
+
+    .notepad-footer {
+        background-color: #f0f0f0;
+        border-top: 1px solid #d7d7d7;
+
+        display: flex;
+    }
+
+    .notepad-footer-left {
+        flex-grow: 1;
+    }
+
+    .notepad-footer-element {
+        flex-grow: 0;
+        border-left: 1px solid #d7d7d7;
+        margin: 1px 0px;
+        padding: 2px 0;
+    }
+
+    .notepad-footer-1 {
+        width: 139px;
+        text-indent: 9px;
+    }
+
+    .notepad-footer-2 {
+        width: 49px;
+        text-indent: 7px;
+    }
+
+    .notepad-footer-3 {
+        width: 119px;
+        text-indent: 6px;
+    }
+
+    .notepad-footer-4 {
+        width: 120px;
+        text-indent: 6px;
+    }
+}

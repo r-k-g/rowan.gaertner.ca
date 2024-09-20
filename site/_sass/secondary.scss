@@ -200,54 +200,6 @@ img[alt="me"] {
   border: black 2px solid;
 }
 
-.notepad{
-  margin: 1rem auto 4rem auto;
-  text-align: left;
-  width: fit-content;
-
-  // Match windows 10 notepad as exactly as possible
-  background-color: white;
-  outline: 1px solid #00000069;
-  box-shadow: 4px 5px 20px 1px #5959595e;
-  
-  // Calibrated to match windows 10 notepad
-  .notepad-content {
-    font-family: consolas, monospace !important;
-    padding: 2px 4px 1px 4px;
-    font-size: 11pt;
-    line-height: 1.23;
-  }
-
-  // Override part of default user agent stylesheet
-  pre {
-    font-family: inherit !important;
-    display: unset !important;
-    margin-block: unset !important;
-    margin: unset !important;
-  }
-
-  code {
-    all: inherit;
-  }
-
-  // Notepad header
-  .notepad-title-row {
-    height: 29px;
-  }
-  .notepad-title {
-    display: inline;
-    margin: auto 0 auto 8px;
-  }
-  .notepad-icon {
-    display: inline;
-    margin: unset;
-  }
-  .notepad-buttons {
-    display: inline;
-    float: right;
-  }
-}
-
 .tempmain {
   background: url(../images/grass3.png) repeat;
   background-size: 32px 32px;
