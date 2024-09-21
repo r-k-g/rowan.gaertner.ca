@@ -1,0 +1,22 @@
+---
+layout: secondary-unlimited
+title: The Great Notepad in the Sky
+permalink: /notes/
+styles: notepad-styles
+---
+
+<div class="content cloud">
+    <p>
+        This used to be a blog, which is still accessible at <a href="/blog/">blog/</a>. I never used the blog, so hopefully this is better.
+    </p>
+</div>
+
+{% for post in site.categories.notes %}
+    <h3>
+        <a href="{{ post.url }}">{{ post.title }}</a>
+    </h3>
+    {% include notepad.html 
+        content=post.content 
+        title=post.title
+        width=post.width height=post.height %}
+{% endfor %}

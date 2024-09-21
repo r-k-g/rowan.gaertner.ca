@@ -1,0 +1,18 @@
+---
+layout: default
+styles: notepad-styles
+---
+
+<header>
+    <a href="/notes/">See All Notes</a>
+</header>
+
+{% include notepad.html 
+    content=page.content 
+    title=page.title
+    width=page.width height=page.height 
+%}
+
+<footer>
+    By: <a href="/"> Rowan Gaertner </a>
+</footer>

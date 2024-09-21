@@ -25,17 +25,17 @@ nav {
   a {
     margin-right: 0.3rem;
     margin-bottom: 0.3rem;
-    transition: color 1.8s linear;
+    transition: color 1.2s linear;
   }
 
   a:hover {
-    color: red;
+    color: rgb(116, 6, 30);
     transition: color 0.1s linear;
   }
 }
 
 .current:not(:hover) {
-  color: red;
+  color: rgb(161, 14, 46);
 }
   
 .content {
