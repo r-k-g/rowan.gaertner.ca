@@ -3,10 +3,18 @@
         <div class="notepad-title-row">
             <img src="/assets/images/notepad.png" alt="Notepad icon" class="notepad-icon">
             {{ include.title }}.txt - Notepad
+            <span class="spacer"></span>
             <div class="notepad-buttons">
-                <span class="notepad-button notepad-button-close"></span>
-                <span class="notepad-button notepad-button-minimize"></span>
-                <span class="notepad-button notepad-button-maximize"></span>
+                <span class="notepad-window-button">
+                    <span class="notepad-minimize"></span>
+                </span>
+                <span class="notepad-window-button">
+                    <span class="notepad-maximize"></span>
+                </span>
+                <span class="notepad-window-button notepad-close-button">
+                    <span class="notepad-close"></span>
+                    <span class="notepad-close"></span>
+                </span>
             </div>
         </div>
         <div class="notepad-menu">
@@ -21,14 +29,14 @@
         </div>
     </div>
 
-    <div class="notepad-content" style="width: {{ include.width }}ch; height: {{ include. height}}lh;">
+    <div class="notepad-content" style="width: {{ include.width }}ch; height: {{ include.height}}lh;">
         {{ include.content }}
     </div>
 
     <div class="notepad-footer">
-        <span class="notepad-footer-left"></span>
+        <span class="spacer"></span>
         <span class="notepad-footer-element notepad-footer-1">
-            Ln {{ include.height }}, Col {{ include.width }}
+            Ln {{ include.height | default: 0 }}, Col {{ include.width | default: 0 }}
         </span>
         <span class="notepad-footer-element notepad-footer-2">100%</span>
         <span class="notepad-footer-element notepad-footer-3">Windows (CRLF)</span>

@@ -1,4 +1,13 @@
-collections:
-  posts:
-    output: true
-    permalink: /blog/:year/:title/
+defaults:
+  - scope:
+      path: "_posts/"
+    values:
+      permalink: /blog/:year/:title/
+      layout: "post"
+  - scope:
+      path: "_posts/notes/"
+    values:
+      category: "notes"
+      layout: "note"
+      permalink: /notes/:year/:title/
+
