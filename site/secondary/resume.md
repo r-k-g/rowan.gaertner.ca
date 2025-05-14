@@ -4,9 +4,11 @@ title: Resume
 permalink: /resume/
 ---
 
-Updated September 18, 2024.
+Updated May 13, 2025.
 
 For contact, you can reach me by email at
 `firstname at lastname dot 🇨🇦`
+
+[download](../assets/pdfs/resume.pdf)
 
 {% render_pdf ../assets/pdfs/resume.pdf %}
