@@ -71,7 +71,7 @@ var __values = (this && this.__values) || function(o) {
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
 var clientId = "d91fefffde334dd0ac6887c57e787291";
-var redirectUri = "https://rowan.gaertner.ca/spotifyexport/";
+var redirectUri = "https://rowan.gaertner.ca/misc/spotifyexport/";
 var scope = "user-read-private playlist-read-private";
 var authUrl = new URL("https://accounts.spotify.com/authorize");
 // Try to get user auth codes from url
