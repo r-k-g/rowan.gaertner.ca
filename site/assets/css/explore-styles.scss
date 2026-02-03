@@ -1,4 +1,36 @@
 ---
 ---
 
-@import "explore"
+body {
+  overflow: hidden;
+}
+
+header {
+  position: absolute;
+  width: 100%;
+}
+
+.main.nobg {
+  background: unset;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.main.nobg::before {
+  position: absolute;
+  width: calc(100% + 4 * var(--grid-size));
+  left: calc(-2 * var(--grid-size));
+}
+
+.background {
+  position:absolute;
+  width: calc(100% + 4 * var(--grid-size));
+  height: calc(100% + 4 * var(--grid-size));
+  left: calc(-2 * var(--grid-size));
+  top: calc(-2 * var(--grid-size));
+  background: url(../images/grass3.png) repeat;
+  background-size: 32px 32px;
+  z-index: -1;
+  transform: translate3d(0px, 0px, 0px);
+}
