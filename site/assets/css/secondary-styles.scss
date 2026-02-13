@@ -1,11 +1,11 @@
 ---
 ---
 
+@use "sass:meta";
 @use "general" as *;
 
 body {
   background-color: rgb(63, 194, 255);
-  animation: bodyMoveup 0.6s ease-out 1;
 }
 
 .secondary {
@@ -13,7 +13,11 @@ body {
   max-width: 900px;
   margin: 0 auto;
   padding: 2.5rem;
-  animation: contentMoveup 0.6s ease-out 1;
+}
+
+// Only apply content slide transition if we have t-down class (from url param)
+html.t-down .secondary {
+  animation: contentSlideDown 0.8s ease-in-out 1;
 }
 
 .title {
@@ -86,6 +90,15 @@ code {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
+}
+
+@keyframes bgcloudSlideDown {
+  0% {
+    margin-top: -100vh;
+  }
+  100% {
+    margin-top: 0;
+  }
 }
 
 table {
@@ -205,26 +218,6 @@ img[alt="me"] {
   border: black 2px solid;
 }
 
-.tempmain {
-  background: url(../images/grass3.png) repeat;
-  background-size: 32px 32px;
-  height: calc(100% - 6.5rem - 2 * 0.9rem);
-  text-align: center;
-  position: relative;
-  animation: tempmainMoveup 0.6s ease-out 1 forwards;
-}
-
-.tempmain::before {
-  display: block;
-  position: relative;
-  top: calc(-32px);
-  width: 100%;
-  height: 32px;
-  background: url(../images/grasstop.png) repeat-x;
-  background-size: 32px 32px;
-  content: "";
-}
-
 .cloud {
   background-color: white;
   border-image-slice: 14 20 14 20;
@@ -239,18 +232,27 @@ img[alt="me"] {
   top: 8%;
   right: -8%;
   animation: moveLeft 80s linear -10s infinite;
+  @at-root html.t-down & {
+    animation: bgcloudSlideDown 0.8s ease-in-out 1, moveLeft 80s linear -10s infinite;
+  }
 }
 
 .cloud2 {
   top: 26%;
   right: -8%;
   animation: moveLeftCovered 65s linear -30s infinite;
+  @at-root html.t-down & {
+    animation: bgcloudSlideDown 0.8s ease-in-out 1, moveLeftCovered 65s linear -30s infinite;
+  }
 }
 
 .cloud3 {
   top: 37%;
   right: -8%;
-  animation: moveLeftCovered 90s linear 5s infinite;
+  animation: moveLeftCovered 90s linear -50s infinite;
+  @at-root html.t-down & {
+    animation: bgcloudSlideDown 0.8s ease-in-out 1, moveLeftCovered 90s linear -50s infinite;
+  }
 }
 
 .cloud4 {
@@ -258,6 +260,9 @@ img[alt="me"] {
   top: 45%;
   right: -8%;
   animation: moveLeftCovered 60s linear -60s infinite;
+  @at-root html.t-down & {
+    animation: bgcloudSlideDown 0.8s ease-in-out 1, moveLeftCovered 60s linear -60s infinite;
+  }
 }
 
 .cloud5 {
@@ -265,6 +270,9 @@ img[alt="me"] {
   top: 69%;
   left: -8%;
   animation: moveRightCovered 50s linear 20s infinite;
+  @at-root html.t-down & {
+    animation: bgcloudSlideDown 0.8s ease-in-out 1, moveRightCovered 50s linear 20s infinite;
+  }
 }
 
 .cloud6 {
@@ -272,6 +280,9 @@ img[alt="me"] {
   top: 90%;
   left: -8%;
   animation: moveRight 105s linear -40s infinite;
+  @at-root html.t-down & {
+    animation: bgcloudSlideDown 0.8s ease-in-out 1, moveRight 105s linear -40s infinite;
+  }
 }
 
 @keyframes moveLeftCovered {
@@ -298,18 +309,89 @@ img[alt="me"] {
   to {left: 110%;}
 }
 
-// move page up on start
-@keyframes contentMoveup {
-  from {transform:translate3d(0px, -100%, 0px);}
-  to {transform:translate3d(0, 0, 0);}
+// Slide content down from above viewport in sync with transition
+@keyframes contentSlideDown {
+  0% {
+    transform: translateY(-100vh);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
-@keyframes bodyMoveup {
-  from {overflow: hidden;}
-  to {overflow: unset;}
+
+// Transition elements for slide in animation when navigating from main page to secondary page
+
+.transition-out {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  pointer-events: none;
 }
 
-@keyframes tempmainMoveup {
-  from {transform:translate3d(0px, -50%, 0px);}
-  to {transform:translate3d(0px, 450%, 0px); height:75px;}
+html.t-down .transition-out {
+  display: flex;
+  animation: transitionSlideDown 0.8s ease-in-out forwards;
+}
+
+.transition-out {
+  width: 100%;
+  // Mostly can just use primary-header styles, but need to add some things
+  // for elements affected by secondary styles
+  @include meta.load-css("primary-header");
+  .sun {
+    margin-right: unset;
+  }
+
+  .cloud {
+    background-color: transparent;
+    border: none;
+    border-image: none;
+    animation: none;
+  }
+
+  .cloud1 {
+    right: 12%;
+  }
+
+  .cloud2 {
+    right: 58%;
+  }
+
+  .cloud4 {
+    right: 80%;
+  }
+}
+
+.tempmain {
+  background: url(../images/grass3.png) repeat;
+  background-size: 32px 32px;
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.tempmain::before {
+  display: block;
+  position: absolute;
+  top: -32px;
+  width: 100%;
+  height: 32px;
+  background: url(../images/grasstop.png) repeat-x;
+  background-size: 32px 32px;
+  content: "";
+}
+
+@keyframes transitionSlideDown {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
 }

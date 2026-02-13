@@ -6,6 +6,12 @@ header, footer {
   width: fit-content;
 }
 
+// undo header styles for the temporary transition header
+.temp-header {
+  margin: 0;
+  width: auto;
+}
+
 .content {
   margin-bottom: 3rem !important;
 }
