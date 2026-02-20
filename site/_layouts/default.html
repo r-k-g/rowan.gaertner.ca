@@ -15,19 +15,19 @@
     <title>{{ page.title }}</title>
     
     {% if page.styles != nil and page.styles != '' %}
-      <link rel="stylesheet" href="/assets/css/{{ page.styles }}.css">
+      <link rel="stylesheet" href="/assets/css/{{ page.styles }}.css?v={{ site.time | date: '%s' }}">
     {% endif %}
 
     {% if layout.styles != nil and layout.styles != '' %}
-    <link rel="stylesheet" href="/assets/css/{{ layout.styles }}.css">
+    <link rel="stylesheet" href="/assets/css/{{ layout.styles }}.css?v={{ site.time | date: '%s' }}">
     {% endif %}
     
     {% if page.script != nil and page.script != '' %}
-      <script src="/assets/scripts/{{ page.script }}.js" defer></script>
+      <script src="/assets/scripts/{{ page.script }}.js?v={{ site.time | date: '%s' }}" defer></script>
     {% endif %}
 
     {% if layout.script != nil and layout.script != '' %}
-      <script src="/assets/scripts/{{ layout.script }}.js" defer></script>
+      <script src="/assets/scripts/{{ layout.script }}.js?v={{ site.time | date: '%s' }}" defer></script>
     {% endif %}
 
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
