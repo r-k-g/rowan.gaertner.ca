@@ -26,6 +26,10 @@
       <script src="/assets/scripts/{{ page.script }}.js" defer></script>
     {% endif %}
 
+    {% if layout.script != nil and layout.script != '' %}
+      <script src="/assets/scripts/{{ layout.script }}.js" defer></script>
+    {% endif %}
+
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png">

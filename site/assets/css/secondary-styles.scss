@@ -32,25 +32,24 @@ nav {
   font-family: pixels;
 
   a {
-    margin-right: 0.3rem;
-    margin-bottom: 0.3rem;
-    transition: color 1.2s linear;
+    padding: 0.3rem;
+    transition: color 0.2s linear, background-color 0.2s linear;
   }
 
   a:hover {
-    color: rgb(116, 6, 30);
-    transition: color 0.1s linear;
+    color: rgb(222, 222, 222);
+    background-color: rgb(8, 60, 90);
   }
 }
 
-.current:not(:hover) {
-  color: rgb(161, 14, 46);
+.current {
+  color: rgb(222, 222, 222) !important;
+  background-color: rgb(30, 30, 50);
 }
   
 .content {
   padding: 1rem 2rem;
   font-family: monospace;
-  font-size: 16px;
   line-height: 1.5;
   margin-bottom: 8rem;
   text-align: left;
@@ -121,66 +120,49 @@ summary {
   margin-top: 0.5rem;
 }
 
-.card {
-  width: 100%;
+.portfolio-grid {
   display: flex;
-  border: black 1px solid;
-  margin-bottom: 1.5rem;
-  
-  .info-col {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 1.5rem;
+}
+
+@media (max-width: 560px) {
+  .portfolio-grid {
+    margin: 0;
+    gap: 1rem;
+  }
+
+  .portfolio-card {
+    width: 100%;
+  }
+}
+
+.portfolio-card {
+  display: block;
+  width: 240px;
+  border: 1px solid black;
+  text-decoration: none;
+  color: inherit;
+  background-color: #efefef;
+
+  img {
+    width: 100%;
+    max-width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+    margin: 0;
+    border-bottom: 1px solid black;
+  }
+
+  .portfolio-card-title {
+    display: block;
+    padding: 0.3rem;
+    font-family: pixels;
+    font-size: 12px;
     text-align: center;
-    border-right: black 1px solid;
-    flex-shrink: 0;
-    
-    .date-range {
-      padding: 0.5rem;
-      border-bottom: black 1px solid;
-      background-color: #efefef;
-
-      .date {
-        display: block;
-      }
-    }
-
-    .links a {
-      display: block;
-    }
-  }
-  
-  .description-col {
-    display: flex;
-    flex-grow: 1;
-    padding: 0.5rem;
-
-    details {
-      margin: auto 0;
-    }
-
-    summary {
-      margin-top: unset;
-      cursor: pointer;
-      font-family: pixels;
-      border-bottom: black 1px solid;
-    }
-
-    img {
-      border: black 1px solid;
-      float: right;
-      max-width: 40%;
-      margin: auto 0;
-      margin-top: 0.4rem;
-    }
-
-    p {
-      margin-top: 0.4rem;
-    }
-  }
-
-  .vl {
-    width: 0.2rem;
-    height: 1rem;
-    background-color: black;
-    display: inline-block;
   }
 }
 

@@ -2,9 +2,11 @@
   link: /
 - name: About
   link: /about/
-- name: Photography
-  link: /photos/
-- name: Projects
-  link : /projects/
+- name: Portfolio
+  link: /portfolio/
+- name: Resume
+  link: /resume/
 - name: Notes
   link: /notes/
+- name: Photography
+  link: /photos/

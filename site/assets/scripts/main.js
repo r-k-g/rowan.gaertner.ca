@@ -43,10 +43,12 @@ function numToPx(val) {
     }
 
     getX() {
+      const spacing = 4
+      const rowOffset = this.xRef.offsetParent.offsetLeft;
       if (this.onLeft)
-        return this.xRef.offsetLeft + this.xRef.getBoundingClientRect().width + 4;
+        return rowOffset + this.xRef.offsetLeft + this.xRef.getBoundingClientRect().width + spacing;
       else
-        return this.xRef.offsetLeft - 4;
+        return rowOffset + this.xRef.offsetLeft - spacing;
     }
 
     getY() {
@@ -168,7 +170,7 @@ function numToPx(val) {
   }
 
   // Add hover listener to signs
-  signs = document.getElementsByClassName("sign");
+  signs = document.getElementsByClassName("nav-sign");
   let nodes = Array.from(
     {length: signs.length - 1}, () => [new NavNode(), new NavNode()]
   );
@@ -413,6 +415,18 @@ function numToPx(val) {
   document.getElementsByClassName("sun")[0]
     .addEventListener("click", function(event) {
       toggleDayNight();
-    })
+    });
+
+  let mailSign = document.getElementsByClassName("mail-sign")[0];
+  function toggleEmail() {
+    document.getElementById("nameTitle").classList.toggle("show-email");
+  }
+  mailSign.addEventListener("click", toggleEmail);
+  mailSign.addEventListener("keydown", function(event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggleEmail();
+    }
+  });
 
 })();

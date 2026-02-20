@@ -13,6 +13,26 @@
   filter: hue-rotate(10deg) brightness(0.6) grayscale(0.3) contrast(1.1) sepia(0.34);
 }
 
+#nameTitle .email {
+  transition: all 1s;
+  display: inline-block;
+  max-width: 0px;
+  opacity: 0%;
+  white-space: nowrap;
+}
+
+#nameTitle.show-email .email {
+  max-width: 5rem;
+  opacity: 100%;
+}
+
+.canada-flag {
+  display: inline-block;
+  height: 0.5em;
+  vertical-align: text-bottom;
+  margin-left: 0.25rem;
+}
+
 .main {
   background: url(../images/grass3.png) repeat;
   background-size: 32px 32px;
@@ -30,6 +50,56 @@
   background: url(../images/grasstop.png) repeat-x;
   background-size: 32px 32px;
   content: "";
+}
+
+.top-row {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  display: flex;
+  width: 100%;
+}
+
+.info {
+  margin-right: auto;
+  padding-left: 50px;
+  display: flex;
+  align-items: flex-end;
+
+  .sign {
+    position: relative;
+    display: flex;
+    font-family: unset;
+    padding: 3px;
+  }
+}
+
+.contacts {
+  margin-left: auto;
+  display: flex;
+  padding-right: 2rem;
+
+  .sign {
+    position: relative;
+    display: flex;
+    padding: 1px;
+    margin-left: 0.5rem;
+  
+    .icon {
+      max-width: 1.2rem;
+      display: inline-block;
+      object-fit: contain;
+      margin: 2px;
+    }
+  }
+
+  .mail-sign {
+    cursor: pointer;
+    align-items: center;
+    img {
+      width: 28px;
+    }
+  }
 }
 
 
@@ -130,9 +200,14 @@
   right: 30%;
 }
 
-.sign.external {
-  padding: 3px 10px;
-  display: flex;
+.sign.single-post {
+  &::before {
+    display: none;
+  }
+  &::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 .sign.exit {
@@ -160,11 +235,6 @@
 #exitWrapper {
   position: relative;
   bottom: 16.6px;
-}
-
-.icon {
-  height: 2rem;
-  margin: 0px 10px;
 }
 
 .crop {
@@ -227,7 +297,7 @@
 .noscriptDude {
   display: inline-block;
   position: absolute;
-  top: 5px;
+  top: 30px;
   z-index: 10000;
   opacity: 0;
 }

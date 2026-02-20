@@ -148,6 +148,39 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     return [headerObj, headerHeight]
   }
 
+  function loadTopRow() {
+    let contacts = document.getElementsByClassName("contacts")[0];
+    let styles = getComputedStyle(contacts);
+    document.body.appendChild(contacts);
+
+    contacts.style.position = "absolute";
+    contacts.style.margin = "0px";
+    contacts.style.width = styles["max-width"];
+    contacts.style.top = "0px";
+    contacts.style.left = "0px";
+
+    let left = nav.width + 48
+    let top = headerHeight;
+    let contactsObj = new WorldElement(contacts, left, top, false, true);
+    worldObjects.push(contactsObj);
+
+    let info = document.getElementsByClassName("info")[0];
+    styles = getComputedStyle(info);
+    document.body.appendChild(info);
+
+    info.style.position = "absolute";
+    info.style.margin = "0px";
+    info.style.width = styles["max-width"];
+    info.style.top = "0px";
+    info.style.left = "0px";
+
+
+    left = nav.x - 300;
+    top = headerHeight;
+    let infoObj = new WorldElement(info, left, top, false, true);
+    worldObjects.push(infoObj);
+  }
+
   function loadMain() {
     let mainEl = document.getElementsByClassName("main")[0];
     let mainObj = new WorldElement(mainEl, 0, headerHeight, false, false);
@@ -206,6 +239,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     }
   }
 
+  // not currently used
   function getZMax() {
     let fullHeight = cameraBounds.bottom - cameraBounds.top;
     return Math.floor(fullHeight) * 5
@@ -419,6 +453,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   let [headerObj, headerHeight] = loadHeader();
   let [mainObj, mainEl] = loadMain(); 
   let nav = loadNav();
+  loadTopRow();
   let background = makeBG(mainEl);
   let grass = touchGrass();
   let dude = makeDude(mainEl);

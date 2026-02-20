@@ -9,7 +9,7 @@ We don't often think about websites as having an impact on the environment. Long
 
 I became aware of this quite recently relative to how long I have been using the web. I was browsing various personal blogs for inspiration in designing this website when I saw a badge for [Website Carbon](https://www.websitecarbon.com/) on [chenbrian.ca](https://chenbrian.ca). This is a website that roughly calculates the relative environmental impact of a given webpage.
 
-With this in mind, I tried to make my own website as climate conscious as possible, while still maintaining functionality and appearance. I was fairly succesful: see [results](https://www.websitecarbon.com/website/rowan-gaertner-ca/).
+With this in mind, I tried to make my own website as climate conscious as possible, while still maintaining functionality and appearance. I was fairly successful: see [results](https://www.websitecarbon.com/website/rowan-gaertner-ca/).
 
 ## Strategies
 So how do you make a website environmentally friendly? (As environmentally friendly as any website can be, that is).

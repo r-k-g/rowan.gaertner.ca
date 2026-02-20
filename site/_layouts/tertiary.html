@@ -1,0 +1,13 @@
+---
+layout: default
+styles: general
+---
+
+<div class="stars">
+{% for i in (1..40) %}
+    <img class="star star{{ i }}" alt="star" src="/assets/images/star.png">
+{% endfor %}
+</div>
+
+{{ content }}
+

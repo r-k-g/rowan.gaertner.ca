@@ -6,7 +6,11 @@ styles: primary-styles
 ---
 
 <header>
-  <h1>{{ page.title }}</h1>
+  <h1 id="nameTitle">
+    Rowan
+    <span class="email"> at </span>
+    Gaertner<span class="email">.<img class="canada-flag" alt="ca" src="/assets/images/canada.png"> </span>
+  </h1>
   <div class="clouds">
     <img class="cloud cloud1" alt="cloud" src="/assets/images/cloud1.png">
     <img class="cloud cloud2" alt="cloud" src="/assets/images/cloud2.png">
@@ -20,9 +24,36 @@ styles: primary-styles
 </header>
 
 <div class="main">
+  <div class="top-row">
+    <div class="info">
+      <span class="sign">
+        Software Engineering @ UWaterloo
+      </span>
+    </div>
+
+
+    <div class="contacts">
+      <span class="sign mail-sign single-post">
+        <a tabindex="0" role="button">
+          <img class="icon" alt="Mail icon" src="/assets/images/mail3.png">
+        </a>
+      </span>
+      <span class="sign single-post">
+        <a href="https://github.com/r-k-g">
+          <img class="icon" alt="GitHub logo" src="/assets/images/logos/github-mark/github-mark.svg">
+        </a>
+      </span>
+      <span class="sign single-post">
+        <a href="https://www.linkedin.com/in/rowan-g/">
+          <img class="icon" alt="Linkedin logo" src="/assets/images/logos/linkedin.svg">
+        </a>
+      </span>
+    </div>
+  </div>
+
   <nav class="paths">
     <div class="row">
-      <span class="sign">
+      <span class="sign nav-sign">
         <a href="/about/?t=down"> About </a>
         <noscript><span class="dude noscriptDude"></span></noscript>
       </span>
@@ -33,14 +64,32 @@ styles: primary-styles
     <div class="row">
       <span class="crop"></span>
       <span class="path horizontal"></span>
-      <span class="sign">
+      <span class="sign nav-sign"> 
+        <a href="/portfolio/?t=down"> Portfolio </a>
+        <noscript><span class="dude noscriptDude"></span></noscript>
+      </span>
+    </div>
+
+    <div class="row">
+      <span class="sign nav-sign">
+        <a href="/resume/?t=down"> Resume </a>
+        <noscript><span class="dude noscriptDude"></span></noscript>
+      </span>
+      <span class="path horizontal"></span>
+      <span class="crop"></span>
+    </div>
+
+    <div class="row">
+      <span class="crop"></span>
+      <span class="path horizontal"></span>
+      <span class="sign nav-sign">
         <a href="/notes/?t=down"> Notes </a>
         <noscript><span class="dude noscriptDude"></span></noscript>
       </span>
     </div>
 
     <div class="row">
-      <span class="sign"> 
+      <span class="sign nav-sign"> 
         <a href="/photos/?t=down">
           <span class="full-text"> Photography </span>
           <span class="short-text"> Photos </span>
@@ -50,45 +99,10 @@ styles: primary-styles
       <span class="path horizontal"></span>
       <span class="crop"></span>
     </div>
-    
-    <div class="row">
-      <span class="crop"></span>
-      <span class="path horizontal"></span>
-      <span class="sign"> 
-        <a href="/projects/?t=down"> Projects </a>
-        <noscript><span class="dude noscriptDude"></span></noscript>
-      </span>
-    </div>
-    
-    <div class="row">
-      <span class="sign">
-        <a href="/resume/?t=down"> Resume </a>
-        <noscript><span class="dude noscriptDude"></span></noscript>
-      </span>
-      <span class="path horizontal"></span>
-      <span class="crop"></span>
-    </div>
-    
-    
-    <div class="row">
-      <span class="crop"></span>
-      <span class="path horizontal"></span>
-      <span class="sign external">
-        <a href="https://github.com/r-k-g">
-          <img class="icon" alt="GitHub logo" src="/assets/images/logos/github-mark/github-mark.svg">
-        </a>
-
-        <a href="https://www.linkedin.com/in/rowan-g/">
-          <img class="icon" alt="Linkedin logo" src="/assets/images/logos/linkedin.svg">
-        </a>
-
-        <noscript><span class="dude noscriptDude"></span></noscript>
-      </span>
-    </div>
 
     <span class="path vertical"></span>
     <div id="exitWrapper">
-      <span class="sign exit"></span>
+      <span class="sign nav-sign exit"></span>
     </div>
     <div class="dude"></div>
   </nav>

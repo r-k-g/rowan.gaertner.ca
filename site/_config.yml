@@ -1,9 +1,13 @@
 sass:
   sass_dir: assets/css
 
+collections:
+  projects:
+    output: true
+
 defaults:
   - scope:
-      path: "_posts/"
+      path: "_posts/blog/"
     values:
       permalink: /blog/:year/:title/
       layout: "post"
@@ -13,4 +17,9 @@ defaults:
       category: "notes"
       layout: "note"
       permalink: /notes/:year/:title/
+  - scope:
+      type: "projects"
+    values:
+      layout: "project"
+      permalink: /portfolio/:title/
 

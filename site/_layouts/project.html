@@ -1,0 +1,45 @@
+---
+layout: tertiary
+styles: project-styles
+script: project-carousel
+---
+
+
+<header class="project-header">
+    <h1>{{ page.title }}</h1>
+    {% for item in site.data.navigation  %}
+    <a href="{{ item.link }}">{{ item.name }}</a>
+    {% endfor %}
+</header>
+
+<!-- Only show arrows if JS is enabled (otherwise just scrollable) -->
+<noscript><style> 
+    .carousel-arrow {
+        display: none;
+    }
+    .carousel-track {
+        overflow-x: auto;
+    }
+</style></noscript>
+
+{% assign sorted_projects = site.projects | sort: "date" | reverse %}
+<div class="carousel">
+    <button class="carousel-arrow carousel-prev">&#9664;</button>
+    <div class="carousel-track">
+        {% for project in sorted_projects %}
+        {% if project.title != page.title %}
+        <a href="{{ project.url }}" class="carousel-card">
+            <img src="{{ project.thumbnail }}" alt="{{ project.title }}">
+            <span class="carousel-card-title">{{ project.title }}</span>
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <button class="carousel-arrow carousel-next">&#9654;</button>
+</div>
+
+<div class="project">
+    <div class="project-content">
+        {{ content }}
+    </div>
+</div>

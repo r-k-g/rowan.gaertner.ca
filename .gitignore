@@ -2,3 +2,4 @@
 _site/
 .jekyll-cache/
 **/images/unused/**
+**/.DS_STORE

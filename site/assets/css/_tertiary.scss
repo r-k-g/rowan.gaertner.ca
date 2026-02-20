@@ -1,0 +1,48 @@
+@use "general" as *;
+@use "sass:math";
+
+body {
+  background-color: rgb(2, 32, 40);
+  color:rgb(222, 222, 222);
+}
+
+a {
+  color:rgb(222, 222, 222);
+}
+a:visited {
+  color:rgb(195, 195, 195);
+}
+
+.star {
+  position: fixed;
+  transform: scale(1);
+  z-index: 0;
+}
+
+
+@for $i from 1 through 40 {
+  .star#{$i} {
+    top: math.percentage(math.random());
+    left: math.percentage(math.random());
+    animation: twinkle 50s ease-in-out -#{math.random(50)}s infinite;
+  }
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  2% {
+    opacity: 1;
+    transform: scale(2);
+  }
+  4% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+}
