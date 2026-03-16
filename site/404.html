@@ -1,0 +1,39 @@
+---
+layout: default
+title: "404 — Page Not Found"
+permalink: /404.html
+styles: 404-styles
+description: "The page you were looking for could not be found."
+---
+
+<div class="stars">
+{% for i in (1..30) %}
+  <img class="star star{{ i }}" alt="star" src="/assets/images/star.png">
+{% endfor %}
+</div>
+
+<div class="grave-scene">
+  <div class="tombstone">
+    <div class="tombstone-top"></div>
+    <div class="tombstone-body">
+      <span class="tombstone-404">404</span>
+      <span class="tombstone-text">Page not</span>
+      <span class="tombstone-text">found</span>
+    </div>
+    <div class="tombstone-base"></div>
+    <div class="grass-strip"></div>
+  </div>
+
+  <p class="epitaph">Here lies <span id="dead-url"></span></p>
+  <a href="/" class="prompt" id="retryLink">Press SPACE to try again</a>
+</div>
+
+<script>
+  document.getElementById('dead-url').textContent = location.pathname;
+  document.addEventListener('keydown', function(e) {
+    if (e.code === 'Space' || e.key === ' ') {
+      e.preventDefault();
+      window.location.href = '/';
+    }
+  });
+</script>

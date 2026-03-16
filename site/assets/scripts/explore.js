@@ -10,7 +10,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       this.el = el;
       this.worldX = worldX;
       this.worldY = worldY;
-      
+
       this.moving = moving;
 
       this.el.style.transform = "translate3d(0, 0, 0px)";
@@ -48,7 +48,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     set y(val) {
       this.#y = val;
       this.el.style.transform = `translate3d(${this.#x}px, ${this.#y}px, 0px)`;
-      
+
       if (this.moving && this.useZ) {
         this.z = yToZ(this.worldY, this.height);
         this.el.style.zIndex = this.z;
@@ -56,10 +56,55 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     }
   }
 
+  class InteractableObject extends WorldElement {
+    constructor(el, worldX, worldY, options={}) {
+      super(el, worldX, worldY, options.collision || false, true, false);
+      this.interactionRange = options.range || 60;
+      this.onInteract = options.onInteract || function() {};
+      this.hintText = options.hint || "[E]";
+      this.isNearby = false;
+      this.useGlow = options.glow || false;
+
+      // Create hint element
+      this.hintEl = document.createElement("div");
+      this.hintEl.className = "interact-hint";
+      this.hintEl.textContent = this.hintText;
+      document.body.appendChild(this.hintEl);
+
+      interactableObjects.push(this);
+    }
+
+    checkProximity(dude) {
+      let dx = (this.worldX + (this.width / 2)) - (dude.worldX + (dude.width / 2));
+      let dy = (this.worldY + (this.height / 2)) - (dude.worldY + (dude.height / 2));
+      let dist = Math.sqrt(dx * dx + dy * dy);
+      return dist < this.interactionRange;
+    }
+
+    setNearby(nearby) {
+      if (nearby && !this.isNearby) {
+        this.isNearby = true;
+        if (this.useGlow) this.el.classList.add("interactable-glow");
+        this.hintEl.classList.add("visible");
+      } else if (!nearby && this.isNearby) {
+        this.isNearby = false;
+        if (this.useGlow) this.el.classList.remove("interactable-glow");
+        this.hintEl.classList.remove("visible");
+      }
+    }
+
+    updateHintPosition(camera) {
+      if (!this.isNearby) return;
+      let screenX = camera.width + (this.worldX - camera.worldX) + (this.width / 2);
+      let screenY = camera.height + (this.worldY - camera.worldY) - 14;
+      this.hintEl.style.transform = `translate(${screenX}px, ${screenY}px)`;
+    }
+  }
+
   class ExploreDude extends WorldElement {
     constructor(el, worldX, worldY) {
       super(el, worldX, worldY, false, true, true);
-      
+
       this.accel = 4;
       this.velX = 0;
       this.velY = 0;
@@ -82,8 +127,208 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     return obj;
   }
 
+  function addInteractable(x, y, options) {
+    let el = document.createElement("div");
+    el.className = options.className || "interactable";
+    if (options.innerHTML) el.innerHTML = options.innerHTML;
+    if (options.style) Object.assign(el.style, options.style);
+    document.body.appendChild(el);
+
+    let obj = new InteractableObject(el, x, y, options);
+    worldObjects.push(obj);
+    return obj;
+  }
+
+  function showMessage(text) {
+    let existing = document.querySelector(".explore-message");
+    if (existing) existing.remove();
+
+    let msg = document.createElement("div");
+    msg.className = "explore-message";
+    msg.textContent = text;
+    document.body.appendChild(msg);
+
+    setTimeout(() => {
+      msg.style.opacity = "0";
+      setTimeout(() => msg.remove(), 1000);
+    }, 3000);
+  }
+
+  function addDirtTile(x, y) {
+    let el = new Image(32, 32);
+    el.src = "/assets/images/dirt.png";
+    el.style.zIndex = "-1";
+    addDecoration(el, x, y);
+  }
+
+  function addDirtPath(startX, startY, endX, endY, width) {
+    let dx = endX - startX;
+    let dy = endY - startY;
+    let dist = Math.sqrt(dx * dx + dy * dy);
+    let steps = Math.ceil(dist / 22);
+
+    for (let i = 0; i <= steps; i++) {
+      let t = i / steps;
+      let x = startX + dx * t;
+      let y = startY + dy * t;
+      for (let w = 0; w < width; w++) {
+        let perpX = -dy / dist * (w - width / 2) * 32;
+        let perpY = dx / dist * (w - width / 2) * 32;
+        addDirtTile(x + perpX, y + perpY);
+      }
+    }
+  }
+
+  function makePond() {
+    let tilesWide = 5;
+    let tilesTall = 3;
+    let tileSize = 32;
+    let pondWidth = tilesWide * tileSize;
+    let pondHeight = tilesTall * tileSize;
+    let startX = -200 - pondWidth / 2;
+    let startY = 550 - pondHeight / 2;
+
+    for (let tx = 0; tx < tilesWide; tx++) {
+      for (let ty = 0; ty < tilesTall; ty++) {
+        let el = new Image(tileSize, tileSize);
+        el.src = "/assets/images/water.png";
+        addDecoration(el, startX + tx * tileSize, startY + ty * tileSize);
+      }
+    }
+
+    // Collision hitbox — matches tile rectangle exactly
+    let hitbox = document.createElement("div");
+    hitbox.style.position = "absolute";
+    hitbox.style.width = pondWidth + "px";
+    hitbox.style.height = pondHeight + "px";
+    document.body.appendChild(hitbox);
+
+    let pondCollision = new WorldElement(hitbox, startX, startY, true, false);
+    worldObjects.push(pondCollision);
+
+    // Interactable — matches tile rectangle exactly
+    let interactHitbox = document.createElement("div");
+    interactHitbox.style.position = "absolute";
+    interactHitbox.style.width = pondWidth + "px";
+    interactHitbox.style.height = pondHeight + "px";
+    document.body.appendChild(interactHitbox);
+
+    let pondInteractable = new InteractableObject(
+      interactHitbox, startX, startY, {
+        range: 80,
+        hint: "[E] Look",
+        onInteract: function() {
+          showMessage("A quiet pond. You see something moving below the surface...");
+        }
+      }
+    );
+    worldObjects.push(pondInteractable);
+  }
+
+  function makeMysterySign(x, y) {
+    let el = document.createElement("div");
+    el.className = "sign";
+    el.textContent = "\u13A0\u13B3\u13A2\u13C4";
+    el.style.fontSize = "7px";
+    el.style.padding = "5px 7px";
+    el.style.position = "absolute";
+    el.style.bottom = "auto";
+    el.style.top = "0px";
+    el.style.left = "0px";
+    el.style.contain = "none";
+    el.style.cursor = "default";
+    document.body.appendChild(el);
+
+    let obj = new InteractableObject(el, x, y, {
+      range: 55,
+      hint: "[E] Read",
+      glow: true,
+      onInteract: function() {
+        showMessage("Update coming soon...");
+      }
+    });
+    worldObjects.push(obj);
+    return obj;
+  }
+
+  function addBush(x, y) {
+    let el = document.createElement("div");
+    el.style.width = "24px";
+    el.style.height = "18px";
+    el.style.backgroundColor = "rgb(45, 110, 40)";
+    el.style.position = "absolute";
+    el.style.imageRendering = "pixelated";
+    document.body.appendChild(el);
+
+    let obj = new WorldElement(el, x, y, false, true);
+    worldObjects.push(obj);
+    return obj;
+  }
+
+  function addRock(x, y) {
+    let el = document.createElement("div");
+    el.style.width = "16px";
+    el.style.height = "12px";
+    el.style.backgroundColor = "rgb(140, 140, 140)";
+    el.style.position = "absolute";
+    document.body.appendChild(el);
+
+    let obj = new WorldElement(el, x, y, false, true);
+    worldObjects.push(obj);
+    return obj;
+  }
+
+  function addDecoration(el, worldX, worldY) {
+    el.style.position = "absolute";
+    pendingDecorations.push({el, worldX, worldY});
+  }
+
+  function addFlower(x, y) {
+    let el = new Image(32, 32);
+    el.src = "/assets/images/flower.png";
+    addDecoration(el, x, y);
+  }
+
+  function chunkDecorations(chunkSize) {
+    let chunks = {};
+
+    for (let i = 0; i < pendingDecorations.length; i++) {
+      let dec = pendingDecorations[i];
+      let cx = Math.floor(dec.worldX / chunkSize) * chunkSize;
+      let cy = Math.floor(dec.worldY / chunkSize) * chunkSize;
+      let key = cx + "," + cy;
+      if (!chunks[key]) chunks[key] = {x: cx, y: cy, items: []};
+      chunks[key].items.push(dec);
+    }
+
+    for (let key in chunks) {
+      let chunk = chunks[key];
+      let container = document.createElement("div");
+      container.style.position = "absolute";
+      container.style.top = "0px";
+      container.style.left = "0px";
+      container.style.width = (chunkSize + 48) + "px";
+      container.style.height = (chunkSize + 48) + "px";
+
+      for (let i = 0; i < chunk.items.length; i++) {
+        let item = chunk.items[i];
+        item.el.style.left = (item.worldX - chunk.x) + "px";
+        item.el.style.top = (item.worldY - chunk.y) + "px";
+        container.appendChild(item.el);
+      }
+
+      document.body.appendChild(container);
+      let worldEl = new WorldElement(container, chunk.x, chunk.y, false, false);
+      worldObjects.push(worldEl);
+    }
+
+    pendingDecorations = [];
+  }
+
   let worldObjects = [];
   let collisionObjects = [];
+  let interactableObjects = [];
+  let pendingDecorations = [];
 
   ///----- SETUP -----\\\
   function loadNav() {
@@ -101,13 +346,13 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     let top = headerHeight + 68;
 
     let navObj = new WorldElement(nav, left, top, true, true)
-    worldObjects.push(navObj);  
+    worldObjects.push(navObj);
     return navObj;
   }
-  
+
   function makeBG(mainDiv) {
     mainDiv.className += " nobg";
-  
+
     let bg = document.createElement("div");
     bg.className += " background";
 
@@ -141,7 +386,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       + pxToNum(headerStyle["padding-top"])
       + pxToNum(headerStyle["padding-bottom"])
     );
-    
+
     let headerObj = new WorldElement(headerEl, 0, 0, false, false);
     worldObjects.push(headerObj);
 
@@ -190,28 +435,64 @@ GRID_SIZE = (16) * PIXEL_SIZE;
 
   function makeDude() {
     let navRect = nav.el.getBoundingClientRect();
-
     let dudeEl = document.createElement("div");
     dudeEl.className += " dude";
-    
     let dudeWidth = 20;
-    let left = navRect.left + (navRect.width / 2) - (dudeWidth / 2);
-    let top = navRect.bottom + 15;
+    let left, top;
 
-    setTimeout(function(el) {
-      dudeEl.style.opacity = 1;
-    }, 70, dudeEl);
+    if (window.exploreReturnToGate) {
+      // Position at exit gate (bottom of nav)
+      left = navRect.left + (navRect.width / 2) - (dudeWidth / 2);
+      top = navRect.bottom + 35;
+      dudeEl.style.opacity = 1; // Immediately visible
+      window.exploreReturnToGate = false;
+    } else {
+      left = navRect.left + (navRect.width / 2) - (dudeWidth / 2);
+      top = navRect.bottom + 15;
+      setTimeout(function(el) { dudeEl.style.opacity = 1; }, 70, dudeEl);
+    }
 
     document.body.appendChild(dudeEl);
-    
     return new ExploreDude(dudeEl, left, top);
   }
 
+  function makeExitInteractable() {
+    let exitEl = document.getElementsByClassName("exit")[0];
+    if (!exitEl) return;
+
+    // Get position relative to nav
+    let gateX = nav.worldX + exitEl.offsetLeft;
+    let gateY = nav.worldY + exitEl.offsetTop + exitEl.offsetParent.offsetTop;
+
+    // Create an invisible interactable positioned over the gate
+    let hitbox = document.createElement("div");
+    hitbox.style.position = "absolute";
+    hitbox.style.width = "48px";
+    hitbox.style.height = "36px";
+    hitbox.style.cursor = "pointer";
+    document.body.appendChild(hitbox);
+
+    let obj = new InteractableObject(hitbox, gateX, gateY, {
+      range: 70,
+      hint: "[E] Return",
+      glow: true,
+      onInteract: function() {
+        window.location.href = '/?explore=return';
+      }
+    });
+    worldObjects.push(obj);
+  }
+
   function populateWorld() {
+    // Dirt paths connecting areas of interest
+    addDirtPath(250, 450, 250, 700, 2);   // Main path going south
+    addDirtPath(250, 550, 500, 400, 2);   // Branch east toward trees
+    addDirtPath(250, 600, 0, 650, 2);     // Short path going west
+
     let xoff = 0
     for (let y=105; y<210; y+=18) {
       for (let x=-140; x<20; x+=40) {
-        addStaticObj("/assets/images/flower.png", x + xoff, y, 32, 32);
+        addFlower(x + xoff, y);
       }
       if (xoff)
         xoff = 0;
@@ -221,7 +502,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
 
     for (let y=480; y<540; y+=14) {
       for (let x=-50; x<60; x+=35) {
-        addStaticObj("/assets/images/flower.png", x + xoff, y, 32, 32);
+        addFlower(x + xoff, y);
       }
       if (xoff)
         xoff = 0;
@@ -237,6 +518,35 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       else
         xoff = 15;
     }
+
+    // Additional trees in different areas
+    addStaticObj("/assets/images/maybtree.png", -350, 380, 40, 48);
+    addStaticObj("/assets/images/maybtree.png", -370, 440, 40, 48);
+    addStaticObj("/assets/images/maybtree.png", 400, 650, 40, 48);
+    addStaticObj("/assets/images/maybtree.png", 420, 720, 40, 48);
+    addStaticObj("/assets/images/maybtree.png", -100, 750, 40, 48);
+
+    // Bushes scattered around
+    addBush(100, 500);
+    addBush(350, 380);
+    addBush(-80, 620);
+    addBush(480, 550);
+    addBush(200, 700);
+    addBush(-300, 480);
+    addBush(50, 350);
+
+    // Rocks near the pond and paths
+    addRock(-150, 620);
+    addRock(-380, 450);
+    addRock(-50, 430);
+    addRock(350, 750);
+    addRock(150, 780);
+
+    // Flowers near the pond
+    addFlower(-290, 490);
+    addFlower(-130, 610);
+    addFlower(-260, 620);
+    addFlower(-100, 500);
   }
 
   // not currently used
@@ -245,7 +555,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     return Math.floor(fullHeight) * 5
   }
 
-  
+
   ///----- MECHANICS -----\\\
   document.addEventListener("mousemove", function(event) {
     inputs.mouseX = event.clientX;
@@ -261,6 +571,20 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     inputs.mouseDown = false;
   });
 
+  function checkInteractions() {
+    for (let i = 0; i < interactableObjects.length; i++) {
+      let obj = interactableObjects[i];
+      let nearby = obj.checkProximity(dude);
+      obj.setNearby(nearby);
+      obj.updateHintPosition(camera);
+
+      if (nearby && inputs.interact) {
+        obj.onInteract();
+        inputs.interact = false;
+      }
+    }
+  }
+
   function doMovement() {
     let dx = 0;
     let dy = 0;
@@ -270,7 +594,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     if (inputs.right) dx += 1;
     if (inputs.up)    dy += -1;
     if (inputs.down)  dy += 1;
-    
+
     if (!(inputs.left || inputs.right || inputs.up || inputs.down)) {
       if (inputs.mouseDown) {
         dx = inputs.mouseX - (
@@ -282,11 +606,12 @@ GRID_SIZE = (16) * PIXEL_SIZE;
         mouse = true;
       }
     }
-    
+
     moveDude(dx, dy, mouse);
     moveCamera();
+    checkInteractions();
   }
-  
+
   function moveDude(dx, dy, mouse) {
     let accelX = 0;
     let accelY = 0;
@@ -299,10 +624,10 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       accelX = (dx / hypot) * dude.accel;
       accelY = (dy / hypot) * dude.accel;
     }
-    
+
     let dragX = dude.drag * Math.pow(dude.velX, 2) * -Math.sign(dude.velX);
     let dragY = dude.drag * Math.pow(dude.velY, 2) * -Math.sign(dude.velY);
-    
+
     dude.velX += accelX + dragX;
     dude.velY += accelY + dragY;
 
@@ -312,7 +637,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     // Update map position
     dude.worldX += dude.velX;
     dude.worldY += dude.velY;
-    
+
     doCollision();
   }
 
@@ -369,17 +694,17 @@ GRID_SIZE = (16) * PIXEL_SIZE;
 
     if (camera.worldX + camera.width > cameraBounds.right)
       camera.worldX = cameraBounds.right - camera.width;
-    
+
     if (camera.worldX - camera.width < cameraBounds.left)
       camera.worldX = cameraBounds.left + camera.width;
-    
+
     if (camera.worldY - camera.height < cameraBounds.top)
       camera.worldY = cameraBounds.top + camera.height;
-    
+
     if (camera.worldY + camera.height > cameraBounds.bottom)
       camera.worldY = cameraBounds.bottom - camera.height;
 
-    
+
     camera.worldX = Math.max(
       Math.min(camera.worldX, cameraBounds.right),
       cameraBounds.left
@@ -389,10 +714,10 @@ GRID_SIZE = (16) * PIXEL_SIZE;
       Math.min(camera.worldY, cameraBounds.bottom),
       cameraBounds.top
     );
-  
+
     background.worldX = camera.worldX - camera.width - camera.worldX%GRID_SIZE;
     background.worldY = camera.worldY - camera.height - camera.worldY%GRID_SIZE;
-  
+
     updateObjects();
     grass.x = background.x;
     grass.y = 0;
@@ -444,14 +769,14 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     delay: 20, loaded: false
   };
   let cameraBounds = {
-    top: 0, bottom: 3000, right: 2500, left: -1000
+    top: 0, bottom: 2200, right: 1800, left: -700
   };
 
   updateCamera();
-  
+
   // Get and set up important components
   let [headerObj, headerHeight] = loadHeader();
-  let [mainObj, mainEl] = loadMain(); 
+  let [mainObj, mainEl] = loadMain();
   let nav = loadNav();
   loadTopRow();
   let background = makeBG(mainEl);
@@ -459,8 +784,29 @@ GRID_SIZE = (16) * PIXEL_SIZE;
   let dude = makeDude(mainEl);
   worldObjects.push(dude);
 
-  // Add decorative objects
+  // Add exit interactable
+  makeExitInteractable();
+
+  // Add decorative objects and dirt paths
   populateWorld();
+
+  // Pond with water tiles and interaction
+  makePond();
+
+  // Group ground-level decorations (dirt, flowers, water) into spatial chunks
+  chunkDecorations(400);
+
+  // Mystery sign near the path
+  makeMysterySign(320, 580);
+
+  // Transfer dark mode from .main to body for explore mode
+  let mainSyncEl = document.getElementsByClassName("main")[0];
+  if (mainSyncEl.classList.contains("dark")) {
+    mainSyncEl.classList.remove("dark");
+    document.body.classList.add("dark");
+    let clouds = document.getElementsByClassName("cloud");
+    for (let cloud of clouds) { cloud.classList.remove("dark"); }
+  }
 
   document.body.style.userSelect = "none";
   document.body.style.webkitUserSelect = "none";
@@ -475,7 +821,7 @@ GRID_SIZE = (16) * PIXEL_SIZE;
     elapsed = timeStamp - lastTime;
 
     window.requestAnimationFrame(step);
-    
+
     if (elapsed > fpsInterval) {
       lastTime = timeStamp - (elapsed % fpsInterval);
       updateCamera();

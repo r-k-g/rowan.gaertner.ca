@@ -1,0 +1,163 @@
+---
+---
+
+@use "general" as *;
+@use "sass:math";
+
+body {
+  background-color: rgb(2, 32, 40);
+  color: rgb(222, 222, 222);
+  overflow: hidden;
+}
+
+// Stars — same approach as _tertiary.scss
+
+.star {
+  position: fixed;
+  transform: scale(1);
+  z-index: 0;
+}
+
+@for $i from 1 through 30 {
+  .star#{$i} {
+    top: math.percentage(math.random());
+    left: math.percentage(math.random());
+    animation: twinkle 50s ease-in-out -#{math.random(50)}s infinite;
+  }
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  2% {
+    opacity: 1;
+    transform: scale(2);
+  }
+  4% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+}
+
+// Scene layout
+
+.grave-scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+// Tombstone
+
+.tombstone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.tombstone-top {
+  width: 180px;
+  height: 80px;
+  background-color: rgb(140, 140, 140);
+  border: 4px solid rgb(80, 80, 80);
+  border-bottom: none;
+  border-radius: 90px 90px 0 0;
+  box-shadow: inset -6px 0 0 rgb(120, 120, 120), inset 6px 0 0 rgb(160, 160, 160);
+}
+
+.tombstone-body {
+  width: 180px;
+  background-color: rgb(140, 140, 140);
+  border-left: 4px solid rgb(80, 80, 80);
+  border-right: 4px solid rgb(80, 80, 80);
+  box-shadow: inset -6px 0 0 rgb(120, 120, 120), inset 6px 0 0 rgb(160, 160, 160);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 0 1.5rem;
+}
+
+.tombstone-404 {
+  font-family: Pixels;
+  font-size: 3rem;
+  color: rgb(50, 50, 50);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.tombstone-text {
+  font-family: Pixels;
+  font-size: 1rem;
+  color: rgb(60, 60, 60);
+  line-height: 1.4;
+}
+
+.tombstone-base {
+  width: 200px;
+  height: 16px;
+  background-color: rgb(120, 120, 120);
+  border: 4px solid rgb(80, 80, 80);
+  box-shadow: inset -4px 0 0 rgb(100, 100, 100), inset 4px 0 0 rgb(140, 140, 140);
+}
+
+.grass-strip {
+  width: 240px;
+  height: 12px;
+  background-color: rgb(56, 120, 36);
+  border-radius: 0 0 2px 2px;
+  position: relative;
+  margin-top: -2px;
+  box-shadow: 0 4px 0 rgb(40, 90, 24);
+}
+
+// Epitaph text
+
+.epitaph {
+  font-family: monospace;
+  font-size: 1rem;
+  color: rgb(180, 180, 180);
+  margin: 1rem 0 2rem;
+  text-align: center;
+}
+
+// Prompt
+
+.prompt {
+  font-family: Pixels;
+  font-size: 1rem;
+  color: rgb(222, 222, 222);
+  text-decoration: none;
+  animation: pulse 3.5s ease-in-out infinite;
+}
+
+.prompt:visited {
+  color: rgb(222, 222, 222);
+}
+
+.prompt:hover {
+  color: rgb(200, 183, 0);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}

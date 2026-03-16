@@ -37,4 +37,79 @@ header {
   background-size: 32px 32px;
   z-index: -1;
   transform: translate3d(0px, 0px, 0px);
+  transition: filter 1s;
+}
+
+// Interaction hint
+.interact-hint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: pixels;
+  font-size: 10px;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2px 5px;
+  pointer-events: none;
+  z-index: 999990;
+  opacity: 0;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  transform-origin: center bottom;
+  image-rendering: pixelated;
+}
+
+.interact-hint.visible {
+  opacity: 1;
+}
+
+// Proximity glow for interactable objects
+.interactable-glow {
+  filter: brightness(1.3) drop-shadow(0 0 4px rgba(255, 255, 200, 0.6));
+  transition: filter 0.3s;
+}
+
+// Instruction sign (non-interactable, informational)
+.instruction-sign {
+  font-size: 9px;
+  padding: 6px 8px;
+  position: absolute;
+  cursor: default;
+}
+
+// Sunglasses easter egg
+.dude.sunglasses::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 6px;
+  left: 1px;
+  width: 18px;
+  height: 5px;
+  background:
+    linear-gradient(to right,
+      rgb(30, 30, 30) 0px, rgb(30, 30, 30) 7px,
+      transparent 7px, transparent 11px,
+      rgb(30, 30, 30) 11px, rgb(30, 30, 30) 18px
+    );
+  image-rendering: pixelated;
+  z-index: 1;
+  pointer-events: none;
+}
+
+// Explore mode message popup
+.explore-message {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: rgb(222, 222, 222);
+  font-family: pixels;
+  font-size: 12px;
+  padding: 8px 16px;
+  z-index: 999991;
+  pointer-events: none;
+  transition: opacity 1s;
+  white-space: nowrap;
 }

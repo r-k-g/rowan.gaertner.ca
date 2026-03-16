@@ -2,6 +2,7 @@
 layout: secondary
 title: Portfolio
 permalink: /portfolio/
+description: "Portfolio of projects by Rowan Gaertner."
 ---
 
 A collection of things I've worked on over the years.

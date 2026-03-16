@@ -302,9 +302,77 @@
   opacity: 0;
 }
 
+// Sunglasses easter egg (works in nav mode)
+.dude.sunglasses::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 6px;
+  left: 1px;
+  width: 18px;
+  height: 5px;
+  background:
+    linear-gradient(to right,
+      rgb(30, 30, 30) 0px, rgb(30, 30, 30) 7px,
+      transparent 7px, transparent 11px,
+      rgb(30, 30, 30) 11px, rgb(30, 30, 30) 18px
+    );
+  image-rendering: pixelated;
+  z-index: 1;
+  pointer-events: none;
+}
+
 @keyframes dudemove {
   0% {top: 40px; left: 40px;}
   33% {top: 40px; left: 20px;}
   67% {top: 0px; left: 20px;}
   100% {top: 0px; left: 0px;}
+}
+
+// Fireflies - visible only in dark/night mode
+.fireflies {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 2s;
+}
+
+.dark .fireflies {
+  opacity: 1;
+}
+
+.firefly {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgb(180, 255, 120);
+  border-radius: 50%;
+  opacity: 0;
+  box-shadow: 0 0 6px 2px rgba(180, 255, 120, 0.6);
+}
+
+.firefly:nth-child(1)  { left: 15%; top: 25%; animation: fireflyGlow 4s ease-in-out 0s infinite; }
+.firefly:nth-child(2)  { left: 72%; top: 60%; animation: fireflyGlow 5s ease-in-out 1.2s infinite; }
+.firefly:nth-child(3)  { left: 40%; top: 45%; animation: fireflyGlow 3.5s ease-in-out 0.5s infinite; }
+.firefly:nth-child(4)  { left: 85%; top: 30%; animation: fireflyGlow 4.5s ease-in-out 2s infinite; }
+.firefly:nth-child(5)  { left: 25%; top: 75%; animation: fireflyGlow 5.5s ease-in-out 0.8s infinite; }
+.firefly:nth-child(6)  { left: 55%; top: 15%; animation: fireflyGlow 4s ease-in-out 3s infinite; }
+.firefly:nth-child(7)  { left: 90%; top: 55%; animation: fireflyGlow 3s ease-in-out 1.5s infinite; }
+.firefly:nth-child(8)  { left: 10%; top: 85%; animation: fireflyGlow 6s ease-in-out 0.3s infinite; }
+.firefly:nth-child(9)  { left: 65%; top: 40%; animation: fireflyGlow 4.2s ease-in-out 2.5s infinite; }
+.firefly:nth-child(10) { left: 35%; top: 70%; animation: fireflyGlow 5s ease-in-out 1s infinite; }
+.firefly:nth-child(11) { left: 80%; top: 20%; animation: fireflyGlow 3.8s ease-in-out 0.7s infinite; }
+.firefly:nth-child(12) { left: 48%; top: 88%; animation: fireflyGlow 4.8s ease-in-out 2.2s infinite; }
+
+@keyframes fireflyGlow {
+  0%, 100% { opacity: 0; }
+  15%, 85% { opacity: 0; }
+  40% { opacity: 0.9; transform: translate(3px, -2px); }
+  60% { opacity: 0.7; transform: translate(-2px, 1px); }
 }
